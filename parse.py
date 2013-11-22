@@ -1345,28 +1345,47 @@ MORPHOLOGY = {
 }
 
 
-def main(lmdb):
+def read_data(lmdb):
     with open(lmdb) as f:
-        for i, line in enumerate(f):
-            line = line.strip().decode('cp1257')
-            fields = line.split()
-            params = map(int, fields[4:])
-            lexeme, source, lemma, pos = fields[:4]
-            lemma = lexeme if lemma == '-' else lemma
-            pos = int(pos)
+        for line in f:
+            yield line
 
-            try:
-                assert pos in MORPHOLOGY
-                for category, rules in MORPHOLOGY[pos]:
-                    for n, (name, options) in rules.items():
-                        n = n - 4
-                        assert n < len(params), ('%s not in params: %r' % (n, params))
-                        assert params[n] in options, ('%s not in %r' % (params[n], options))
-            except AssertionError:
-                print '%d: %s' % (i, line.encode('utf-8'))
-                raise
 
-            #print ('%s <- %s %s %s' % (lexeme, lemma, POS[pos], params)).encode('utf-8')
+def main(lmdb):
+    #data = read_data(lmdb)
+    data = ['namas 1 - 1 1 1 1 1 1 1 0 0 2 0 0 0 0 0 1 0 0 0 0']
+    for i, line in enumerate(data):
+        line = line.strip().decode('cp1257')
+        fields = line.split()
+        params = map(int, fields[4:])
+        lexeme, source, lemma, pos = fields[:4]
+        lemma = lexeme if lemma == '-' else lemma
+        pos = int(pos)
+
+        try:
+            assert pos in MORPHOLOGY
+            for category, rules in MORPHOLOGY[pos]:
+                for n, (name, options) in rules.items():
+                    n = n - 4
+                    assert n < len(params), ('%s not in params: %r' % (n, params))
+                    assert params[n] in options, ('%s not in %r' % (params[n], options))
+        except AssertionError:
+            print '%d: %s' % (i, line.encode('utf-8'))
+            raise
+
+        #if pos == 5:
+        #    print ('%s <- %s %s %s' % (lexeme, lemma, POS[pos], params)).encode('utf-8')
+        if lexeme == 'namas':
+            print line
+            for category, rules in MORPHOLOGY[pos]:
+                print category.encode('utf-8')
+                for n, (name, options) in rules.items():
+                    n = n - 4
+                    if name:
+                        print '  %s' % name.encode('utf-8')
+                    else:
+                        print '  -'
+                    print '    %s' % options[params[n]].encode('utf-8')
 
 
 if __name__ == '__main__':
