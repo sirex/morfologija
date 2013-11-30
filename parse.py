@@ -2,20 +2,27 @@
 # coding: utf-8
 
 import sys
+import subprocess
+
+
+class Paradigm(object):
+    def __init__(self, name, forms):
+        self.name = name
+        self.forms = forms
 
 
 POS = {
-     1: u'daiktavardis',
-     2: u'būdvardis',
-     3: u'skaitvardis',
-     4: u'įvardis',
-     5: u'veiksmažodis',
-     6: u'prieveiksmis',
-     7: u'dalelytė',
-     8: u'prielinksnis',
-     9: u'jungtukas',
-    10: u'jaustukas',
-    11: u'ištiktukas',
+     1: (u'n',      u'daiktavardis'),
+     2: (u'adj',    u'būdvardis'),
+     3: (u'num',    u'skaitvardis'),
+     4: (u'prn',    u'įvardis'),
+     5: (u'vblex',  u'veiksmažodis'),
+     6: (u'adv',    u'prieveiksmis'),
+     #7: (u'',       u'dalelytė'),
+     8: (u'pr',     u'prielinksnis'),
+     9: (u'cnjcoo', u'jungtukas'),
+    10: (u'ij',     u'jaustukas'),
+    #11: (u'',       u'ištiktukas'),
 }
 
 SOURCES = {
@@ -84,11 +91,11 @@ MORPHOLOGY = {
         (u'Daiktavardžio įpatumai', {
              4: (u'Tikriniškumas', {
                   1: u'Bendrinis',
-                  2: u'Asmenvardis-vardas',
+                  2: ('ant', u'Asmenvardis-vardas'),
                   3: u'Ne tikrinis, bet  "iš pagarbos" ir pan. gali būti traktuojamas (t.y. rašomas iš didžiosios) kaip tikrinis (pvz., Dievas, Altingas, Koranas ir pan.)',
-                  4: u'Tikrinis geografinis vardas - miestas, kaimas, šalis, gyvenvietė, t.y. toks, iš kurio galimi vediniai su -ietis(-ė) ir pan.',
-                  5: u'Kiti tikriniai vardai, pvz., firmų pavadinimai',
-                  6: u'Tikrinis geografinis vardas: upės, ežerai, kalnai ir pan.',
+                  4: ('top', u'Tikrinis geografinis vardas - miestas, kaimas, šalis, gyvenvietė, t.y. toks, iš kurio galimi vediniai su -ietis(-ė) ir pan.'),
+                  5: ('org', u'Kiti tikriniai vardai, pvz., firmų pavadinimai'),
+                  6: ('hyd', u'Tikrinis geografinis vardas: upės, ežerai, kalnai ir pan.'),
                   7: u'Subendrinėjęs asmenvardis-vardas (gali būti rašomas ir iš mažosios, ir iš didžiosios), pvz., Eskulapas-eskulapas',
                   8: u'Subendrinėjęs tikrinis geografinis vardas (gali būti rašomas tiek mažosios, tiek iš didžiosios), pvz., Kvirinalas-kvirinalas',
                   9: u'Subendrinėjęs kitas tikrinis vardas (pvz., antikinių švenčių), pvz., herėjos-Herėjos',
@@ -121,7 +128,22 @@ MORPHOLOGY = {
         (u'Kaitybos charakteristika', {
              7: (u'Linksniavimo charakteristika', {
                   0: u'Daiktavardis nekaitomas, nelinksniuojamas',
-                  1: u'(i)a linksniuotė, paradigma nr. 1 (žiūr DLKG97 psl.70)',
+                  1: Paradigm(u'(i)a linksniuotė, paradigma nr. 1 (žiūr DLKG97 psl.70)', [
+                          (u'as',   u'as', 'm', 'sg', 'nom',),
+                          (u'o',    u'as', 'm', 'sg', 'gen',),
+                          (u'ui',   u'as', 'm', 'sg', 'dat',),
+                          (u'ą',    u'as', 'm', 'sg', 'acc',),
+                          (u'u',    u'as', 'm', 'sg', 'ins',),
+                          (u'e',    u'as', 'm', 'sg', 'loc',),
+                          (u'e',    u'as', 'm', 'sg', 'voc',),
+                          (u'ai',   u'as', 'm', 'pl', 'nom',),
+                          (u'ų',    u'as', 'm', 'pl', 'gen',),
+                          (u'ams',  u'as', 'm', 'pl', 'dat',),
+                          (u'us',   u'as', 'm', 'pl', 'acc',),
+                          (u'ais',  u'as', 'm', 'pl', 'ins',),
+                          (u'uose', u'as', 'm', 'pl', 'loc',),
+                          (u'ai',   u'as', 'm', 'pl', 'voc',),
+                      ]),
                   2: u'(i)a linksniuotė, paradigma nr. 2 (žiūr DLKG97 psl.71)',
                   3: u'(i)a linksniuotė, paradigma nr. 3 (žiūr DLKG97 psl.71)',
                   4: u'(i)u linksniuotė, paradigma nr. 4 (žiūr DLKG97 psl.72)',
@@ -1351,8 +1373,81 @@ def read_data(lmdb):
             yield line
 
 
-def main(lmdb):
-    #data = read_data(lmdb)
+
+def gen_symbols(indent):
+    for n, c in POS.values():
+        yield '%s<sdef n=%-10s c="%s"/>' % (
+            indent, '"%s"' % n, c
+        )
+
+    for pos, posrules in MORPHOLOGY.items():
+        for category, rules in posrules:
+            yield ''
+            yield '%s<!-- %s -->' % (indent, category)
+            for name, options in rules.values():
+                yield ''
+                if name:
+                    yield '%s<!-- %s -->' % (indent, name)
+                for option in options.values():
+                    if isinstance(option, tuple):
+                        n, c = option
+                        yield '%s<sdef n=%-10s c="%s"/>' % (
+                            indent, '"%s"' % n, c
+                        )
+
+
+def dump_properties(i, lexeme, lemma, pos, params, fields):
+    print i
+    print ('%s -> %s' % (lexeme, lemma)).encode('utf-8')
+
+    posm = POS[pos][0]
+    print posm
+    for category, rules in MORPHOLOGY[pos]:
+        print category.encode('utf-8')
+        for n, (name, options) in rules.items():
+            n = n - 4
+            if name:
+                print '  %s' % name.encode('utf-8')
+            else:
+                print '  -'
+            if isinstance(options[params[n]], basestring):
+                print ('    %d: [%s] -> %s' % (n+4, params[n], options[params[n]])).encode('utf-8')
+            else:
+                print '    %d: [%s] -> %r' % (n+4, params[n], options[params[n]])
+
+
+def get_fields(pos, params):
+    fields = {}
+    for category, rules in MORPHOLOGY[pos]:
+        for n, (name, options) in rules.items():
+            fields[n] = int(params[n-4])
+    return fields
+
+
+def get_values(pos, params):
+    fields = {}
+    for category, rules in MORPHOLOGY[pos]:
+        for n, (name, options) in rules.items():
+            fields[n] = options[int(params[n-4])]
+    return fields
+
+
+def validate_entry(i, line, pos, params):
+    try:
+        assert pos in MORPHOLOGY
+        for category, rules in MORPHOLOGY[pos]:
+            for n, (name, options) in rules.items():
+                n = n - 4
+                assert n < len(params), ('%s not in params: %r' % (n, params))
+                assert params[n] in options, ('%s not in %r' % (params[n], options))
+    except AssertionError:
+        print '%d: %s' % (i, line.encode('utf-8'))
+        raise
+
+
+def gen_entries(lmdb, indent):
+    paradigms = set()
+    data = read_data(lmdb)
     data = ['namas 1 - 1 1 1 1 1 1 1 0 0 2 0 0 0 0 0 1 0 0 0 0']
     for i, line in enumerate(data):
         line = line.strip().decode('cp1257')
@@ -1362,30 +1457,114 @@ def main(lmdb):
         lemma = lexeme if lemma == '-' else lemma
         pos = int(pos)
 
-        try:
-            assert pos in MORPHOLOGY
-            for category, rules in MORPHOLOGY[pos]:
-                for n, (name, options) in rules.items():
-                    n = n - 4
-                    assert n < len(params), ('%s not in params: %r' % (n, params))
-                    assert params[n] in options, ('%s not in %r' % (params[n], options))
-        except AssertionError:
-            print '%d: %s' % (i, line.encode('utf-8'))
-            raise
+        validate_entry(i, line, pos, params)
 
-        #if pos == 5:
-        #    print ('%s <- %s %s %s' % (lexeme, lemma, POS[pos], params)).encode('utf-8')
-        if lexeme == 'namas':
-            print line
-            for category, rules in MORPHOLOGY[pos]:
-                print category.encode('utf-8')
-                for n, (name, options) in rules.items():
-                    n = n - 4
-                    if name:
-                        print '  %s' % name.encode('utf-8')
-                    else:
-                        print '  -'
-                    print '    %s' % options[params[n]].encode('utf-8')
+        fields = get_fields(pos, params)
+        values = get_values(pos, params)
+
+        dump_properties(i, lexeme, lemma, pos, params, fields)
+
+        posm = POS[pos][0]
+        if posm == 'n':
+            parsymbols = ['n']
+
+            # Gender
+            if fields[8] in (1, 3):
+                parsymbols.append('m')
+                accept_gender = ('m',)
+            else:
+                assert False
+
+            # Number
+            if fields[9] in (1, 2, 5, 6):
+                accept_number = ('sg', 'pl')
+            else:
+                assert False
+
+            if fields[11] == 0:
+                pass
+            else:
+                assert False
+
+            if fields[12] == 2:
+                pass
+            else:
+                assert False
+
+
+            if isinstance(values[7], Paradigm):
+                paradigm = values[7]
+            else:
+                assert False
+
+            rgt = paradigm.forms[0][1]
+            parname = '%s/%s__%s' % (lexeme[:-len(rgt)], rgt, '_'.join(parsymbols))
+
+            key = (rgt,) + tuple(parsymbols)
+
+            if key in paradigms: continue
+            paradigms.add(key)
+
+            yield '%s<pardef n="%s">' % (indent, parname)
+            for lft, rgt, gender, number, case in paradigm.forms:
+                if gender in accept_gender and number in accept_number:
+                    symbols = ('n', gender, number, case)
+                    yield '%s  <e><p><l>%s</l><r>%s%s</r></p></e>' % (
+                        indent, lft, rgt,
+                        ''.join(['<s n="%s"/>' % n for n in symbols])
+                    )
+            yield '%s</pardef>' % indent
+
+
+        else:
+            break
+
+        #print (u'%s<e lm="%s"><i>žuvininkys</i><par n="abiturien/tė__n"/></e>' % (
+        #    indent, lemma
+        #)).encode('utf-8')
+        break
+
+
+def build_file(lmdb):
+    yield u'<?xml version="1.0" encoding="UTF-8"?>'
+    yield u'<dictionary>'
+    yield u'  <alphabet>AĄBCČDEĘĖFGHIĮYJKLMNOPRSŠTUŲŪVZŽaąbcčdeęėfghiįyjklmnoprsštuųūvzž</alphabet>'
+    yield u'  <sdefs>'
+    for line in gen_symbols('    '):
+        yield line
+    yield u'  </sdefs>'
+    yield u'  <pardefs>'
+    for line in gen_entries(lmdb, '    '):
+        yield line
+    yield u'  </pardefs>'
+    yield u'  <section id="main" type="standard">'
+
+    yield u'    <e lm="namas"><i>nam</i><par n="nam/as__n_m"/></e>'
+
+    #for line in gen_entries(lmdb, '    '):
+    #    yield line
+    yield u'  </section>'
+    yield u'</dictionary>'
+
+
+
+def expand(lmdb):
+    with open('temp.dix', 'w') as f:
+        for line in build_file(lmdb):
+            f.write('%s\n' % line.encode('utf-8'))
+
+    subprocess.call('lt-expand temp.dix', shell=True)
+
+
+def generate(lmdb):
+    for line in build_file(lmdb):
+        print line.encode('utf-8')
+
+
+
+def main(lmdb):
+    expand(lmdb)
+
 
 
 if __name__ == '__main__':
