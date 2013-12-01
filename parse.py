@@ -6,9 +6,10 @@ import subprocess
 
 
 class Paradigm(object):
-    def __init__(self, name, forms):
+    def __init__(self, name, forms, overrides=None):
         self.name = name
         self.forms = forms
+        self.overrides = overrides or {}
 
 
 POS = {
@@ -85,13 +86,13 @@ VERB_PREFIXES = {
 }
 
 
-PARADIGMS = [
-    ('BASE__namelis', (
+PARADIGMS = {
+    u'BASE__nam/elis': [
         (u'elis',    u'', ('m', 'sg', 'nom',), ()),
         (u'elio',    u'', ('m', 'sg', 'gen',), ()),
         (u'eliui',   u'', ('m', 'sg', 'dat',), ()),
         (u'elį',     u'', ('m', 'sg', 'acc',), ()),
-        (u'elu',     u'', ('m', 'sg', 'ins',), ()),
+        (u'eliu',    u'', ('m', 'sg', 'ins',), ()),
         (u'elyje',   u'', ('m', 'sg', 'loc',), ()),
         (u'eli',     u'', ('m', 'sg', 'voc',), ()),
         (u'eliai',   u'', ('m', 'pl', 'nom',), ()),
@@ -101,8 +102,23 @@ PARADIGMS = [
         (u'eliais',  u'', ('m', 'pl', 'ins',), ()),
         (u'eliuose', u'', ('m', 'pl', 'loc',), ()),
         (u'eliai',   u'', ('m', 'pl', 'voc',), ()),
-    )),
-    ('BASE__nameliukas', (
+
+        (u'elė',     u'', ('f', 'sg', 'nom',), ()),
+        (u'elės',    u'', ('f', 'sg', 'gen',), ()),
+        (u'elei',    u'', ('f', 'sg', 'dat',), ()),
+        (u'elę',     u'', ('f', 'sg', 'acc',), ()),
+        (u'ele',     u'', ('f', 'sg', 'ins',), ()),
+        (u'elėje',   u'', ('f', 'sg', 'loc',), ()),
+        (u'ele',     u'', ('f', 'sg', 'voc',), ()),
+        (u'elės',    u'', ('f', 'pl', 'nom',), ()),
+        (u'elių',    u'', ('f', 'pl', 'gen',), ()),
+        (u'elėms',   u'', ('f', 'pl', 'dat',), ()),
+        (u'eles',    u'', ('f', 'pl', 'acc',), ()),
+        (u'elėmis',  u'', ('f', 'pl', 'ins',), ()),
+        (u'elėse',   u'', ('f', 'pl', 'loc',), ()),
+        (u'elės',    u'', ('f', 'pl', 'voc',), ()),
+    ],
+    u'BASE__nam/eliukas': [
         (u'eliukas',   u'', ('m', 'sg', 'nom',), ()),
         (u'eliuko',    u'', ('m', 'sg', 'gen',), ()),
         (u'eliukui',   u'', ('m', 'sg', 'dat',), ()),
@@ -117,10 +133,54 @@ PARADIGMS = [
         (u'eliukais',  u'', ('m', 'pl', 'ins',), ()),
         (u'eliukuose', u'', ('m', 'pl', 'loc',), ()),
         (u'eliukai',   u'', ('m', 'pl', 'voc',), ()),
-    )),
 
+        (u'eliukė',     u'', ('f', 'sg', 'nom',), ()),
+        (u'eliukės',    u'', ('f', 'sg', 'gen',), ()),
+        (u'eliukei',    u'', ('f', 'sg', 'dat',), ()),
+        (u'eliukę',     u'', ('f', 'sg', 'acc',), ()),
+        (u'eliuke',     u'', ('f', 'sg', 'ins',), ()),
+        (u'eliukėje',   u'', ('f', 'sg', 'loc',), ()),
+        (u'eliuke',     u'', ('f', 'sg', 'voc',), ()),
+        (u'eliukės',    u'', ('f', 'pl', 'nom',), ()),
+        (u'eliukių',    u'', ('f', 'pl', 'gen',), ()),
+        (u'eliukėms',   u'', ('f', 'pl', 'dat',), ()),
+        (u'eliukes',    u'', ('f', 'pl', 'acc',), ()),
+        (u'eliukėmis',  u'', ('f', 'pl', 'ins',), ()),
+        (u'eliukėse',   u'', ('f', 'pl', 'loc',), ()),
+        (u'eliukės',    u'', ('f', 'pl', 'voc',), ()),
+    ],
+    u'BASE__bern/užėlis': [
+        (u'užėlis',    u'', ('m', 'sg', 'nom',), ()),
+        (u'užėlio',    u'', ('m', 'sg', 'gen',), ()),
+        (u'užėliui',   u'', ('m', 'sg', 'dat',), ()),
+        (u'užėlį',     u'', ('m', 'sg', 'acc',), ()),
+        (u'užėliu',    u'', ('m', 'sg', 'ins',), ()),
+        (u'užėlyje',   u'', ('m', 'sg', 'loc',), ()),
+        (u'užėli',     u'', ('m', 'sg', 'voc',), ()),
+        (u'užėliai',   u'', ('m', 'pl', 'nom',), ()),
+        (u'užėlių',    u'', ('m', 'pl', 'gen',), ()),
+        (u'užėliams',  u'', ('m', 'pl', 'dat',), ()),
+        (u'užėlius',   u'', ('m', 'pl', 'acc',), ()),
+        (u'užėliais',  u'', ('m', 'pl', 'ins',), ()),
+        (u'užėliuose', u'', ('m', 'pl', 'loc',), ()),
+        (u'užėliai',   u'', ('m', 'pl', 'voc',), ()),
 
-    (u'BASE__bankininkas', (
+        (u'užėlė',     u'', ('f', 'sg', 'nom',), ()),
+        (u'užėlės',    u'', ('f', 'sg', 'gen',), ()),
+        (u'užėlei',    u'', ('f', 'sg', 'dat',), ()),
+        (u'užėlę',     u'', ('f', 'sg', 'acc',), ()),
+        (u'užėle',     u'', ('f', 'sg', 'ins',), ()),
+        (u'užėlėje',   u'', ('f', 'sg', 'loc',), ()),
+        (u'užėle',     u'', ('f', 'sg', 'voc',), ()),
+        (u'užėlės',    u'', ('f', 'pl', 'nom',), ()),
+        (u'užėlių',    u'', ('f', 'pl', 'gen',), ()),
+        (u'užėlėms',   u'', ('f', 'pl', 'dat',), ()),
+        (u'užėles',    u'', ('f', 'pl', 'acc',), ()),
+        (u'užėlėmis',  u'', ('f', 'pl', 'ins',), ()),
+        (u'užėlėse',   u'', ('f', 'pl', 'loc',), ()),
+        (u'užėlės',    u'', ('f', 'pl', 'voc',), ()),
+    ],
+    u'BASE__bank/ininkas': [
         (u'ininkas',   u'', ('m', 'sg', 'nom',), ()),
         (u'ininko',    u'', ('m', 'sg', 'gen',), ()),
         (u'ininkui',   u'', ('m', 'sg', 'dat',), ()),
@@ -135,17 +195,108 @@ PARADIGMS = [
         (u'ininkais',  u'', ('m', 'pl', 'ins',), ()),
         (u'ininkuose', u'', ('m', 'pl', 'loc',), ()),
         (u'ininkai',   u'', ('m', 'pl', 'voc',), ()),
-    )),
 
-    #13: u'ybė',
-    #14: u'ystė',
-    #15: u'ingas',
+        (u'ininkė',    u'', ('f', 'sg', 'nom',), ()),
+        (u'ininkės',   u'', ('f', 'sg', 'gen',), ()),
+        (u'ininkei',   u'', ('f', 'sg', 'dat',), ()),
+        (u'ininkę',    u'', ('f', 'sg', 'acc',), ()),
+        (u'ininke',    u'', ('f', 'sg', 'ins',), ()),
+        (u'ininkėje',  u'', ('f', 'sg', 'loc',), ()),
+        (u'ininke',    u'', ('f', 'sg', 'voc',), ()),
+        (u'ininkės',   u'', ('f', 'pl', 'nom',), ()),
+        (u'ininkių',   u'', ('f', 'pl', 'gen',), ()),
+        (u'ininkėms',  u'', ('f', 'pl', 'dat',), ()),
+        (u'ininkes',   u'', ('f', 'pl', 'acc',), ()),
+        (u'ininkėmis', u'', ('f', 'pl', 'ins',), ()),
+        (u'ininkėse',  u'', ('f', 'pl', 'loc',), ()),
+        (u'ininkės',   u'', ('f', 'pl', 'voc',), ()),
+    ],
 
-    #16: u'iškas',
-    (u'BASE__auksiškas', (
+    u'BASE__bais/ybė': [
+        (u'ybė',     u'', ('f', 'sg', 'nom',), ()),
+        (u'ybės',    u'', ('f', 'sg', 'gen',), ()),
+        (u'ybei',    u'', ('f', 'sg', 'dat',), ()),
+        (u'ybę',     u'', ('f', 'sg', 'acc',), ()),
+        (u'ybe',     u'', ('f', 'sg', 'ins',), ()),
+        (u'ybėje',   u'', ('f', 'sg', 'loc',), ()),
+        (u'ybe',     u'', ('f', 'sg', 'voc',), ()),
+        (u'ybės',    u'', ('f', 'pl', 'nom',), ()),
+        (u'ybių',    u'', ('f', 'pl', 'gen',), ()),
+        (u'ybėms',   u'', ('f', 'pl', 'dat',), ()),
+        (u'ybes',    u'', ('f', 'pl', 'acc',), ()),
+        (u'ybėmis',  u'', ('f', 'pl', 'ins',), ()),
+        (u'ybėse',   u'', ('f', 'pl', 'loc',), ()),
+        (u'ybės',    u'', ('f', 'pl', 'voc',), ()),
+    ],
+
+    u'BASE__bern/ystė': [
+        (u'ystė',     u'', ('m', 'sg', 'nom',), ()),
+        (u'ystės',    u'', ('m', 'sg', 'gen',), ()),
+        (u'ystei',    u'', ('m', 'sg', 'dat',), ()),
+        (u'ystę',     u'', ('m', 'sg', 'acc',), ()),
+        (u'yste',     u'', ('m', 'sg', 'ins',), ()),
+        (u'ystėje',   u'', ('m', 'sg', 'loc',), ()),
+        (u'yste',     u'', ('m', 'sg', 'voc',), ()),
+        (u'ystės',    u'', ('m', 'pl', 'nom',), ()),
+        (u'ysčių',    u'', ('m', 'pl', 'gen',), ()),
+        (u'ystėms',   u'', ('m', 'pl', 'dat',), ()),
+        (u'ystes',    u'', ('m', 'pl', 'acc',), ()),
+        (u'ystėmis',  u'', ('m', 'pl', 'ins',), ()),
+        (u'ystėse',   u'', ('m', 'pl', 'loc',), ()),
+        (u'ystės',    u'', ('m', 'pl', 'voc',), ()),
+
+        (u'ystė',     u'', ('f', 'sg', 'nom',), ()),
+        (u'ystės',    u'', ('f', 'sg', 'gen',), ()),
+        (u'ystei',    u'', ('f', 'sg', 'dat',), ()),
+        (u'ystę',     u'', ('f', 'sg', 'acc',), ()),
+        (u'yste',     u'', ('f', 'sg', 'ins',), ()),
+        (u'ystėje',   u'', ('f', 'sg', 'loc',), ()),
+        (u'yste',     u'', ('f', 'sg', 'voc',), ()),
+        (u'ystės',    u'', ('f', 'pl', 'nom',), ()),
+        (u'ysčių',    u'', ('f', 'pl', 'gen',), ()),
+        (u'ystėms',   u'', ('f', 'pl', 'dat',), ()),
+        (u'ystes',    u'', ('f', 'pl', 'acc',), ()),
+        (u'ystėmis',  u'', ('f', 'pl', 'ins',), ()),
+        (u'ystėse',   u'', ('f', 'pl', 'loc',), ()),
+        (u'ystės',    u'', ('f', 'pl', 'voc',), ()),
+    ],
+
+    u'BASE__bais/ingas': [
+        (u'ingas',    u'', ('m', 'sg', 'nom',), ()),
+        (u'ingo',     u'', ('m', 'sg', 'gen',), ()),
+        (u'ingam',    u'', ('m', 'sg', 'dat',), ()),
+        (u'ingą',     u'', ('m', 'sg', 'acc',), ()),
+        (u'ingu',     u'', ('m', 'sg', 'ins',), ()),
+        (u'ingame',   u'', ('m', 'sg', 'loc',), ()),
+        (u'ingasis',  u'', ('m', 'sg', 'voc',), ()),
+        (u'ingi',     u'', ('m', 'pl', 'nom',), ()),
+        (u'ingų',     u'', ('m', 'pl', 'gen',), ()),
+        (u'ingiems',  u'', ('m', 'pl', 'dat',), ()),
+        (u'ingus',    u'', ('m', 'pl', 'acc',), ()),
+        (u'ingais',   u'', ('m', 'pl', 'ins',), ()),
+        (u'inguose',  u'', ('m', 'pl', 'loc',), ()),
+        (u'ingi',     u'', ('m', 'pl', 'voc',), ()),
+
+        (u'inga',     u'', ('f', 'sg', 'nom',), ()),
+        (u'ingos',    u'', ('f', 'sg', 'gen',), ()),
+        (u'ingai',    u'', ('f', 'sg', 'dat',), ()),
+        (u'ingą',     u'', ('f', 'sg', 'acc',), ()),
+        (u'inga',     u'', ('f', 'sg', 'ins',), ()),
+        (u'ingoje',   u'', ('f', 'sg', 'loc',), ()),
+        (u'inga',     u'', ('f', 'sg', 'voc',), ()),
+        (u'ingos',    u'', ('f', 'pl', 'nom',), ()),
+        (u'ingų',     u'', ('f', 'pl', 'gen',), ()),
+        (u'ingoms',   u'', ('f', 'pl', 'dat',), ()),
+        (u'ingas',    u'', ('f', 'pl', 'acc',), ()),
+        (u'ingomis',  u'', ('f', 'pl', 'ins',), ()),
+        (u'ingose',   u'', ('f', 'pl', 'loc',), ()),
+        (u'ingos',    u'', ('f', 'pl', 'voc',), ()),
+    ],
+
+    u'BASE__auks/iškas': [
         (u'iškas',   u'', ('m', 'sg', 'nom',), ()),
         (u'iško',    u'', ('m', 'sg', 'gen',), ()),
-        (u'iškui',   u'', ('m', 'sg', 'dat',), ()),
+        (u'iškam',   u'', ('m', 'sg', 'dat',), ()),
         (u'išką',    u'', ('m', 'sg', 'acc',), ()),
         (u'išku',    u'', ('m', 'sg', 'ins',), ()),
         (u'iške',    u'', ('m', 'sg', 'loc',), ()),
@@ -157,10 +308,24 @@ PARADIGMS = [
         (u'iškais',  u'', ('m', 'pl', 'ins',), ()),
         (u'iškuose', u'', ('m', 'pl', 'loc',), ()),
         (u'iškai',   u'', ('m', 'pl', 'voc',), ()),
-    )),
 
-    #17: u'inis',
-    (u'BASE__naminis', (
+        (u'iška',     u'', ('f', 'sg', 'nom',), ()),
+        (u'iškos',    u'', ('f', 'sg', 'gen',), ()),
+        (u'iškai',    u'', ('f', 'sg', 'dat',), ()),
+        (u'išką',     u'', ('f', 'sg', 'acc',), ()),
+        (u'iška',     u'', ('f', 'sg', 'ins',), ()),
+        (u'iškoje',   u'', ('f', 'sg', 'loc',), ()),
+        (u'iška',     u'', ('f', 'sg', 'voc',), ()),
+        (u'iškos',    u'', ('f', 'pl', 'nom',), ()),
+        (u'iškų',     u'', ('f', 'pl', 'gen',), ()),
+        (u'iškoms',   u'', ('f', 'pl', 'dat',), ()),
+        (u'iškas',    u'', ('f', 'pl', 'acc',), ()),
+        (u'iškomis',  u'', ('f', 'pl', 'ins',), ()),
+        (u'iškose',   u'', ('f', 'pl', 'loc',), ()),
+        (u'iškos',    u'', ('f', 'pl', 'voc',), ()),
+    ],
+
+    u'BASE__nam/inis': [
         (u'inis',    u'', ('m', 'sg', 'nom',), ()),
         (u'inio',    u'', ('m', 'sg', 'gen',), ()),
         (u'iniui',   u'', ('m', 'sg', 'dat',), ()),
@@ -175,14 +340,61 @@ PARADIGMS = [
         (u'iniais',  u'', ('m', 'pl', 'ins',), ()),
         (u'iniuose', u'', ('m', 'pl', 'loc',), ()),
         (u'iniai',   u'', ('m', 'pl', 'voc',), ()),
-    )),
+
+        (u'inė',     u'', ('f', 'sg', 'nom',), ()),
+        (u'inės',    u'', ('f', 'sg', 'gen',), ()),
+        (u'inei',    u'', ('f', 'sg', 'dat',), ()),
+        (u'inę',     u'', ('f', 'sg', 'acc',), ()),
+        (u'ine',     u'', ('f', 'sg', 'ins',), ()),
+        (u'inėje',   u'', ('f', 'sg', 'loc',), ()),
+        (u'ine',     u'', ('f', 'sg', 'voc',), ()),
+        (u'inės',    u'', ('f', 'pl', 'nom',), ()),
+        (u'inių',    u'', ('f', 'pl', 'gen',), ()),
+        (u'inėms',   u'', ('f', 'pl', 'dat',), ()),
+        (u'ines',    u'', ('f', 'pl', 'acc',), ()),
+        (u'inėmis',  u'', ('f', 'pl', 'ins',), ()),
+        (u'inėse',   u'', ('f', 'pl', 'loc',), ()),
+        (u'inės',    u'', ('f', 'pl', 'voc',), ()),
+    ],
 
 
     #18: u'in(i)ai',
+
     #19: u'ėtas',
+    u'BASE__kaul/ėtas': [
+        (u'ėtas',   u'', ('m', 'sg', 'nom',), ()),
+        (u'ėto',    u'', ('m', 'sg', 'gen',), ()),
+        (u'ėtam',   u'', ('m', 'sg', 'dat',), ()),
+        (u'ėtą',    u'', ('m', 'sg', 'acc',), ()),
+        (u'ėtu',    u'', ('m', 'sg', 'ins',), ()),
+        (u'ėte',    u'', ('m', 'sg', 'loc',), ()),
+        (u'ėte',    u'', ('m', 'sg', 'voc',), ()),
+        (u'ėtai',   u'', ('m', 'pl', 'nom',), ()),
+        (u'ėtų',    u'', ('m', 'pl', 'gen',), ()),
+        (u'ėtams',  u'', ('m', 'pl', 'dat',), ()),
+        (u'ėtus',   u'', ('m', 'pl', 'acc',), ()),
+        (u'ėtais',  u'', ('m', 'pl', 'ins',), ()),
+        (u'ėtuose', u'', ('m', 'pl', 'loc',), ()),
+        (u'ėtai',   u'', ('m', 'pl', 'voc',), ()),
+
+        (u'ėta',     u'', ('f', 'sg', 'nom',), ()),
+        (u'ėtos',    u'', ('f', 'sg', 'gen',), ()),
+        (u'ėtai',    u'', ('f', 'sg', 'dat',), ()),
+        (u'ėtą',     u'', ('f', 'sg', 'acc',), ()),
+        (u'ėta',     u'', ('f', 'sg', 'ins',), ()),
+        (u'ėtoje',   u'', ('f', 'sg', 'loc',), ()),
+        (u'ėta',     u'', ('f', 'sg', 'voc',), ()),
+        (u'ėtos',    u'', ('f', 'pl', 'nom',), ()),
+        (u'ėtų',     u'', ('f', 'pl', 'gen',), ()),
+        (u'ėtoms',   u'', ('f', 'pl', 'dat',), ()),
+        (u'ėtas',    u'', ('f', 'pl', 'acc',), ()),
+        (u'ėtomis',  u'', ('f', 'pl', 'ins',), ()),
+        (u'ėtose',   u'', ('f', 'pl', 'loc',), ()),
+        (u'ėtos',    u'', ('f', 'pl', 'voc',), ()),
+    ],
 
     #20: u'(u)otas',
-    (u'BASE__auksuotas', (
+    u'BASE__auks/uotas': [
         (u'uotas',   u'', ('m', 'sg', 'nom',), ()),
         (u'uoto',    u'', ('m', 'sg', 'gen',), ()),
         (u'uotui',   u'', ('m', 'sg', 'dat',), ()),
@@ -197,8 +409,8 @@ PARADIGMS = [
         (u'uotais',  u'', ('m', 'pl', 'ins',), ()),
         (u'uotuose', u'', ('m', 'pl', 'loc',), ()),
         (u'uotai',   u'', ('m', 'pl', 'voc',), ()),
-    ))
-]
+    ],
+}
 
 
 MORPHOLOGY = {
@@ -244,7 +456,7 @@ MORPHOLOGY = {
         (u'Kaitybos charakteristika', {
              7: (u'Linksniavimo charakteristika', {
                   0: u'Daiktavardis nekaitomas, nelinksniuojamas',
-                  1: Paradigm(u'(i)a linksniuotė, paradigma nr. 1 (žiūr DLKG97 psl.70)', (
+                  1: Paradigm(u'(i)a linksniuotė, paradigma nr. 1 (žiūr DLKG97 psl.70)', [
                           (u'as',   u'as', ('m', 'sg', 'nom',), ()),
                           (u'o',    u'as', ('m', 'sg', 'gen',), ()),
                           (u'ui',   u'as', ('m', 'sg', 'dat',), ()),
@@ -274,8 +486,101 @@ MORPHOLOGY = {
                           (u'ėmis', u'as', ('f', 'pl', 'ins',), ()),
                           (u'ėse',  u'as', ('f', 'pl', 'loc',), ()),
                           (u'ės',   u'as', ('f', 'pl', 'voc',), ()),
-                      )),
-                  2: u'(i)a linksniuotė, paradigma nr. 2 (žiūr DLKG97 psl.71)',
+                      ]),
+                  2: Paradigm(u'(i)a linksniuotė, paradigma nr. 2 (žiūr DLKG97 psl.71)', [
+                          (u'as',   u'as', ('m', 'sg', 'nom',), ()),
+                          (u'o',    u'as', ('m', 'sg', 'gen',), ()),
+                          (u'ui',   u'as', ('m', 'sg', 'dat',), ()),
+                          (u'ą',    u'as', ('m', 'sg', 'acc',), ()),
+                          (u'u',    u'as', ('m', 'sg', 'ins',), ()),
+                          (u'uje',  u'as', ('m', 'sg', 'loc',), ()),
+                          (u'au',   u'as', ('m', 'sg', 'voc',), ()),
+                          (u'ai',   u'as', ('m', 'pl', 'nom',), ()),
+                          (u'ų',    u'as', ('m', 'pl', 'gen',), ()),
+                          (u'ams',  u'as', ('m', 'pl', 'dat',), ()),
+                          (u'us',   u'as', ('m', 'pl', 'acc',), ()),
+                          (u'ais',  u'as', ('m', 'pl', 'ins',), ()),
+                          (u'uose', u'as', ('m', 'pl', 'loc',), ()),
+                          (u'ai',   u'as', ('m', 'pl', 'voc',), ()),
+
+                          (u'a',    u'as', ('f', 'sg', 'nom',), ()),
+                          (u'os',   u'as', ('f', 'sg', 'gen',), ()),
+                          (u'ai',   u'as', ('f', 'sg', 'dat',), ()),
+                          (u'ą',    u'as', ('f', 'sg', 'acc',), ()),
+                          (u'a',    u'as', ('f', 'sg', 'ins',), ()),
+                          (u'oje',  u'as', ('f', 'sg', 'loc',), ()),
+                          (u'a',    u'as', ('f', 'sg', 'voc',), ()),
+                          (u'os',   u'as', ('f', 'pl', 'nom',), ()),
+                          (u'ų',    u'as', ('f', 'pl', 'gen',), ()),
+                          (u'oms',  u'as', ('f', 'pl', 'dat',), ()),
+                          (u'as',   u'as', ('f', 'pl', 'acc',), ()),
+                          (u'omis', u'as', ('f', 'pl', 'ins',), ()),
+                          (u'ose',  u'as', ('f', 'pl', 'loc',), ()),
+                          (u'os',   u'as', ('f', 'pl', 'voc',), ()),
+                      ], {
+                      u'BASE__nam/elis': (u'BASE__artoj/ėlis', [
+                          (u'ėlis',    u'', ('m', 'sg', 'nom',), ()),
+                          (u'ėlio',    u'', ('m', 'sg', 'gen',), ()),
+                          (u'ėliui',   u'', ('m', 'sg', 'dat',), ()),
+                          (u'ėlį',     u'', ('m', 'sg', 'acc',), ()),
+                          (u'ėliu',    u'', ('m', 'sg', 'ins',), ()),
+                          (u'ėlyje',   u'', ('m', 'sg', 'loc',), ()),
+                          (u'ėli',     u'', ('m', 'sg', 'voc',), ()),
+                          (u'ėliai',   u'', ('m', 'pl', 'nom',), ()),
+                          (u'ėlių',    u'', ('m', 'pl', 'gen',), ()),
+                          (u'ėliams',  u'', ('m', 'pl', 'dat',), ()),
+                          (u'ėlius',   u'', ('m', 'pl', 'acc',), ()),
+                          (u'ėliais',  u'', ('m', 'pl', 'ins',), ()),
+                          (u'ėliuose', u'', ('m', 'pl', 'loc',), ()),
+                          (u'ėliai',   u'', ('m', 'pl', 'voc',), ()),
+
+                          (u'ėlė',     u'', ('f', 'sg', 'nom',), ()),
+                          (u'ėlės',    u'', ('f', 'sg', 'gen',), ()),
+                          (u'ėlei',    u'', ('f', 'sg', 'dat',), ()),
+                          (u'ėlę',     u'', ('f', 'sg', 'acc',), ()),
+                          (u'ėle',     u'', ('f', 'sg', 'ins',), ()),
+                          (u'ėlėje',   u'', ('f', 'sg', 'loc',), ()),
+                          (u'ėle',     u'', ('f', 'sg', 'voc',), ()),
+                          (u'ėlės',    u'', ('f', 'pl', 'nom',), ()),
+                          (u'ėlių',    u'', ('f', 'pl', 'gen',), ()),
+                          (u'ėlėms',   u'', ('f', 'pl', 'dat',), ()),
+                          (u'ėles',    u'', ('f', 'pl', 'acc',), ()),
+                          (u'ėlėmis',  u'', ('f', 'pl', 'ins',), ()),
+                          (u'ėlėse',   u'', ('f', 'pl', 'loc',), ()),
+                          (u'ėlės',    u'', ('f', 'pl', 'voc',), ()),
+                      ]),
+                      u'BASE__nam/eliukas': (u'BASE__artoj/ėliukas', [
+                          (u'ėliukas',   u'', ('m', 'sg', 'nom',), ()),
+                          (u'ėliuko',    u'', ('m', 'sg', 'gen',), ()),
+                          (u'ėliukui',   u'', ('m', 'sg', 'dat',), ()),
+                          (u'ėliuką',    u'', ('m', 'sg', 'acc',), ()),
+                          (u'ėliuku',    u'', ('m', 'sg', 'ins',), ()),
+                          (u'ėliuke',    u'', ('m', 'sg', 'loc',), ()),
+                          (u'ėliuke',    u'', ('m', 'sg', 'voc',), ()),
+                          (u'ėliukai',   u'', ('m', 'pl', 'nom',), ()),
+                          (u'ėliukų',    u'', ('m', 'pl', 'gen',), ()),
+                          (u'ėliukams',  u'', ('m', 'pl', 'dat',), ()),
+                          (u'ėliukus',   u'', ('m', 'pl', 'acc',), ()),
+                          (u'ėliukais',  u'', ('m', 'pl', 'ins',), ()),
+                          (u'ėliukuose', u'', ('m', 'pl', 'loc',), ()),
+                          (u'ėliukai',   u'', ('m', 'pl', 'voc',), ()),
+
+                          (u'ėliukė',     u'', ('f', 'sg', 'nom',), ()),
+                          (u'ėliukės',    u'', ('f', 'sg', 'gen',), ()),
+                          (u'ėliukei',    u'', ('f', 'sg', 'dat',), ()),
+                          (u'ėliukę',     u'', ('f', 'sg', 'acc',), ()),
+                          (u'ėliuke',     u'', ('f', 'sg', 'ins',), ()),
+                          (u'ėliukėje',   u'', ('f', 'sg', 'loc',), ()),
+                          (u'ėliuke',     u'', ('f', 'sg', 'voc',), ()),
+                          (u'ėliukės',    u'', ('f', 'pl', 'nom',), ()),
+                          (u'ėliukių',    u'', ('f', 'pl', 'gen',), ()),
+                          (u'ėliukėms',   u'', ('f', 'pl', 'dat',), ()),
+                          (u'ėliukes',    u'', ('f', 'pl', 'acc',), ()),
+                          (u'ėliukėmis',  u'', ('f', 'pl', 'ins',), ()),
+                          (u'ėliukėse',   u'', ('f', 'pl', 'loc',), ()),
+                          (u'ėliukės',    u'', ('f', 'pl', 'voc',), ()),
+                      ]),
+                      }),
                   3: u'(i)a linksniuotė, paradigma nr. 3 (žiūr DLKG97 psl.71)',
                   4: u'(i)u linksniuotė, paradigma nr. 4 (žiūr DLKG97 psl.72)',
                   5: u'(i)u linksniuotė, paradigma nr. 5 (žiūr DLKG97 psl.73)',
@@ -1575,10 +1880,18 @@ def validate_entry(i, line, pos, params):
         print '%d: %s' % (i, line.encode('utf-8'))
         raise
 
+def check_filter(symbols, filters):
+    slen = len(symbols)
+    for i, fltr in enumerate(filters):
+        if i+1 > slen:
+            return False
+        if fltr and fltr != symbols[i]:
+            return True
 
-def gen_paradigm(indent, name, forms):
+def gen_paradigm(indent, name, forms, filters):
     yield '%s<pardef n="%s">' % (indent, name)
     for lft, rgt, symbols, includes in forms:
+        if check_filter(symbols, filters): continue
         yield '%s  <e><p><l>%s</l><r>%s%s</r></p>%s</e>' % (
             indent, lft, rgt,
             ''.join(['<s n="%s"/>' % n for n in symbols]),
@@ -1587,131 +1900,185 @@ def gen_paradigm(indent, name, forms):
     yield '%s</pardef>' % indent
 
 
-def gen_entries(lmdb, indent):
+def parse_noun(fields, values):
+    key = []
+    filters = []
+    includes = []
+
+    if fields[5] == 1:
+        # Neigiančių prefiksų neturi
+        key.append(1)
+    elif fields[5] in (2, 3, 7, 8):
+        # TODO: pridėti neigiamą simbolį
+        key.append(1)
+    elif fields[5] in (4, 5, 6):
+        # TODO: pridėti neigiamą simbolį
+        key.append(2)
+    else:
+        assert False
+
+    if fields[6] in (1, 2):
+        # Eilinis daiktavardžio pobūdis
+        key.append(1)
+    else:
+        assert False
+
+    # Linksniavimo charakteristika
+    key.append(fields[7])
+
+    if fields[8] in (1, 3):
+        # Tik vyriška giminė
+        key.append(1)
+        filters.append('m')
+    elif fields[8] == 2:
+        key.append(2)
+        filters.append(None)
+    else:
+        assert False
+
+    if fields[9] in (1, 2, 5, 6):
+        # Abiskaitinis, turi vienaskaitą ir daugiskaitą
+        key.append(1)
+        filters.append(None)
+    elif fields[9] == 3:
+        key.append(2)
+        filters.append('pl')
+    elif fields[9] == 4:
+        key.append(3)
+        filters.append('sg')
+    else:
+        assert False
+
+    if fields[10] == 0:
+        # Sąngražinių formų neturi
+        key.append(1)
+    else:
+        assert False
+
+    if fields[11] == 0:
+        # Pamatinis iš nieko nepadarytas daiktavardis
+        key.append(1)
+    else:
+        assert False
+
+    if fields[12] == 1:
+        # Deminutyvų neturi
+        key.append(1)
+    elif fields[12] == 2:
+        # Turi normalius vienos giminės deminutyvus
+        key.append(2)
+        includes.extend([
+            # TODO: nurodyti vieną giminę
+            u'BASE__nam/elis', u'BASE__nam/eliukas', u'BASE__bern/užėlis'
+        ])
+    elif fields[12] == 3:
+        # Turi deminutyvus abiejose giminėse
+        key.append(3)
+        includes.extend([
+            u'BASE__nam/elis', u'BASE__nam/eliukas', u'BASE__bern/užėlis'
+        ])
+    else:
+        assert False
+
+    # Vediniai
+    derivations = {
+        13: u'BASE__bank/ininkas',
+        14: u'BASE__bais/ybė',
+        15: u'BASE__bern/ystė',
+        16: u'BASE__bais/ingas',
+        17: u'BASE__auks/iškas',
+        18: u'BASE__nam/inis',
+        19: u'in(i)ai',
+        20: u'BASE__kaul/ėtas',
+        21: u'BASE__auks/uotas',
+    }
+    k = 0
+    for j in range(13, 22):
+        k <<= 1
+        if fields[j] == 1:
+            if j == 19: continue  # Prieveiksmio vedinių su -in(i)a ???
+            assert derivations[j] in PARADIGMS
+            includes.append(derivations[j])
+            k |= 1
+    key.append(k)
+
+
+    if fields[22] == 0:
+        # Daiktavardis prefiksinių junginių neturi
+        key.append(1)
+    else:
+        assert False
+
+
+    if isinstance(values[7], Paradigm):
+        paradigm = values[7]
+    else:
+        assert False
+
+    return key, paradigm, includes, filters
+
+
+def parse_line(i, line):
+    fields = line.split()
+    params = map(int, fields[4:])
+    lexeme, source, lemma, pos = fields[:4]
+    lemma = lexeme if lemma == '-' else lemma
+    pos = int(pos)
+
+    validate_entry(i, line, pos, params)
+
+    fields = get_fields(pos, params)
+    values = get_values(pos, params)
+
+    posm = POS[pos][0]
+    try:
+        if posm == 'n':
+            key, paradigm, includes, filters = parse_noun(fields, values)
+        else:
+            assert False
+    except AssertionError:
+        dump_properties(i, lexeme, lemma, pos, params, fields)
+        raise
+
+    return lexeme, key, paradigm, includes, filters
+
+
+def gen_paradigms(lmdb, indent):
     paradigms = set()
-    base_paradigms = dict(PARADIGMS)
     data = read_data(lmdb)
-    data = ['jogas 1 - 1 1 1 1 1 2 1 0 0 2 0 0 0 0 1 1 1 0 0 0']
+    #data = ['jogas 1 - 1 1 1 1 1 2 1 0 0 2 0 0 0 0 1 1 1 0 0 0',
+    #        'namas 1 - 1 1 1 1 1 1 1 0 0 2 0 0 0 0 0 1 0 0 0 0']
+    #data = ['namas 1 - 1 1 1 1 1 1 1 0 0 2 0 0 0 0 0 1 0 0 0 0']
+    #data = ['baisas 1 - 1 1 1 1 1 1 1 0 0 2 1 1 0 1 0 1 1 0 0 0']
+    #data = ['bernas 1 - 1 1 1 1 1 1 1 0 0 2 0 0 1 0 1 1 0 0 0 0']
+    #data = ['kursai 3 - 1 1 1 1 1 1 3 0 0 2 0 0 0 0 1 1 0 0 0 0']
+    #data = ['artojas 1 - 1 1 1 1 2 1 1 0 0 2 0 0 0 0 1 1 0 0 0 0']
     for i, line in enumerate(data):
         line = line.strip().decode('cp1257')
-        fields = line.split()
-        params = map(int, fields[4:])
-        lexeme, source, lemma, pos = fields[:4]
-        lemma = lexeme if lemma == '-' else lemma
-        pos = int(pos)
+        lexeme, key, paradigm, includes, filters = parse_line(i, line)
 
-        validate_entry(i, line, pos, params)
+        rgt = paradigm.forms[0][1]
+        namesfx = '_'.join(filter(None, ['n']+filters))
+        parname = '%s/%s__%s' % (lexeme[:-len(rgt)], rgt, namesfx)
 
-        fields = get_fields(pos, params)
-        values = get_values(pos, params)
-
-        dump_properties(i, lexeme, lemma, pos, params, fields)
-
-        posm = POS[pos][0]
-        if posm == 'n':
-            key = []
-            parsymbols = ['n']
-            includes = []
-
-            if fields[5] == 1:
-                # Neigiančių prefiksų neturi
-                key.append(1)
+        parforms = list(paradigm.forms)
+        for incl in includes:
+            if incl in paradigm.overrides:
+                incl, forms = paradigm.overrides[incl]
             else:
-                assert False
-
-            if fields[6] in (1, 2):
-                # Eilinis daiktavardžio pobūdis
-                key.append(1)
-            else:
-                assert False
-
-            # Linksniavimo charakteristika
-            key.append(fields[7])
-
-            if fields[8] in (1, 3):
-                # Tik vyriška giminė
-                key.append(1)
-            elif fields[8] == 2:
-                key.append(2)
-            else:
-                assert False
-
-            if fields[9] in (1, 2, 5, 6):
-                # Abiskaitinis, turi vienaskaitą ir daugiskaitą
-                key.append(1)
-            else:
-                assert False
-
-            if fields[10] == 0:
-                # Sąngražinių formų neturi
-                key.append(1)
-            else:
-                assert False
-
-            if fields[11] == 0:
-                # Pamatinis iš nieko nepadarytas daiktavardis
-                key.append(1)
-            else:
-                assert False
-
-            if fields[12] == 2:
-                # Turi normalius vienos giminės deminutyvus
-                key.append(1)
-                includes.extend(['BASE__namelis', 'BASE__nameliukas'])
-            else:
-                assert False
-
-            # Vediniai
-            derivations = {
-                13: u'BASE__bankininkas',
-                14: u'ybė',
-                15: u'ystė',
-                16: u'ingas',
-                17: u'BASE__auksiškas',
-                18: u'BASE__naminis',
-                19: u'in(i)ai',
-                20: u'ėtas',
-                21: u'BASE__auksuotas',
-            }
-            k = 0
-            for j in range(13, 22):
-                k <<= 1
-                if fields[j] == 1:
-                    if j == 19: continue  # Prieveiksmio vedinių su -in(i)a ???
-                    assert derivations[j] in base_paradigms
-                    includes.append(derivations[j])
-                    k |= 1
-            key.append(k)
-
-
-            if fields[22] == 0:
-                # Daiktavardis prefiksinių junginių neturi
-                key.append(1)
-            else:
-                assert False
-
-
-            if isinstance(values[7], Paradigm):
-                paradigm = values[7]
-            else:
-                assert False
-
-            rgt = paradigm.forms[0][1]
-            parname = '%s/%s__%s' % (lexeme[:-len(rgt)], rgt, '_'.join(parsymbols))
-
-            key = tuple(key)
-            if key in paradigms: continue
-            paradigms.add(key)
-
-            forms = paradigm.forms + tuple([
-                (u'', rgt, (), (incl,)) for incl in includes
-            ])
-
-            for line in gen_paradigm(indent, parname, forms):
+                forms = PARADIGMS[incl]
+            inclname = '%s__%s' % (incl, namesfx)
+            parforms.append((u'', rgt, (), (inclname,)))
+            if inclname in paradigms: continue
+            paradigms.add(inclname)
+            for line in gen_paradigm(indent, inclname, forms, filters):
                 yield line
 
-        else:
-            break
+        key = tuple(key)
+        if key not in paradigms:
+            paradigms.add(key)
+            for line in gen_paradigm(indent, parname, parforms, filters):
+                yield line
 
         #print (u'%s<e lm="%s"><i>žuvininkys</i><par n="abiturien/tė__n"/></e>' % (
         #    indent, lemma
@@ -1728,11 +2095,11 @@ def build_file(lmdb):
     yield u'  </sdefs>'
     yield u'  <pardefs>'
 
-    for name, forms in PARADIGMS:
-        for line in gen_paradigm('    ', name, forms):
-            yield line
+    #for name, forms in PARADIGMS:
+    #    for line in gen_paradigm('    ', name, forms):
+    #        yield line
 
-    for line in gen_entries(lmdb, '    '):
+    for line in gen_paradigms(lmdb, '    '):
         yield line
 
     yield u'  </pardefs>'
@@ -1743,6 +2110,11 @@ def build_file(lmdb):
     yield u'    <e lm="anglas"><i>angl</i><par n="angl/as__n_m"/></e>'
     yield u'    <e lm="bankas"><i>bank</i><par n="bank/as__n_m"/></e>'
     yield u'    <e lm="jogas"><i>jog</i><par n="jog/as__n"/></e>'
+    yield u'    <e lm="baisas"><i>bais</i><par n="bais/as__n_m"/></e>'
+    yield u'    <e lm="bernas"><i>bern</i><par n="bern/as__n_m"/></e>'
+    yield u'    <e lm="kaulas"><i>kaul</i><par n="kaul/as__n_m"/></e>'
+    yield u'    <e lm="kursai"><i>kurs</i><par n="kurs/as__n_m_pl"/></e>'
+    yield u'    <e lm="artojas"><i>artoj</i><par n="artoj/as__n_m"/></e>'
 
     #for line in gen_entries(lmdb, '    '):
     #    yield line
