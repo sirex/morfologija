@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import re
 import sys
 import subprocess
 
@@ -87,6 +88,9 @@ VERB_PREFIXES = {
 
 
 PARADIGMS = {
+    u'nekaitomas' : [
+        (u'',    u'', (), ()),
+    ],
     u'BASE__nam/elis': [
         (u'elis',    u'', ('m', 'sg', 'nom',), ()),
         (u'elio',    u'', ('m', 'sg', 'gen',), ()),
@@ -413,6 +417,22 @@ PARADIGMS = {
 }
 
 
+def modpar_sub(substs, l):
+    for rp, rr in substs:
+        if re.match(rp, l):
+            return re.sub(rp, rr, l)
+    return l
+
+def modpar(n, substs):
+    return {
+        k: (
+            'BASE__%s/%s' % (n, k[6:].split('/',1)[1]),
+            [(modpar_sub(substs, l), r, s, x) for l, r, s, x in v],
+        )
+        for k, v in PARADIGMS.items()
+        if k.startswith('BASE__')
+    }
+
 MORPHOLOGY = {
     # Daiktavardis
     1: [
@@ -455,7 +475,7 @@ MORPHOLOGY = {
         }),
         (u'Kaitybos charakteristika', {
              7: (u'Linksniavimo charakteristika', {
-                  0: u'Daiktavardis nekaitomas, nelinksniuojamas',
+                  0: Paradigm(u'Daiktavardis nekaitomas, nelinksniuojamas', []),
                   1: Paradigm(u'(i)a linksniuotė, paradigma nr. 1 (žiūr DLKG97 psl.70)', [
                           (u'as',   u'as', ('m', 'sg', 'nom',), ()),
                           (u'o',    u'as', ('m', 'sg', 'gen',), ()),
@@ -581,27 +601,768 @@ MORPHOLOGY = {
                           (u'ėliukės',    u'', ('f', 'pl', 'voc',), ()),
                       ]),
                       }),
-                  3: u'(i)a linksniuotė, paradigma nr. 3 (žiūr DLKG97 psl.71)',
-                  4: u'(i)u linksniuotė, paradigma nr. 4 (žiūr DLKG97 psl.72)',
-                  5: u'(i)u linksniuotė, paradigma nr. 5 (žiūr DLKG97 psl.73)',
-                  6: u'(i)o linksniuotė, paradigma nr. 6 (žiūr DLKG97 psl.74)',
-                  7: u'(i)o linksniuotė, paradigma nr. 7 (žiūr DLKG97 psl.74)',
-                  8: u'ė linksniuotė, paradigma nr. 8 (žiūr DLKG97 psl.75)',
-                  9: u'i linksniuotė, paradigma nr. 9 (žiūr DLKG97 psl.76)',
-                 10: u'i linksniuotė, paradigma nr. 10(žiūr DLKG97 psl.77)',
-                 11: u'i linksniuotė, paradigma nr. 11(žiūr DLKG97 psl.77)',
-                 12: u'i linksniuotė, paradigma nr. 12(žiūr DLKG97 psl.78)',
-                 13: u'Paradigma daiktavardžiui petys;',
-                 14: u'Paradigma daiktavardžiui žmogus (žmonės);',
-                 15: u'Paradigma daiktavardžiui pats;',
-                 16: u'Paradigma daiktavardžiui viešpats;',
-                 17: u'Paradigma daiktavardžiui mėnuo;',
-                 18: u'Paradigma vyr. g. daiktavardžiams iš sudaiktavardėjusių įvardžiuotinių būdvardžių bei dalyvių su -asis, pvz., jaunasis, palaimintasis, miegamasis, laukiamasis, mylimasis, nežinomasis',
-                 19: u'Paradigma vyr. g. daiktavardžiams iš sudaiktavardėjusių įvardžiuotinių būdvardžių ar dalyvių su -[t]ysis, pvz., pėstysis, vyresnysis, dirbantysis',
-                 20: u'Paradigma vyr. g. daiktavardžiams iš sudaiktavardėjusių neįvardžiuotinių dalyvių su -[..]as, pvz., pažįstamas',
-                 21: u'Paradigma vyr. g. daiktavardžiams iš sudaiktavardėjusių neįvardžiuotinių dalyvių su -ęs, pvz., suaugęs',
-                 22: u'Paradigma mot. g. daiktavardžiams iš sudaiktavardėjusių įvardžiuotinių būdvardžių bei dalyvių su -(i)oji, pvz., jaunoji, palaimintoji, gulsčioji, kaltinamoji, kuliamoji, mylimoji, dirbančioji, sprogtinoji',
-                 23: u'Paradigma vyr. g. sangrąžiniams daiktavardžiams iš sangrąžinių veiksmažodžių su ‑asis, pvz., barimasis(-osi, -uisi, ...)',
+                  3: Paradigm(u'(i)a linksniuotė, paradigma nr. 3 (žiūr DLKG97 psl.71)', [
+                          (u'is',    u'is', ('m', 'sg', 'nom',), ()),
+                          (u'io',    u'is', ('m', 'sg', 'gen',), ()),
+                          (u'iui',   u'is', ('m', 'sg', 'dat',), ()),
+                          (u'į',     u'is', ('m', 'sg', 'acc',), ()),
+                          (u'iu',    u'is', ('m', 'sg', 'ins',), ()),
+                          (u'yje',   u'is', ('m', 'sg', 'loc',), ()),
+                          (u'i',     u'is', ('m', 'sg', 'voc',), ()),
+                          (u'iai',   u'is', ('m', 'pl', 'nom',), ()),
+                          (u'ių',    u'is', ('m', 'pl', 'gen',), ()),
+                          (u'iams',  u'is', ('m', 'pl', 'dat',), ()),
+                          (u'ius',   u'is', ('m', 'pl', 'acc',), ()),
+                          (u'iais',  u'is', ('m', 'pl', 'ins',), ()),
+                          (u'iuose', u'is', ('m', 'pl', 'loc',), ()),
+                          (u'iai',   u'is', ('m', 'pl', 'voc',), ()),
+
+                          (u'ė',     u'is', ('f', 'sg', 'nom',), ()),
+                          (u'ės',    u'is', ('f', 'sg', 'gen',), ()),
+                          (u'ei',    u'is', ('f', 'sg', 'dat',), ()),
+                          (u'ę',     u'is', ('f', 'sg', 'acc',), ()),
+                          (u'e',     u'is', ('f', 'sg', 'ins',), ()),
+                          (u'ėje',   u'is', ('f', 'sg', 'loc',), ()),
+                          (u'e',     u'is', ('f', 'sg', 'voc',), ()),
+                          (u'ės',    u'is', ('f', 'pl', 'nom',), ()),
+                          (u'ių',    u'is', ('f', 'pl', 'gen',), ()),
+                          (u'ėms',   u'is', ('f', 'pl', 'dat',), ()),
+                          (u'es',    u'is', ('f', 'pl', 'acc',), ()),
+                          (u'ėmis',  u'is', ('f', 'pl', 'ins',), ()),
+                          (u'ėse',   u'is', ('f', 'pl', 'loc',), ()),
+                          (u'ės',    u'is', ('f', 'pl', 'voc',), ()),
+                      ]),
+                  4: Paradigm(u'(i)u linksniuotė, paradigma nr. 4 (žiūr DLKG97 psl.72)', [
+                          (u'us',   u'us', ('m', 'sg', 'nom',), ()),
+                          (u'aus',  u'us', ('m', 'sg', 'gen',), ()),
+                          (u'ui',   u'us', ('m', 'sg', 'dat',), ()),
+                          (u'ų',    u'us', ('m', 'sg', 'acc',), ()),
+                          (u'umi',  u'us', ('m', 'sg', 'ins',), ()),
+                          (u'uje',  u'us', ('m', 'sg', 'loc',), ()),
+                          (u'au',   u'us', ('m', 'sg', 'voc',), ()),
+                          (u'ūs',   u'us', ('m', 'pl', 'nom',), ()),
+                          (u'ų',    u'us', ('m', 'pl', 'gen',), ()),
+                          (u'ums',  u'us', ('m', 'pl', 'dat',), ()),
+                          (u'us',   u'us', ('m', 'pl', 'acc',), ()),
+                          (u'umis', u'us', ('m', 'pl', 'ins',), ()),
+                          (u'uose', u'us', ('m', 'pl', 'loc',), ()),
+                          (u'ūs',   u'us', ('m', 'pl', 'voc',), ()),
+                      ]),
+                  5: Paradigm(u'(i)u linksniuotė, paradigma nr. 5 (žiūr DLKG97 psl.73)', [
+                          (u'us',   u'us', ('m', 'sg', 'nom',), ()),
+                          (u'aus',  u'us', ('m', 'sg', 'gen',), ()),
+                          (u'ui',   u'us', ('m', 'sg', 'dat',), ()),
+                          (u'ų',    u'us', ('m', 'sg', 'acc',), ()),
+                          (u'umi',  u'us', ('m', 'sg', 'ins',), ()),
+                          (u'uje',  u'us', ('m', 'sg', 'loc',), ()),
+                          (u'au',   u'us', ('m', 'sg', 'voc',), ()),
+                          (u'ai',   u'us', ('m', 'pl', 'nom',), ()),
+                          (u'ų',    u'us', ('m', 'pl', 'gen',), ()),
+                          (u'ams',  u'us', ('m', 'pl', 'dat',), ()),
+                          (u'us',   u'us', ('m', 'pl', 'acc',), ()),
+                          (u'ais',  u'us', ('m', 'pl', 'ins',), ()),
+                          (u'uose', u'us', ('m', 'pl', 'loc',), ()),
+                          (u'ai',   u'us', ('m', 'pl', 'voc',), ()),
+
+                          (u'ė',    u'us', ('f', 'sg', 'nom',), ()),
+                          (u'ės',   u'us', ('f', 'sg', 'gen',), ()),
+                          (u'ei',   u'us', ('f', 'sg', 'dat',), ()),
+                          (u'ę',    u'us', ('f', 'sg', 'acc',), ()),
+                          (u'e',    u'us', ('f', 'sg', 'ins',), ()),
+                          (u'ėje',  u'us', ('f', 'sg', 'loc',), ()),
+                          (u'e',    u'us', ('f', 'sg', 'voc',), ()),
+                          (u'ės',   u'us', ('f', 'pl', 'nom',), ()),
+                          (u'ų',    u'us', ('f', 'pl', 'gen',), ()),
+                          (u'ėms',  u'us', ('f', 'pl', 'dat',), ()),
+                          (u'es',   u'us', ('f', 'pl', 'acc',), ()),
+                          (u'ėmis', u'us', ('f', 'pl', 'ins',), ()),
+                          (u'ėse',  u'us', ('f', 'pl', 'loc',), ()),
+                          (u'ės',   u'us', ('f', 'pl', 'voc',), ()),
+                      ], {
+                      u'BASE__nam/elis': (u'BASE__artoj/ėlis', [
+                          (u'ėlis',    u'', ('m', 'sg', 'nom',), ()),
+                          (u'ėlio',    u'', ('m', 'sg', 'gen',), ()),
+                          (u'ėliui',   u'', ('m', 'sg', 'dat',), ()),
+                          (u'ėlį',     u'', ('m', 'sg', 'acc',), ()),
+                          (u'ėliu',    u'', ('m', 'sg', 'ins',), ()),
+                          (u'ėlyje',   u'', ('m', 'sg', 'loc',), ()),
+                          (u'ėli',     u'', ('m', 'sg', 'voc',), ()),
+                          (u'ėliai',   u'', ('m', 'pl', 'nom',), ()),
+                          (u'ėlių',    u'', ('m', 'pl', 'gen',), ()),
+                          (u'ėliams',  u'', ('m', 'pl', 'dat',), ()),
+                          (u'ėlius',   u'', ('m', 'pl', 'acc',), ()),
+                          (u'ėliais',  u'', ('m', 'pl', 'ins',), ()),
+                          (u'ėliuose', u'', ('m', 'pl', 'loc',), ()),
+                          (u'ėliai',   u'', ('m', 'pl', 'voc',), ()),
+
+                          (u'ėlė',     u'', ('f', 'sg', 'nom',), ()),
+                          (u'ėlės',    u'', ('f', 'sg', 'gen',), ()),
+                          (u'ėlei',    u'', ('f', 'sg', 'dat',), ()),
+                          (u'ėlę',     u'', ('f', 'sg', 'acc',), ()),
+                          (u'ėle',     u'', ('f', 'sg', 'ins',), ()),
+                          (u'ėlėje',   u'', ('f', 'sg', 'loc',), ()),
+                          (u'ėle',     u'', ('f', 'sg', 'voc',), ()),
+                          (u'ėlės',    u'', ('f', 'pl', 'nom',), ()),
+                          (u'ėlių',    u'', ('f', 'pl', 'gen',), ()),
+                          (u'ėlėms',   u'', ('f', 'pl', 'dat',), ()),
+                          (u'ėles',    u'', ('f', 'pl', 'acc',), ()),
+                          (u'ėlėmis',  u'', ('f', 'pl', 'ins',), ()),
+                          (u'ėlėse',   u'', ('f', 'pl', 'loc',), ()),
+                          (u'ėlės',    u'', ('f', 'pl', 'voc',), ()),
+                      ]),
+                      u'BASE__nam/eliukas': (u'BASE__artoj/ėliukas', [
+                          (u'ėliukas',   u'', ('m', 'sg', 'nom',), ()),
+                          (u'ėliuko',    u'', ('m', 'sg', 'gen',), ()),
+                          (u'ėliukui',   u'', ('m', 'sg', 'dat',), ()),
+                          (u'ėliuką',    u'', ('m', 'sg', 'acc',), ()),
+                          (u'ėliuku',    u'', ('m', 'sg', 'ins',), ()),
+                          (u'ėliuke',    u'', ('m', 'sg', 'loc',), ()),
+                          (u'ėliuke',    u'', ('m', 'sg', 'voc',), ()),
+                          (u'ėliukai',   u'', ('m', 'pl', 'nom',), ()),
+                          (u'ėliukų',    u'', ('m', 'pl', 'gen',), ()),
+                          (u'ėliukams',  u'', ('m', 'pl', 'dat',), ()),
+                          (u'ėliukus',   u'', ('m', 'pl', 'acc',), ()),
+                          (u'ėliukais',  u'', ('m', 'pl', 'ins',), ()),
+                          (u'ėliukuose', u'', ('m', 'pl', 'loc',), ()),
+                          (u'ėliukai',   u'', ('m', 'pl', 'voc',), ()),
+
+                          (u'ėliukė',     u'', ('f', 'sg', 'nom',), ()),
+                          (u'ėliukės',    u'', ('f', 'sg', 'gen',), ()),
+                          (u'ėliukei',    u'', ('f', 'sg', 'dat',), ()),
+                          (u'ėliukę',     u'', ('f', 'sg', 'acc',), ()),
+                          (u'ėliuke',     u'', ('f', 'sg', 'ins',), ()),
+                          (u'ėliukėje',   u'', ('f', 'sg', 'loc',), ()),
+                          (u'ėliuke',     u'', ('f', 'sg', 'voc',), ()),
+                          (u'ėliukės',    u'', ('f', 'pl', 'nom',), ()),
+                          (u'ėliukių',    u'', ('f', 'pl', 'gen',), ()),
+                          (u'ėliukėms',   u'', ('f', 'pl', 'dat',), ()),
+                          (u'ėliukes',    u'', ('f', 'pl', 'acc',), ()),
+                          (u'ėliukėmis',  u'', ('f', 'pl', 'ins',), ()),
+                          (u'ėliukėse',   u'', ('f', 'pl', 'loc',), ()),
+                          (u'ėliukės',    u'', ('f', 'pl', 'voc',), ()),
+                      ]),
+                      }),
+                  6: Paradigm(u'(i)o linksniuotė, paradigma nr. 6 (žiūr DLKG97 psl.74)', [
+                          (u'a',    u'a', ('f', 'sg', 'nom',), ()),
+                          (u'os',   u'a', ('f', 'sg', 'gen',), ()),
+                          (u'ai',   u'a', ('f', 'sg', 'dat',), ()),
+                          (u'ą',    u'a', ('f', 'sg', 'acc',), ()),
+                          (u'a',    u'a', ('f', 'sg', 'ins',), ()),
+                          (u'oje',  u'a', ('f', 'sg', 'loc',), ()),
+                          (u'a',    u'a', ('f', 'sg', 'voc',), ()),
+                          (u'os',   u'a', ('f', 'pl', 'nom',), ()),
+                          (u'ų',    u'a', ('f', 'pl', 'gen',), ()),
+                          (u'oms',  u'a', ('f', 'pl', 'dat',), ()),
+                          (u'as',   u'a', ('f', 'pl', 'acc',), ()),
+                          (u'omis', u'a', ('f', 'pl', 'ins',), ()),
+                          (u'ose',  u'a', ('f', 'pl', 'loc',), ()),
+                          (u'os',   u'a', ('f', 'pl', 'voc',), ()),
+                      ]),
+                  7: Paradigm(u'(i)o linksniuotė, paradigma nr. 7 (žiūr DLKG97 psl.74)', [
+                          (u'a',    u'a', ('f', 'sg', 'nom',), ()),
+                          (u'os',   u'a', ('f', 'sg', 'gen',), ()),
+                          (u'ai',   u'a', ('f', 'sg', 'dat',), ()),
+                          (u'ą',    u'a', ('f', 'sg', 'acc',), ()),
+                          (u'a',    u'a', ('f', 'sg', 'ins',), ()),
+                          (u'oje',  u'a', ('f', 'sg', 'loc',), ()),
+                          (u'a',    u'a', ('f', 'sg', 'voc',), ()),
+                          (u'os',   u'a', ('f', 'pl', 'nom',), ()),
+                          (u'ų',    u'a', ('f', 'pl', 'gen',), ()),
+                          (u'oms',  u'a', ('f', 'pl', 'dat',), ()),
+                          (u'as',   u'a', ('f', 'pl', 'acc',), ()),
+                          (u'omis', u'a', ('f', 'pl', 'ins',), ()),
+                          (u'ose',  u'a', ('f', 'pl', 'loc',), ()),
+                          (u'os',   u'a', ('f', 'pl', 'voc',), ()),
+                      ]),
+                  8: Paradigm(u'ė linksniuotė, paradigma nr. 8 (žiūr DLKG97 psl.75)', [
+                          (u'ė',    u'ė', ('m', 'sg', 'nom',), ()),
+                          (u'ės',   u'ė', ('m', 'sg', 'gen',), ()),
+                          (u'ei',   u'ė', ('m', 'sg', 'dat',), ()),
+                          (u'ę',    u'ė', ('m', 'sg', 'acc',), ()),
+                          (u'e',    u'ė', ('m', 'sg', 'ins',), ()),
+                          (u'ėje',  u'ė', ('m', 'sg', 'loc',), ()),
+                          (u'e',    u'ė', ('m', 'sg', 'voc',), ()),
+                          (u'ės',   u'ė', ('m', 'pl', 'nom',), ()),
+                          (u'ių',   u'ė', ('m', 'pl', 'gen',), ()),
+                          (u'ėms',  u'ė', ('m', 'pl', 'dat',), ()),
+                          (u'es',   u'ė', ('m', 'pl', 'acc',), ()),
+                          (u'ėmis', u'ė', ('m', 'pl', 'ins',), ()),
+                          (u'ėse',  u'ė', ('m', 'pl', 'loc',), ()),
+                          (u'ės',   u'ė', ('m', 'pl', 'voc',), ()),
+                      ]),
+                  9: Paradigm(u'i linksniuotė, paradigma nr. 9 (žiūr DLKG97 psl.76)', [
+                          (u'is',   u'is', ('f', 'sg', 'nom',), ()),
+                          (u'ies',  u'is', ('f', 'sg', 'gen',), ()),
+                          (u'iai',  u'is', ('f', 'sg', 'dat',), ()),
+                          (u'į',    u'is', ('f', 'sg', 'acc',), ()),
+                          (u'imi',  u'is', ('f', 'sg', 'ins',), ()),
+                          (u'yje',  u'is', ('f', 'sg', 'loc',), ()),
+                          (u'ie',   u'is', ('f', 'sg', 'voc',), ()),
+                          (u'ys',   u'is', ('f', 'pl', 'nom',), ()),
+                          (u'ų',    u'is', ('f', 'pl', 'gen',), ()),
+                          (u'ims',  u'is', ('f', 'pl', 'dat',), ()),
+                          (u'is',   u'is', ('f', 'pl', 'acc',), ()),
+                          (u'imis', u'is', ('f', 'pl', 'ins',), ()),
+                          (u'yse',  u'is', ('f', 'pl', 'loc',), ()),
+                          (u'ys',   u'is', ('f', 'pl', 'voc',), ()),
+                      ]),
+                 10: Paradigm(u'i linksniuotė, paradigma nr. 10(žiūr DLKG97 psl.77)', [
+                          (u'is',    u'is', ('m', 'sg', 'nom',), ()),
+                          (u'io',    u'is', ('m', 'sg', 'gen',), ()),
+                          (u'iui',   u'is', ('m', 'sg', 'dat',), ()),
+                          (u'į',     u'is', ('m', 'sg', 'acc',), ()),
+                          (u'iu',    u'is', ('m', 'sg', 'ins',), ()),
+                          (u'yje',   u'is', ('m', 'sg', 'loc',), ()),
+                          (u'ie',    u'is', ('m', 'sg', 'voc',), ()),
+                          (u'ys',    u'is', ('m', 'pl', 'nom',), ()),
+                          (u'ų',     u'is', ('m', 'pl', 'gen',), ()),
+                          (u'ims',   u'is', ('m', 'pl', 'dat',), ()),
+                          (u'is',    u'is', ('m', 'pl', 'acc',), ()),
+                          (u'imis',  u'is', ('m', 'pl', 'ins',), ()),
+                          (u'yse',   u'is', ('m', 'pl', 'loc',), ()),
+                          (u'ys',    u'is', ('m', 'pl', 'voc',), ()),
+
+                          (u'ė',     u'is', ('f', 'sg', 'nom',), ()),
+                          (u'ės',    u'is', ('f', 'sg', 'gen',), ()),
+                          (u'ei',    u'is', ('f', 'sg', 'dat',), ()),
+                          (u'ę',     u'is', ('f', 'sg', 'acc',), ()),
+                          (u'e',     u'is', ('f', 'sg', 'ins',), ()),
+                          (u'ėje',   u'is', ('f', 'sg', 'loc',), ()),
+                          (u'e',     u'is', ('f', 'sg', 'voc',), ()),
+                          (u'ės',    u'is', ('f', 'pl', 'nom',), ()),
+                          (u'ių',    u'is', ('f', 'pl', 'gen',), ()),
+                          (u'ėms',   u'is', ('f', 'pl', 'dat',), ()),
+                          (u'es',    u'is', ('f', 'pl', 'acc',), ()),
+                          (u'ėmis',  u'is', ('f', 'pl', 'ins',), ()),
+                          (u'ėse',   u'is', ('f', 'pl', 'loc',), ()),
+                          (u'ės',    u'is', ('f', 'pl', 'voc',), ()),
+                      ], {
+                      u'BASE__nam/elis': (u'BASE__artoj/ėlis', [
+                          (u'ėlis',    u'', ('m', 'sg', 'nom',), ()),
+                          (u'ėlio',    u'', ('m', 'sg', 'gen',), ()),
+                          (u'ėliui',   u'', ('m', 'sg', 'dat',), ()),
+                          (u'ėlį',     u'', ('m', 'sg', 'acc',), ()),
+                          (u'ėliu',    u'', ('m', 'sg', 'ins',), ()),
+                          (u'ėlyje',   u'', ('m', 'sg', 'loc',), ()),
+                          (u'ėli',     u'', ('m', 'sg', 'voc',), ()),
+                          (u'ėliai',   u'', ('m', 'pl', 'nom',), ()),
+                          (u'ėlių',    u'', ('m', 'pl', 'gen',), ()),
+                          (u'ėliams',  u'', ('m', 'pl', 'dat',), ()),
+                          (u'ėlius',   u'', ('m', 'pl', 'acc',), ()),
+                          (u'ėliais',  u'', ('m', 'pl', 'ins',), ()),
+                          (u'ėliuose', u'', ('m', 'pl', 'loc',), ()),
+                          (u'ėliai',   u'', ('m', 'pl', 'voc',), ()),
+
+                          (u'ėlė',     u'', ('f', 'sg', 'nom',), ()),
+                          (u'ėlės',    u'', ('f', 'sg', 'gen',), ()),
+                          (u'ėlei',    u'', ('f', 'sg', 'dat',), ()),
+                          (u'ėlę',     u'', ('f', 'sg', 'acc',), ()),
+                          (u'ėle',     u'', ('f', 'sg', 'ins',), ()),
+                          (u'ėlėje',   u'', ('f', 'sg', 'loc',), ()),
+                          (u'ėle',     u'', ('f', 'sg', 'voc',), ()),
+                          (u'ėlės',    u'', ('f', 'pl', 'nom',), ()),
+                          (u'ėlių',    u'', ('f', 'pl', 'gen',), ()),
+                          (u'ėlėms',   u'', ('f', 'pl', 'dat',), ()),
+                          (u'ėles',    u'', ('f', 'pl', 'acc',), ()),
+                          (u'ėlėmis',  u'', ('f', 'pl', 'ins',), ()),
+                          (u'ėlėse',   u'', ('f', 'pl', 'loc',), ()),
+                          (u'ėlės',    u'', ('f', 'pl', 'voc',), ()),
+                      ]),
+                      u'BASE__nam/eliukas': (u'BASE__artoj/ėliukas', [
+                          (u'ėliukas',   u'', ('m', 'sg', 'nom',), ()),
+                          (u'ėliuko',    u'', ('m', 'sg', 'gen',), ()),
+                          (u'ėliukui',   u'', ('m', 'sg', 'dat',), ()),
+                          (u'ėliuką',    u'', ('m', 'sg', 'acc',), ()),
+                          (u'ėliuku',    u'', ('m', 'sg', 'ins',), ()),
+                          (u'ėliuke',    u'', ('m', 'sg', 'loc',), ()),
+                          (u'ėliuke',    u'', ('m', 'sg', 'voc',), ()),
+                          (u'ėliukai',   u'', ('m', 'pl', 'nom',), ()),
+                          (u'ėliukų',    u'', ('m', 'pl', 'gen',), ()),
+                          (u'ėliukams',  u'', ('m', 'pl', 'dat',), ()),
+                          (u'ėliukus',   u'', ('m', 'pl', 'acc',), ()),
+                          (u'ėliukais',  u'', ('m', 'pl', 'ins',), ()),
+                          (u'ėliukuose', u'', ('m', 'pl', 'loc',), ()),
+                          (u'ėliukai',   u'', ('m', 'pl', 'voc',), ()),
+
+                          (u'ėliukė',     u'', ('f', 'sg', 'nom',), ()),
+                          (u'ėliukės',    u'', ('f', 'sg', 'gen',), ()),
+                          (u'ėliukei',    u'', ('f', 'sg', 'dat',), ()),
+                          (u'ėliukę',     u'', ('f', 'sg', 'acc',), ()),
+                          (u'ėliuke',     u'', ('f', 'sg', 'ins',), ()),
+                          (u'ėliukėje',   u'', ('f', 'sg', 'loc',), ()),
+                          (u'ėliuke',     u'', ('f', 'sg', 'voc',), ()),
+                          (u'ėliukės',    u'', ('f', 'pl', 'nom',), ()),
+                          (u'ėliukių',    u'', ('f', 'pl', 'gen',), ()),
+                          (u'ėliukėms',   u'', ('f', 'pl', 'dat',), ()),
+                          (u'ėliukes',    u'', ('f', 'pl', 'acc',), ()),
+                          (u'ėliukėmis',  u'', ('f', 'pl', 'ins',), ()),
+                          (u'ėliukėse',   u'', ('f', 'pl', 'loc',), ()),
+                          (u'ėliukės',    u'', ('f', 'pl', 'voc',), ()),
+                      ]),
+                      }),
+                 11: Paradigm(u'i linksniuotė, paradigma nr. 11(žiūr DLKG97 psl.77)', [
+                          (u'uo',      u'uo', ('m', 'sg', 'nom',), ()),
+                          (u'ens',     u'uo', ('m', 'sg', 'gen',), ()),
+                          (u'eniui',   u'uo', ('m', 'sg', 'dat',), ()),
+                          (u'enį',     u'uo', ('m', 'sg', 'acc',), ()),
+                          (u'eniu',    u'uo', ('m', 'sg', 'ins',), ()),
+                          (u'enyje',   u'uo', ('m', 'sg', 'loc',), ()),
+                          (u'enie',    u'uo', ('m', 'sg', 'voc',), ()),
+                          (u'enys',    u'uo', ('m', 'pl', 'nom',), ()),
+                          (u'enų',     u'uo', ('m', 'pl', 'gen',), ()),
+                          (u'enims',   u'uo', ('m', 'pl', 'dat',), ()),
+                          (u'enis',    u'uo', ('m', 'pl', 'acc',), ()),
+                          (u'enimis',  u'uo', ('m', 'pl', 'ins',), ()),
+                          (u'enyse',   u'uo', ('m', 'pl', 'loc',), ()),
+                          (u'enys',    u'uo', ('m', 'pl', 'voc',), ()),
+                      ], {
+                      u'BASE__nam/elis': (u'BASE__artoj/ėlis', [
+                          (u'enėlis',    u'', ('m', 'sg', 'nom',), ()),
+                          (u'enėlio',    u'', ('m', 'sg', 'gen',), ()),
+                          (u'enėliui',   u'', ('m', 'sg', 'dat',), ()),
+                          (u'enėlį',     u'', ('m', 'sg', 'acc',), ()),
+                          (u'enėliu',    u'', ('m', 'sg', 'ins',), ()),
+                          (u'enėlyje',   u'', ('m', 'sg', 'loc',), ()),
+                          (u'enėli',     u'', ('m', 'sg', 'voc',), ()),
+                          (u'enėliai',   u'', ('m', 'pl', 'nom',), ()),
+                          (u'enėlių',    u'', ('m', 'pl', 'gen',), ()),
+                          (u'enėliams',  u'', ('m', 'pl', 'dat',), ()),
+                          (u'enėlius',   u'', ('m', 'pl', 'acc',), ()),
+                          (u'enėliais',  u'', ('m', 'pl', 'ins',), ()),
+                          (u'enėliuose', u'', ('m', 'pl', 'loc',), ()),
+                          (u'enėliai',   u'', ('m', 'pl', 'voc',), ()),
+
+                          (u'enėlė',     u'', ('f', 'sg', 'nom',), ()),
+                          (u'enėlės',    u'', ('f', 'sg', 'gen',), ()),
+                          (u'enėlei',    u'', ('f', 'sg', 'dat',), ()),
+                          (u'enėlę',     u'', ('f', 'sg', 'acc',), ()),
+                          (u'enėle',     u'', ('f', 'sg', 'ins',), ()),
+                          (u'enėlėje',   u'', ('f', 'sg', 'loc',), ()),
+                          (u'enėle',     u'', ('f', 'sg', 'voc',), ()),
+                          (u'enėlės',    u'', ('f', 'pl', 'nom',), ()),
+                          (u'enėlių',    u'', ('f', 'pl', 'gen',), ()),
+                          (u'enėlėms',   u'', ('f', 'pl', 'dat',), ()),
+                          (u'enėles',    u'', ('f', 'pl', 'acc',), ()),
+                          (u'enėlėmis',  u'', ('f', 'pl', 'ins',), ()),
+                          (u'enėlėse',   u'', ('f', 'pl', 'loc',), ()),
+                          (u'enėlės',    u'', ('f', 'pl', 'voc',), ()),
+                      ]),
+                      u'BASE__nam/eliukas': (u'BASE__artoj/ėliukas', [
+                          (u'enėliukas',   u'', ('m', 'sg', 'nom',), ()),
+                          (u'enėliuko',    u'', ('m', 'sg', 'gen',), ()),
+                          (u'enėliukui',   u'', ('m', 'sg', 'dat',), ()),
+                          (u'enėliuką',    u'', ('m', 'sg', 'acc',), ()),
+                          (u'enėliuku',    u'', ('m', 'sg', 'ins',), ()),
+                          (u'enėliuke',    u'', ('m', 'sg', 'loc',), ()),
+                          (u'enėliuke',    u'', ('m', 'sg', 'voc',), ()),
+                          (u'enėliukai',   u'', ('m', 'pl', 'nom',), ()),
+                          (u'enėliukų',    u'', ('m', 'pl', 'gen',), ()),
+                          (u'enėliukams',  u'', ('m', 'pl', 'dat',), ()),
+                          (u'enėliukus',   u'', ('m', 'pl', 'acc',), ()),
+                          (u'enėliukais',  u'', ('m', 'pl', 'ins',), ()),
+                          (u'enėliukuose', u'', ('m', 'pl', 'loc',), ()),
+                          (u'enėliukai',   u'', ('m', 'pl', 'voc',), ()),
+
+                          (u'enėliukė',     u'', ('f', 'sg', 'nom',), ()),
+                          (u'enėliukės',    u'', ('f', 'sg', 'gen',), ()),
+                          (u'enėliukei',    u'', ('f', 'sg', 'dat',), ()),
+                          (u'enėliukę',     u'', ('f', 'sg', 'acc',), ()),
+                          (u'enėliuke',     u'', ('f', 'sg', 'ins',), ()),
+                          (u'enėliukėje',   u'', ('f', 'sg', 'loc',), ()),
+                          (u'enėliuke',     u'', ('f', 'sg', 'voc',), ()),
+                          (u'enėliukės',    u'', ('f', 'pl', 'nom',), ()),
+                          (u'enėliukių',    u'', ('f', 'pl', 'gen',), ()),
+                          (u'enėliukėms',   u'', ('f', 'pl', 'dat',), ()),
+                          (u'enėliukes',    u'', ('f', 'pl', 'acc',), ()),
+                          (u'enėliukėmis',  u'', ('f', 'pl', 'ins',), ()),
+                          (u'enėliukėse',   u'', ('f', 'pl', 'loc',), ()),
+                          (u'enėliukės',    u'', ('f', 'pl', 'voc',), ()),
+                      ]),
+                      u'BASE__bern/užėlis': (u'BASE__akm/enužėlis', [
+                          (u'enužėlis',    u'', ('m', 'sg', 'nom',), ()),
+                          (u'enužėlio',    u'', ('m', 'sg', 'gen',), ()),
+                          (u'enužėliui',   u'', ('m', 'sg', 'dat',), ()),
+                          (u'enužėlį',     u'', ('m', 'sg', 'acc',), ()),
+                          (u'enužėliu',    u'', ('m', 'sg', 'ins',), ()),
+                          (u'enužėlyje',   u'', ('m', 'sg', 'loc',), ()),
+                          (u'enužėli',     u'', ('m', 'sg', 'voc',), ()),
+                          (u'enužėliai',   u'', ('m', 'pl', 'nom',), ()),
+                          (u'enužėlių',    u'', ('m', 'pl', 'gen',), ()),
+                          (u'enužėliams',  u'', ('m', 'pl', 'dat',), ()),
+                          (u'enužėlius',   u'', ('m', 'pl', 'acc',), ()),
+                          (u'enužėliais',  u'', ('m', 'pl', 'ins',), ()),
+                          (u'enužėliuose', u'', ('m', 'pl', 'loc',), ()),
+                          (u'enužėliai',   u'', ('m', 'pl', 'voc',), ()),
+
+                          (u'enužėlė',     u'', ('f', 'sg', 'nom',), ()),
+                          (u'enužėlės',    u'', ('f', 'sg', 'gen',), ()),
+                          (u'enužėlei',    u'', ('f', 'sg', 'dat',), ()),
+                          (u'enužėlę',     u'', ('f', 'sg', 'acc',), ()),
+                          (u'enužėle',     u'', ('f', 'sg', 'ins',), ()),
+                          (u'enužėlėje',   u'', ('f', 'sg', 'loc',), ()),
+                          (u'enužėle',     u'', ('f', 'sg', 'voc',), ()),
+                          (u'enužėlės',    u'', ('f', 'pl', 'nom',), ()),
+                          (u'enužėlių',    u'', ('f', 'pl', 'gen',), ()),
+                          (u'enužėlėms',   u'', ('f', 'pl', 'dat',), ()),
+                          (u'enužėles',    u'', ('f', 'pl', 'acc',), ()),
+                          (u'enužėlėmis',  u'', ('f', 'pl', 'ins',), ()),
+                          (u'enužėlėse',   u'', ('f', 'pl', 'loc',), ()),
+                          (u'enužėlės',    u'', ('f', 'pl', 'voc',), ()),
+                      ]),
+                      u'BASE__bais/ingas': (u'BASE__akm/eningas', [
+                          (u'eningas',    u'', ('m', 'sg', 'nom',), ()),
+                          (u'eningo',     u'', ('m', 'sg', 'gen',), ()),
+                          (u'eningam',    u'', ('m', 'sg', 'dat',), ()),
+                          (u'eningą',     u'', ('m', 'sg', 'acc',), ()),
+                          (u'eningu',     u'', ('m', 'sg', 'ins',), ()),
+                          (u'eningame',   u'', ('m', 'sg', 'loc',), ()),
+                          (u'eningasis',  u'', ('m', 'sg', 'voc',), ()),
+                          (u'eningi',     u'', ('m', 'pl', 'nom',), ()),
+                          (u'eningų',     u'', ('m', 'pl', 'gen',), ()),
+                          (u'eningiems',  u'', ('m', 'pl', 'dat',), ()),
+                          (u'eningus',    u'', ('m', 'pl', 'acc',), ()),
+                          (u'eningais',   u'', ('m', 'pl', 'ins',), ()),
+                          (u'eninguose',  u'', ('m', 'pl', 'loc',), ()),
+                          (u'eningi',     u'', ('m', 'pl', 'voc',), ()),
+
+                          (u'eninga',     u'', ('f', 'sg', 'nom',), ()),
+                          (u'eningos',    u'', ('f', 'sg', 'gen',), ()),
+                          (u'eningai',    u'', ('f', 'sg', 'dat',), ()),
+                          (u'eningą',     u'', ('f', 'sg', 'acc',), ()),
+                          (u'eninga',     u'', ('f', 'sg', 'ins',), ()),
+                          (u'eningoje',   u'', ('f', 'sg', 'loc',), ()),
+                          (u'eninga',     u'', ('f', 'sg', 'voc',), ()),
+                          (u'eningos',    u'', ('f', 'pl', 'nom',), ()),
+                          (u'eningų',     u'', ('f', 'pl', 'gen',), ()),
+                          (u'eningoms',   u'', ('f', 'pl', 'dat',), ()),
+                          (u'eningas',    u'', ('f', 'pl', 'acc',), ()),
+                          (u'eningomis',  u'', ('f', 'pl', 'ins',), ()),
+                          (u'eningose',   u'', ('f', 'pl', 'loc',), ()),
+                          (u'eningos',    u'', ('f', 'pl', 'voc',), ()),
+                      ]),
+                      u'BASE__auks/iškas': (u'BASE__akm/eniškas', [
+                          (u'eniškas',   u'', ('m', 'sg', 'nom',), ()),
+                          (u'eniško',    u'', ('m', 'sg', 'gen',), ()),
+                          (u'eniškam',   u'', ('m', 'sg', 'dat',), ()),
+                          (u'enišką',    u'', ('m', 'sg', 'acc',), ()),
+                          (u'enišku',    u'', ('m', 'sg', 'ins',), ()),
+                          (u'eniške',    u'', ('m', 'sg', 'loc',), ()),
+                          (u'eniške',    u'', ('m', 'sg', 'voc',), ()),
+                          (u'eniškai',   u'', ('m', 'pl', 'nom',), ()),
+                          (u'eniškų',    u'', ('m', 'pl', 'gen',), ()),
+                          (u'eniškams',  u'', ('m', 'pl', 'dat',), ()),
+                          (u'eniškus',   u'', ('m', 'pl', 'acc',), ()),
+                          (u'eniškais',  u'', ('m', 'pl', 'ins',), ()),
+                          (u'eniškuose', u'', ('m', 'pl', 'loc',), ()),
+                          (u'eniškai',   u'', ('m', 'pl', 'voc',), ()),
+
+                          (u'eniška',     u'', ('f', 'sg', 'nom',), ()),
+                          (u'eniškos',    u'', ('f', 'sg', 'gen',), ()),
+                          (u'eniškai',    u'', ('f', 'sg', 'dat',), ()),
+                          (u'enišką',     u'', ('f', 'sg', 'acc',), ()),
+                          (u'eniška',     u'', ('f', 'sg', 'ins',), ()),
+                          (u'eniškoje',   u'', ('f', 'sg', 'loc',), ()),
+                          (u'eniška',     u'', ('f', 'sg', 'voc',), ()),
+                          (u'eniškos',    u'', ('f', 'pl', 'nom',), ()),
+                          (u'eniškų',     u'', ('f', 'pl', 'gen',), ()),
+                          (u'eniškoms',   u'', ('f', 'pl', 'dat',), ()),
+                          (u'eniškas',    u'', ('f', 'pl', 'acc',), ()),
+                          (u'eniškomis',  u'', ('f', 'pl', 'ins',), ()),
+                          (u'eniškose',   u'', ('f', 'pl', 'loc',), ()),
+                          (u'eniškos',    u'', ('f', 'pl', 'voc',), ()),
+                      ]),
+                      }),
+                 12: Paradigm(u'i linksniuotė, paradigma nr. 12(žiūr DLKG97 psl.78)', [
+                          (u'ė',       u'ė', ('f', 'sg', 'nom',), ()),
+                          (u'ės',      u'ė', ('f', 'sg', 'gen',), ()),
+                          (u'eriai',   u'ė', ('f', 'sg', 'dat',), ()),
+                          (u'erį',     u'ė', ('f', 'sg', 'acc',), ()),
+                          (u'erimi',   u'ė', ('f', 'sg', 'ins',), ()),
+                          (u'erėje',   u'ė', ('f', 'sg', 'loc',), ()),
+                          (u'erę',     u'ė', ('f', 'sg', 'voc',), ()),
+                          (u'ėrės',    u'ė', ('f', 'pl', 'nom',), ()),
+                          (u'erų',     u'ė', ('f', 'pl', 'gen',), ()),
+                          (u'erims',   u'ė', ('f', 'pl', 'dat',), ()),
+                          (u'eris',    u'ė', ('f', 'pl', 'acc',), ()),
+                          (u'erėmis',  u'ė', ('f', 'pl', 'ins',), ()),
+                          (u'erėse',   u'ė', ('f', 'pl', 'loc',), ()),
+                          (u'ės',      u'ė', ('f', 'pl', 'voc',), ()),
+                      ]),
+                 13: Paradigm(u'Paradigma daiktavardžiui petys;', [
+                          (u'tys',     u'tys', ('m', 'sg', 'nom',), ()),
+                          (u'čio',     u'tys', ('m', 'sg', 'gen',), ()),
+                          (u'čiui',    u'tys', ('m', 'sg', 'dat',), ()),
+                          (u'tį',      u'tys', ('m', 'sg', 'acc',), ()),
+                          (u'čiu',     u'tys', ('m', 'sg', 'ins',), ()),
+                          (u'tyje',    u'tys', ('m', 'sg', 'loc',), ()),
+                          (u'tį',      u'tys', ('m', 'sg', 'voc',), ()),
+                          (u'čiai',    u'tys', ('m', 'pl', 'nom',), ()),
+                          (u'čių',     u'tys', ('m', 'pl', 'gen',), ()),
+                          (u'čiams',   u'tys', ('m', 'pl', 'dat',), ()),
+                          (u'čius',    u'tys', ('m', 'pl', 'acc',), ()),
+                          (u'čiais',   u'tys', ('m', 'pl', 'ins',), ()),
+                          (u'čiuose',  u'tys', ('m', 'pl', 'loc',), ()),
+                          (u'čiai',    u'tys', ('m', 'pl', 'voc',), ()),
+                      ], modpar(u'pe', ((r'.*', r't\g<0>'),))),
+                 14: Paradigm(u'Paradigma daiktavardžiui žmogus (žmonės);', [
+                          (u'gus',     u'gus', ('m', 'sg', 'nom',), ()),
+                          (u'gaus',    u'gus', ('m', 'sg', 'gen',), ()),
+                          (u'gui',     u'gus', ('m', 'sg', 'dat',), ()),
+                          (u'gų',      u'gus', ('m', 'sg', 'acc',), ()),
+                          (u'gumi',    u'gus', ('m', 'sg', 'ins',), ()),
+                          (u'guje',    u'gus', ('m', 'sg', 'loc',), ()),
+                          (u'gau',     u'gus', ('m', 'sg', 'voc',), ()),
+                          (u'nės',     u'gus', ('m', 'pl', 'nom',), ()),
+                          (u'nių',     u'gus', ('m', 'pl', 'gen',), ()),
+                          (u'nėms',    u'gus', ('m', 'pl', 'dat',), ()),
+                          (u'nes',     u'gus', ('m', 'pl', 'acc',), ()),
+                          (u'nėmis',   u'gus', ('m', 'pl', 'ins',), ()),
+                          (u'nėse',    u'gus', ('m', 'pl', 'loc',), ()),
+                          (u'nės',     u'gus', ('m', 'pl', 'voc',), ()),
+                      ], modpar(u'žmo', ((r'.*', r'g\g<0>'),))),
+                 15: Paradigm(u'Paradigma daiktavardžiui pats;', [
+                          (u'ts',     u'ts', ('m', 'sg', 'nom',), ()),
+                          (u'čio',    u'ts', ('m', 'sg', 'gen',), ()),
+                          (u'čiam',   u'ts', ('m', 'sg', 'dat',), ()),
+                          (u'tį',     u'ts', ('m', 'sg', 'acc',), ()),
+                          (u'čiu',    u'ts', ('m', 'sg', 'ins',), ()),
+                          (u'čiame',  u'ts', ('m', 'sg', 'loc',), ()),
+                          (u'tsai',   u'ts', ('m', 'sg', 'voc',), ()),
+                          (u'tys',    u'ts', ('m', 'pl', 'nom',), ()),
+                          (u'čių',    u'ts', ('m', 'pl', 'gen',), ()),
+                          (u'tiems',  u'ts', ('m', 'pl', 'dat',), ()),
+                          (u'čius',   u'ts', ('m', 'pl', 'acc',), ()),
+                          (u'čiais',  u'ts', ('m', 'pl', 'ins',), ()),
+                          (u'čiuose', u'ts', ('m', 'pl', 'loc',), ()),
+                          (u'ŧys',    u'ts', ('m', 'pl', 'voc',), ()),
+
+                          (u'ti',     u'ts', ('f', 'sg', 'nom',), ()),
+                          (u'čios',   u'ts', ('f', 'sg', 'gen',), ()),
+                          (u'čiai',   u'ts', ('f', 'sg', 'dat',), ()),
+                          (u'čią',    u'ts', ('f', 'sg', 'acc',), ()),
+                          (u'čia',    u'ts', ('f', 'sg', 'ins',), ()),
+                          (u'čioje',  u'ts', ('f', 'sg', 'loc',), ()),
+                          (u'čioji',  u'ts', ('f', 'sg', 'voc',), ()),
+                          (u'čios',   u'ts', ('f', 'pl', 'nom',), ()),
+                          (u'čių',    u'ts', ('f', 'pl', 'gen',), ()),
+                          (u'čioms',  u'ts', ('f', 'pl', 'dat',), ()),
+                          (u'čias',   u'ts', ('f', 'pl', 'acc',), ()),
+                          (u'čiomis', u'ts', ('f', 'pl', 'ins',), ()),
+                          (u'čiose',  u'ts', ('f', 'pl', 'loc',), ()),
+                          (u'čios',   u'ts', ('f', 'pl', 'voc',), ()),
+                      ], modpar(u'pa', ((r'.*', r't\g<0>'),))),
+                 16: Paradigm(u'Paradigma daiktavardžiui viešpats;', [
+                          (u'ts',     u'ts', ('m', 'sg', 'nom',), ()),
+                          (u'čio',    u'ts', ('m', 'sg', 'gen',), ()),
+                          (u'čiui',   u'ts', ('m', 'sg', 'dat',), ()),
+                          (u'tį',     u'ts', ('m', 'sg', 'acc',), ()),
+                          (u'čiu',    u'ts', ('m', 'sg', 'ins',), ()),
+                          (u'tyje',   u'ts', ('m', 'sg', 'loc',), ()),
+                          (u'tie',    u'ts', ('m', 'sg', 'voc',), ()),
+                          (u'čiai',   u'ts', ('m', 'pl', 'nom',), ()),
+                          (u'čių',    u'ts', ('m', 'pl', 'gen',), ()),
+                          (u'čiams',  u'ts', ('m', 'pl', 'dat',), ()),
+                          (u'čius',   u'ts', ('m', 'pl', 'acc',), ()),
+                          (u'čiais',  u'ts', ('m', 'pl', 'ins',), ()),
+                          (u'čiuose', u'ts', ('m', 'pl', 'loc',), ()),
+                          (u'ŧys',    u'ts', ('m', 'pl', 'voc',), ()),
+                      ], modpar(u'pa', (
+                          (r'^e(.*)', ur'tė\g<1>'),
+                          (r'.*',     ur't\g<0>'),
+                      ))),
+                 17: Paradigm(u'Paradigma daiktavardžiui mėnuo;', [
+                          (u'uo',      u'uo', ('m', 'sg', 'nom',), ()),
+                          (u'esio',    u'uo', ('m', 'sg', 'gen',), ()),
+                          (u'esiui',   u'uo', ('m', 'sg', 'dat',), ()),
+                          (u'esį',     u'uo', ('m', 'sg', 'acc',), ()),
+                          (u'esiu',    u'uo', ('m', 'sg', 'ins',), ()),
+                          (u'esyje',   u'uo', ('m', 'sg', 'loc',), ()),
+                          (u'esie',    u'uo', ('m', 'sg', 'voc',), ()),
+                          (u'esiai',   u'uo', ('m', 'pl', 'nom',), ()),
+                          (u'esių',    u'uo', ('m', 'pl', 'gen',), ()),
+                          (u'esiams',  u'uo', ('m', 'pl', 'dat',), ()),
+                          (u'esius',   u'uo', ('m', 'pl', 'acc',), ()),
+                          (u'esiais',  u'uo', ('m', 'pl', 'ins',), ()),
+                          (u'esiuose', u'uo', ('m', 'pl', 'loc',), ()),
+                          (u'esiai',   u'uo', ('m', 'pl', 'voc',), ()),
+                      ],
+                      modpar(u'pa', (
+                          (ur'^e(.*)',    ur'esė\g<1>'),
+                          (ur'^užėl(.*)', ur'\g<0>'),
+                          (ur'.*',        ur'es\g<0>'),
+                      ))
+                      ),
+                 18: Paradigm(u'Paradigma vyr. g. daiktavardžiams iš sudaiktavardėjusių įvardžiuotinių būdvardžių bei dalyvių su -asis, pvz., jaunasis, palaimintasis, miegamasis, laukiamasis, mylimasis, nežinomasis', [
+                          (u'asis',     u'asis', ('m', 'sg', 'nom',), ()),
+                          (u'ojo',      u'asis', ('m', 'sg', 'gen',), ()),
+                          (u'ajam',     u'asis', ('m', 'sg', 'dat',), ()),
+                          (u'ąjį',      u'asis', ('m', 'sg', 'acc',), ()),
+                          (u'uoju',     u'asis', ('m', 'sg', 'ins',), ()),
+                          (u'ajame',    u'asis', ('m', 'sg', 'loc',), ()),
+                          (u'asai',     u'asis', ('m', 'sg', 'voc',), ()),
+                          (u'ieji',     u'asis', ('m', 'pl', 'nom',), ()),
+                          (u'ųjų',      u'asis', ('m', 'pl', 'gen',), ()),
+                          (u'iesiems',  u'asis', ('m', 'pl', 'dat',), ()),
+                          (u'uosius',   u'asis', ('m', 'pl', 'acc',), ()),
+                          (u'aisiais',  u'asis', ('m', 'pl', 'ins',), ()),
+                          (u'uosiuose', u'asis', ('m', 'pl', 'loc',), ()),
+                          (u'ieji',     u'asis', ('m', 'pl', 'voc',), ()),
+
+                          (u'oji',      u'asis', ('f', 'sg', 'nom',), ()),
+                          (u'osios',    u'asis', ('f', 'sg', 'gen',), ()),
+                          (u'ajai',     u'asis', ('f', 'sg', 'dat',), ()),
+                          (u'ąją',      u'asis', ('f', 'sg', 'acc',), ()),
+                          (u'aja',      u'asis', ('f', 'sg', 'ins',), ()),
+                          (u'ojoje',    u'asis', ('f', 'sg', 'loc',), ()),
+                          (u'oji',      u'asis', ('f', 'sg', 'voc',), ()),
+                          (u'osios',    u'asis', ('f', 'pl', 'nom',), ()),
+                          (u'ųjų',      u'asis', ('f', 'pl', 'gen',), ()),
+                          (u'osioms',   u'asis', ('f', 'pl', 'dat',), ()),
+                          (u'asias',    u'asis', ('f', 'pl', 'acc',), ()),
+                          (u'osiomis',  u'asis', ('f', 'pl', 'ins',), ()),
+                          (u'osiose',   u'asis', ('f', 'pl', 'loc',), ()),
+                          (u'osios',    u'asis', ('f', 'pl', 'voc',), ()),
+                      ]),
+                 19: Paradigm(u'Paradigma vyr. g. daiktavardžiams iš sudaiktavardėjusių įvardžiuotinių būdvardžių ar dalyvių su -[t]ysis, pvz., pėstysis, vyresnysis, dirbantysis', [
+                          (u'ysis',      u'ysis', ('m', 'sg', 'nom',), ()),
+                          (u'iojo',      u'ysis', ('m', 'sg', 'gen',), ()),
+                          (u'iajam',     u'ysis', ('m', 'sg', 'dat',), ()),
+                          (u'iąjį',      u'ysis', ('m', 'sg', 'acc',), ()),
+                          (u'iuoju',     u'ysis', ('m', 'sg', 'ins',), ()),
+                          (u'iajame',    u'ysis', ('m', 'sg', 'loc',), ()),
+                          (u'ysis',      u'ysis', ('m', 'sg', 'voc',), ()),
+                          (u'ieji',      u'ysis', ('m', 'pl', 'nom',), ()),
+                          (u'iūjų',      u'ysis', ('m', 'pl', 'gen',), ()),
+                          (u'iesiems',   u'ysis', ('m', 'pl', 'dat',), ()),
+                          (u'iuosius',   u'ysis', ('m', 'pl', 'acc',), ()),
+                          (u'iaisiais',  u'ysis', ('m', 'pl', 'ins',), ()),
+                          (u'iuosiuose', u'ysis', ('m', 'pl', 'loc',), ()),
+                          (u'ieji',      u'ysis', ('m', 'pl', 'voc',), ()),
+
+                          (u'ioji',      u'ysis', ('f', 'sg', 'nom',), ()),
+                          (u'iosios',    u'ysis', ('f', 'sg', 'gen',), ()),
+                          (u'iajai',     u'ysis', ('f', 'sg', 'dat',), ()),
+                          (u'iąją',      u'ysis', ('f', 'sg', 'acc',), ()),
+                          (u'iaja',      u'ysis', ('f', 'sg', 'ins',), ()),
+                          (u'iojoje',    u'ysis', ('f', 'sg', 'loc',), ()),
+                          (u'ioji',      u'ysis', ('f', 'sg', 'voc',), ()),
+                          (u'iosios',    u'ysis', ('f', 'pl', 'nom',), ()),
+                          (u'iųjų',      u'ysis', ('f', 'pl', 'gen',), ()),
+                          (u'iosioms',   u'ysis', ('f', 'pl', 'dat',), ()),
+                          (u'iasias',    u'ysis', ('f', 'pl', 'acc',), ()),
+                          (u'iosiomis',  u'ysis', ('f', 'pl', 'ins',), ()),
+                          (u'iosiose',   u'ysis', ('f', 'pl', 'loc',), ()),
+                          (u'iosios',    u'ysis', ('f', 'pl', 'voc',), ()),
+                      ]),
+                 20: Paradigm(u'Paradigma vyr. g. daiktavardžiams iš sudaiktavardėjusių neįvardžiuotinių dalyvių su -[..]as, pvz., pažįstamas', [
+                          (u'as',   u'as', ('m', 'sg', 'nom',), ()),
+                          (u'o',    u'as', ('m', 'sg', 'gen',), ()),
+                          (u'am',   u'as', ('m', 'sg', 'dat',), ()),
+                          (u'ą',    u'as', ('m', 'sg', 'acc',), ()),
+                          (u'u',    u'as', ('m', 'sg', 'ins',), ()),
+                          (u'ame',  u'as', ('m', 'sg', 'loc',), ()),
+                          (u'asis', u'as', ('m', 'sg', 'voc',), ()),
+                          (u'i',    u'as', ('m', 'pl', 'nom',), ()),
+                          (u'ų',    u'as', ('m', 'pl', 'gen',), ()),
+                          (u'iems', u'as', ('m', 'pl', 'dat',), ()),
+                          (u'us',   u'as', ('m', 'pl', 'acc',), ()),
+                          (u'ais',  u'as', ('m', 'pl', 'ins',), ()),
+                          (u'uose', u'as', ('m', 'pl', 'loc',), ()),
+                          (u'i',    u'as', ('m', 'pl', 'voc',), ()),
+
+                          (u'a',    u'as', ('f', 'sg', 'nom',), ()),
+                          (u'os',   u'as', ('f', 'sg', 'gen',), ()),
+                          (u'ai',   u'as', ('f', 'sg', 'dat',), ()),
+                          (u'ą',    u'as', ('f', 'sg', 'acc',), ()),
+                          (u'a',    u'as', ('f', 'sg', 'ins',), ()),
+                          (u'oje',  u'as', ('f', 'sg', 'loc',), ()),
+                          (u'a',    u'as', ('f', 'sg', 'voc',), ()),
+                          (u'os',   u'as', ('f', 'pl', 'nom',), ()),
+                          (u'ų',    u'as', ('f', 'pl', 'gen',), ()),
+                          (u'oms',  u'as', ('f', 'pl', 'dat',), ()),
+                          (u'as',   u'as', ('f', 'pl', 'acc',), ()),
+                          (u'omis', u'as', ('f', 'pl', 'ins',), ()),
+                          (u'ose',  u'as', ('f', 'pl', 'loc',), ()),
+                          (u'os',   u'as', ('f', 'pl', 'voc',), ()),
+                      ]),
+                 21: Paradigm(u'Paradigma vyr. g. daiktavardžiams iš sudaiktavardėjusių neįvardžiuotinių dalyvių su -ęs, pvz., suaugęs', [
+                          (u'ęs',      u'ę', ('m', 'sg', 'nom',), ()),
+                          (u'usio',    u'ę', ('m', 'sg', 'gen',), ()),
+                          (u'usiam',   u'ę', ('m', 'sg', 'dat',), ()),
+                          (u'usį',     u'ę', ('m', 'sg', 'acc',), ()),
+                          (u'usiu',    u'ę', ('m', 'sg', 'ins',), ()),
+                          (u'usiame',  u'ę', ('m', 'sg', 'loc',), ()),
+                          (u'usysis',  u'ę', ('m', 'sg', 'voc',), ()),
+                          (u'ę',       u'ę', ('m', 'pl', 'nom',), ()),
+                          (u'usių',    u'ę', ('m', 'pl', 'gen',), ()),
+                          (u'usiems',  u'ę', ('m', 'pl', 'dat',), ()),
+                          (u'usius',   u'ę', ('m', 'pl', 'acc',), ()),
+                          (u'usiais',  u'ę', ('m', 'pl', 'ins',), ()),
+                          (u'usiuose', u'ę', ('m', 'pl', 'loc',), ()),
+                          (u'usieji',  u'ę', ('m', 'pl', 'voc',), ()),
+
+                          (u'usi',     u'ę', ('f', 'sg', 'nom',), ()),
+                          (u'usios',   u'ę', ('f', 'sg', 'gen',), ()),
+                          (u'usiai',   u'ę', ('f', 'sg', 'dat',), ()),
+                          (u'usią',    u'ę', ('f', 'sg', 'acc',), ()),
+                          (u'usia',    u'ę', ('f', 'sg', 'ins',), ()),
+                          (u'ioje',    u'ę', ('f', 'sg', 'loc',), ()),
+                          (u'ioji',    u'ę', ('f', 'sg', 'voc',), ()),
+                          (u'usios',   u'ę', ('f', 'pl', 'nom',), ()),
+                          (u'usių',    u'ę', ('f', 'pl', 'gen',), ()),
+                          (u'usiosm',  u'ę', ('f', 'pl', 'dat',), ()),
+                          (u'usias',   u'ę', ('f', 'pl', 'acc',), ()),
+                          (u'usiomis', u'ę', ('f', 'pl', 'ins',), ()),
+                          (u'usiose',  u'ę', ('f', 'pl', 'loc',), ()),
+                          (u'usios',   u'ę', ('f', 'pl', 'voc',), ()),
+                      ]),
+                 22: Paradigm(u'Paradigma mot. g. daiktavardžiams iš sudaiktavardėjusių įvardžiuotinių būdvardžių bei dalyvių su -(i)oji, pvz., jaunoji, palaimintoji, gulsčioji, kaltinamoji, kuliamoji, mylimoji, dirbančioji, sprogtinoji', [
+                          (u'asis',     u'oji', ('m', 'sg', 'nom',), ()),
+                          (u'ojo',      u'oji', ('m', 'sg', 'gen',), ()),
+                          (u'ajam',     u'oji', ('m', 'sg', 'dat',), ()),
+                          (u'ąjį',      u'oji', ('m', 'sg', 'acc',), ()),
+                          (u'uoju',     u'oji', ('m', 'sg', 'ins',), ()),
+                          (u'ajame',    u'oji', ('m', 'sg', 'loc',), ()),
+                          (u'asai',     u'oji', ('m', 'sg', 'voc',), ()),
+                          (u'ieji',     u'oji', ('m', 'pl', 'nom',), ()),
+                          (u'ųjų',      u'oji', ('m', 'pl', 'gen',), ()),
+                          (u'iesiems',  u'oji', ('m', 'pl', 'dat',), ()),
+                          (u'uosius',   u'oji', ('m', 'pl', 'acc',), ()),
+                          (u'aisiais',  u'oji', ('m', 'pl', 'ins',), ()),
+                          (u'uosiuose', u'oji', ('m', 'pl', 'loc',), ()),
+                          (u'ieji',     u'oji', ('m', 'pl', 'voc',), ()),
+
+                          (u'oji',      u'oji', ('f', 'sg', 'nom',), ()),
+                          (u'osios',    u'oji', ('f', 'sg', 'gen',), ()),
+                          (u'ajai',     u'oji', ('f', 'sg', 'dat',), ()),
+                          (u'ąją',      u'oji', ('f', 'sg', 'acc',), ()),
+                          (u'aja',      u'oji', ('f', 'sg', 'ins',), ()),
+                          (u'ojoje',    u'oji', ('f', 'sg', 'loc',), ()),
+                          (u'oji',      u'oji', ('f', 'sg', 'voc',), ()),
+                          (u'osios',    u'oji', ('f', 'pl', 'nom',), ()),
+                          (u'ųjų',      u'oji', ('f', 'pl', 'gen',), ()),
+                          (u'osioms',   u'oji', ('f', 'pl', 'dat',), ()),
+                          (u'asias',    u'oji', ('f', 'pl', 'acc',), ()),
+                          (u'osiomis',  u'oji', ('f', 'pl', 'ins',), ()),
+                          (u'osiose',   u'oji', ('f', 'pl', 'loc',), ()),
+                          (u'osios',    u'oji', ('f', 'pl', 'voc',), ()),
+                      ]),
+                 23: Paradigm(u'Paradigma vyr. g. sangrąžiniams daiktavardžiams iš sangrąžinių veiksmažodžių su ‑asis, pvz., barimasis(-osi, -uisi, ...)', [
+                          (u'asis',     u'asis', ('m', 'sg', 'nom',), ()),
+                          (u'osi',      u'asis', ('m', 'sg', 'gen',), ()),
+                          (u'uisi',     u'asis', ('m', 'sg', 'dat',), ()),
+                          (u'ąsi',      u'asis', ('m', 'sg', 'acc',), ()),
+                          (u'usi',     u'asis', ('m', 'sg', 'ins',), ()),
+                          (u'esi',    u'asis', ('m', 'sg', 'loc',), ()),
+                          (u'asai',     u'asis', ('m', 'sg', 'voc',), ()),
+                          (u'aisi',     u'asis', ('m', 'pl', 'nom',), ()),
+                          (u'ųsi',      u'asis', ('m', 'pl', 'gen',), ()),
+                          (u'ams',  u'asis', ('m', 'pl', 'dat',), ()),
+                          (u'uosius',   u'asis', ('m', 'pl', 'acc',), ()),
+                          (u'aisiais',  u'asis', ('m', 'pl', 'ins',), ()),
+                          (u'usiuose', u'asis', ('m', 'pl', 'loc',), ()),
+                          (u'aisi',     u'asis', ('m', 'pl', 'voc',), ()),
+                      ]),
              }),
              8: (u'Giminės charakteristika', {
                   1: u'Eilinis vyr. gim. daiktavardis',
@@ -890,7 +1651,37 @@ MORPHOLOGY = {
         (u'Kaitybos charakteristika', {
              4: (u'Linksniavimo charakteristika', {
                   0: u'Būdvardis nekaitomas, nelinksniuojamas, pvz.: bordo',
-                  1: u'(i)a linksniuotė, paradigma nr. 1 (žiūr DLKG97 psl.179), pvz.: geras',
+                  1: Paradigm(u'(i)a linksniuotė, paradigma nr. 1 (žiūr DLKG97 psl.179), pvz.: geras', [
+                          (u'as',   u'as', ('m', 'sg', 'nom',), ()),
+                          (u'o',    u'as', ('m', 'sg', 'gen',), ()),
+                          (u'am',   u'as', ('m', 'sg', 'dat',), ()),
+                          (u'ą',    u'as', ('m', 'sg', 'acc',), ()),
+                          (u'u',    u'as', ('m', 'sg', 'ins',), ()),
+                          (u'ame',  u'as', ('m', 'sg', 'loc',), ()),
+                          (u'asis', u'as', ('m', 'sg', 'voc',), ()),
+                          (u'i',    u'as', ('m', 'pl', 'nom',), ()),
+                          (u'ų',    u'as', ('m', 'pl', 'gen',), ()),
+                          (u'ams',  u'as', ('m', 'pl', 'dat',), ()),
+                          (u'us',   u'as', ('m', 'pl', 'acc',), ()),
+                          (u'ais',  u'as', ('m', 'pl', 'ins',), ()),
+                          (u'uose', u'as', ('m', 'pl', 'loc',), ()),
+                          (u'i',    u'as', ('m', 'pl', 'voc',), ()),
+
+                          (u'a',    u'as', ('f', 'sg', 'nom',), ()),
+                          (u'os',   u'as', ('f', 'sg', 'gen',), ()),
+                          (u'ai',   u'as', ('f', 'sg', 'dat',), ()),
+                          (u'ą',    u'as', ('f', 'sg', 'acc',), ()),
+                          (u'a',    u'as', ('f', 'sg', 'ins',), ()),
+                          (u'oje',  u'as', ('f', 'sg', 'loc',), ()),
+                          (u'a',    u'as', ('f', 'sg', 'voc',), ()),
+                          (u'os',   u'as', ('f', 'pl', 'nom',), ()),
+                          (u'ų',    u'as', ('f', 'pl', 'gen',), ()),
+                          (u'oms',  u'as', ('f', 'pl', 'dat',), ()),
+                          (u'as',   u'as', ('f', 'pl', 'acc',), ()),
+                          (u'omis', u'as', ('f', 'pl', 'ins',), ()),
+                          (u'ose',  u'as', ('f', 'pl', 'loc',), ()),
+                          (u'os',   u'as', ('f', 'pl', 'voc',), ()),
+                      ]),
                   2: u'(i)a linksniuotė, paradigma nr. 2 (žiūr DLKG97 psl.179), pvz.: žalias',
                   3: u'(i)a linksniuotė, paradigma nr. 3 (žiūr DLKG97 psl.179-180), pvz.: kairys, paskesnis',
                   4: u'(i)a linksniuotė, paradigma nr. 4 (žiūr DLKG97 psl.180), pvz.: paskutinis',
@@ -1832,7 +2623,8 @@ def gen_symbols(indent):
                         )
 
 
-def dump_properties(i, lexeme, lemma, pos, params, fields):
+def dump_properties(i, line, lexeme, lemma, pos, params, fields):
+    print line.encode('utf-8')
     print i
     print ('%s -> %s' % (lexeme, lemma)).encode('utf-8')
 
@@ -1914,24 +2706,39 @@ def parse_noun(fields, values):
     elif fields[5] in (4, 5, 6):
         # TODO: pridėti neigiamą simbolį
         key.append(2)
+    elif fields[5] == 9:
+        # TODO: pridėti neigiamą simbolį
+        key.append(3)
     else:
         assert False
 
-    if fields[6] in (1, 2):
+    if fields[6] in (1, 2, 5, 6, 7, 8, 9, 10, 11):
         # Eilinis daiktavardžio pobūdis
         key.append(1)
+    elif fields[6] in (3, 4):
+        # Nekaitomas
+        key.append(2)
+        includes.append('nekaitomas')
     else:
         assert False
 
     # Linksniavimo charakteristika
     key.append(fields[7])
 
-    if fields[8] in (1, 3):
+    if fields[8] in (1, 3, 4):
         # Tik vyriška giminė
         key.append(1)
         filters.append('m')
-    elif fields[8] == 2:
+    elif fields[8] in (5, 7):
+        # Tik moteriška giminė
         key.append(2)
+        filters.append('f')
+    elif fields[8] in (2, 8):
+        # Abi giminės
+        key.append(3)
+        filters.append(None)
+    elif fields[8] == 6:
+        key.append(4)
         filters.append(None)
     else:
         assert False
@@ -1946,6 +2753,10 @@ def parse_noun(fields, values):
     elif fields[9] == 4:
         key.append(3)
         filters.append('sg')
+    elif fields[9] == 0:
+        key.append(4)
+        if 'nekaitomas' not in includes:
+            includes.append('nekaitomas')
     else:
         assert False
 
@@ -1953,18 +2764,23 @@ def parse_noun(fields, values):
         # Sąngražinių formų neturi
         key.append(1)
     else:
-        assert False
+        key.append(2)
+        # TODO: Patikrinti sangražines formas
+        #assert False
 
-    if fields[11] == 0:
-        # Pamatinis iš nieko nepadarytas daiktavardis
+    if fields[11] in (0, 1, 2, 3, 4):
+        # Pamatinis iš nieko nepadarytas daiktavardis arba padarytas iš
+        # -ininkas[ė] priesagos.
         key.append(1)
     else:
-        assert False
+        key.append(1)
+        # TODO: patikrinti visus padarytus iš kažko daiktavardžius
+        #assert False
 
-    if fields[12] == 1:
+    if fields[12] in (1, 4):
         # Deminutyvų neturi
         key.append(1)
-    elif fields[12] == 2:
+    elif fields[12] in (2, 5):
         # Turi normalius vienos giminės deminutyvus
         key.append(2)
         includes.extend([
@@ -2007,11 +2823,33 @@ def parse_noun(fields, values):
         # Daiktavardis prefiksinių junginių neturi
         key.append(1)
     else:
+        # TODO: įgyvendinti prefiksus
+        key.append(2)
+        #assert False
+
+
+    if fields[7] == 11:
+        # TODO: akmuo, šuo: awk '{ if ($4==1 && $8==11) print }' lmdb.txt
+        return None
+    elif fields[7] == 0:
+        paradigm = values[7]
+        if 'nekaitomas' not in includes:
+            includes.append('nekaitomas')
+    elif isinstance(values[7], Paradigm):
+        paradigm = values[7]
+    else:
         assert False
 
+    return key, paradigm, includes, filters
 
-    if isinstance(values[7], Paradigm):
-        paradigm = values[7]
+
+def parse_adjective(fields, values):
+    key = []
+    filters = []
+    includes = []
+
+    if isinstance(values[4], Paradigm):
+        paradigm = values[4]
     else:
         assert False
 
@@ -2031,16 +2869,23 @@ def parse_line(i, line):
     values = get_values(pos, params)
 
     posm = POS[pos][0]
+    #dump_properties(i, line, lexeme, lemma, pos, params, fields)
     try:
         if posm == 'n':
-            key, paradigm, includes, filters = parse_noun(fields, values)
+            res = parse_noun(fields, values)
+        elif posm == 'adj':
+            res = parse_adjective(fields, values)
         else:
             assert False
     except AssertionError:
-        dump_properties(i, lexeme, lemma, pos, params, fields)
+        dump_properties(i, line, lexeme, lemma, pos, params, fields)
         raise
 
-    return lexeme, key, paradigm, includes, filters
+    if res is None:
+        return None
+    else:
+        key, paradigm, includes, filters = res
+        return lexeme, key, paradigm, includes, filters
 
 
 def gen_paradigms(lmdb, indent):
@@ -2049,18 +2894,33 @@ def gen_paradigms(lmdb, indent):
     #data = ['jogas 1 - 1 1 1 1 1 2 1 0 0 2 0 0 0 0 1 1 1 0 0 0',
     #        'namas 1 - 1 1 1 1 1 1 1 0 0 2 0 0 0 0 0 1 0 0 0 0']
     #data = ['namas 1 - 1 1 1 1 1 1 1 0 0 2 0 0 0 0 0 1 0 0 0 0']
-    #data = ['baisas 1 - 1 1 1 1 1 1 1 0 0 2 1 1 0 1 0 1 1 0 0 0']
-    #data = ['bernas 1 - 1 1 1 1 1 1 1 0 0 2 0 0 1 0 1 1 0 0 0 0']
-    #data = ['kursai 3 - 1 1 1 1 1 1 3 0 0 2 0 0 0 0 1 1 0 0 0 0']
-    #data = ['artojas 1 - 1 1 1 1 2 1 1 0 0 2 0 0 0 0 1 1 0 0 0 0']
+    #data = ['baltoji 1 - 1 1 1 8 22 5 1 0 0 2 0 0 0 0 0 0 0 0 0 0']
+    #data = ['palaimintoji 1 - 1 1 1 9 22 5 1 0 0 2 0 0 0 0 0 0 0 0 0 0']
+    #data = ['dergštas 1 - 1 1 1 10 1 6 1 0 0 2 0 0 0 0 1 1 0 0 0 0']
+    #data = ['balda 1 - 1 1 1 11 6 6 1 0 0 2 0 0 0 0 1 1 0 0 0 0']
+    #data = ['aulininkas 1 aulas 1 1 1 1 1 2 1 0 1 2 0 0 0 0 1 1 0 0 0 0']
+    #data = ['aulininkė 1 aulas 1 1 1 1 8 8 1 0 1 2 0 0 0 0 1 1 0 0 0 0']
+    #data = ['balnelis 1 balnas 1 1 1 1 3 1 1 0 2 5 0 0 0 0 1 1 0 0 0 0']
+    #data = ['balsingumas 1 balsas 1 1 9 1 1 1 1 0 3 2 0 0 0 0 1 1 0 0 0 1']
+    #data = ['bendrystė 1 bendras 1 1 1 1 8 5 1 0 4 2 0 0 0 0 1 1 0 0 0 0']
+    #data = ['barimasis 1 bartis(barasi,barėsi) 1 1 9 1 23 1 1 3 49 1 0 0 0 0 0 0 0 0 0 5']
+    data = ['abipusiškas 1 - 2 1 1 1 1 1 0 1 1 1 1 0 1 1 0']
     for i, line in enumerate(data):
-        line = line.strip().decode('cp1257')
-        lexeme, key, paradigm, includes, filters = parse_line(i, line)
+        #line = line.strip().decode('cp1257')
+        line = line.strip().decode('utf-8')
+        res = parse_line(i, line)
+        if res is None:
+            continue
+        else:
+            lexeme, key, paradigm, includes, filters = res
 
-        rgt = paradigm.forms[0][1]
         namesfx = '_'.join(filter(None, ['n']+filters))
-        parname = '%s/%s__%s' % (lexeme[:-len(rgt)], rgt, namesfx)
-
+        if paradigm.forms:
+            rgt = paradigm.forms[0][1]
+            parname = '%s/%s__%s' % (lexeme[:-len(rgt)], rgt, namesfx)
+        else:
+            rgt = ''
+            parname = '%s__%s' % (lexeme, namesfx)
         parforms = list(paradigm.forms)
         for incl in includes:
             if incl in paradigm.overrides:
@@ -2115,6 +2975,40 @@ def build_file(lmdb):
     yield u'    <e lm="kaulas"><i>kaul</i><par n="kaul/as__n_m"/></e>'
     yield u'    <e lm="kursai"><i>kurs</i><par n="kurs/as__n_m_pl"/></e>'
     yield u'    <e lm="artojas"><i>artoj</i><par n="artoj/as__n_m"/></e>'
+    yield u'    <e lm="alkis"><i>alk</i><par n="alk/is__n_m"/></e>'
+    yield u'    <e lm="debesis"><i>debes</i><par n="debes/is__n_m"/></e>'
+    yield u'    <e lm="alus"><i>al</i><par n="al/us__n_m"/></e>'
+    yield u'    <e lm="pietūs"><i>piet</i><par n="piet/us__n_m_pl"/></e>'
+    yield u'    <e lm="herojus"><i>heroj</i><par n="heroj/us__n"/></e>'
+    yield u'    <e lm="akmuo"><i>akm</i><par n="akm/uo__n_m"/></e>'
+    yield u'    <e lm="šuo"><i>š</i><par n="akm/uo__n_m"/></e>'
+    yield u'    <e lm="petys"><i>pe</i><par n="pe/tys__n_m"/></e>'
+    yield u'    <e lm="žmogus"><i>žmo</i><par n="žmo/gus__n_m"/></e>'
+    yield u'    <e lm="pats"><i>pa</i><par n="pa/ts__n_m"/></e>'
+    yield u'    <e lm="viešpats"><i>viešpa</i><par n="viešpa/ts__n_m"/></e>'
+    yield u'    <e lm="mėnuo"><i>mėn</i><par n="mėn/uo__n_m"/></e>'
+    yield u'    <e lm="alibi"><i>alibi</i><par n="alibi__n_m"/></e>'
+    yield u'    <e lm="junga"><i>jung</i><par n="jung/a__n_m"/></e>'
+    yield u'    <e lm="buožė"><i>buož</i><par n="buož/ė__n_m"/></e>'
+    yield u'    <e lm="baltasis"><i>balt</i><par n="balt/asis__n_m"/></e>'
+    yield u'    <e lm="vyresnysis"><i>vyresn</i><par n="vyresn/ysis__n_m"/></e>'
+    yield u'    <e lm="pažįstamas"><i>pažįstam</i><par n="pažįstam/as__n_m"/></e>'
+    yield u'    <e lm="vedę"><i>ved</i><par n="ved/ę__n_m"/></e>'
+    yield u'    <e lm="aistra"><i>aistr</i><par n="aistr/a__n_f"/></e>'
+    yield u'    <e lm="buja"><i>buj</i><par n="buj/a__n_f"/></e>'
+    yield u'    <e lm="bazė"><i>baz</i><par n="baz/ė__n_f"/></e>'
+    yield u'    <e lm="ausis"><i>aus</i><par n="aus/is__n_f"/></e>'
+    yield u'    <e lm="duktė"><i>dukt</i><par n="dukt/ė__n_f"/></e>'
+    yield u'    <e lm="baltoji"><i>balt</i><par n="balt/oji__n_f"/></e>'
+    yield u'    <e lm="palaimintoji"><i>palaimint</i><par n="palaimint/oji__n_f"/></e>'
+    yield u'    <e lm="dergštas"><i>dergšt</i><par n="dergšt/as__n"/></e>'
+    yield u'    <e lm="balda"><i>bald</i><par n="bald/a__n"/></e>'
+    yield u'    <e lm="aulininkas"><i>aulinink</i><par n="aulinink/as__n"/></e>'
+    yield u'    <e lm="aulininkė"><i>aulinink</i><par n="aulinink/ė__n"/></e>'
+    yield u'    <e lm="balnelis"><i>balnel</i><par n="balnel/is__n_m"/></e>'
+    yield u'    <e lm="balsingumas"><i>balsingum</i><par n="balsingum/as__n_m"/></e>'
+    yield u'    <e lm="barimasis"><i>barim</i><par n="barim/asis__n_m"/></e>'
+    yield u'    <e lm="abipusiškas"><i>abipusišk</i><par n="abipusišk/as__n"/></e>'
 
     #for line in gen_entries(lmdb, '    '):
     #    yield line

@@ -1,0 +1,7 @@
+syntax: glob
+
+apertium-svn/
+foma-0.9.17/
+*.bin
+ataskaita_2005.pdf
+*.tar.gz
