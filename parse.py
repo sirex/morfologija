@@ -305,13 +305,13 @@ PARADIGMS = {
         (u'išku',    u'', ('m', 'sg', 'ins',), ()),
         (u'iške',    u'', ('m', 'sg', 'loc',), ()),
         (u'iške',    u'', ('m', 'sg', 'voc',), ()),
-        (u'iškai',   u'', ('m', 'pl', 'nom',), ()),
+        (u'iški',    u'', ('m', 'pl', 'nom',), ()),
         (u'iškų',    u'', ('m', 'pl', 'gen',), ()),
-        (u'iškams',  u'', ('m', 'pl', 'dat',), ()),
+        (u'iškiems', u'', ('m', 'pl', 'dat',), ()),
         (u'iškus',   u'', ('m', 'pl', 'acc',), ()),
         (u'iškais',  u'', ('m', 'pl', 'ins',), ()),
         (u'iškuose', u'', ('m', 'pl', 'loc',), ()),
-        (u'iškai',   u'', ('m', 'pl', 'voc',), ()),
+        (u'iški',    u'', ('m', 'pl', 'voc',), ()),
 
         (u'iška',     u'', ('f', 'sg', 'nom',), ()),
         (u'iškos',    u'', ('f', 'sg', 'gen',), ()),
@@ -2904,10 +2904,10 @@ def gen_paradigms(lmdb, indent):
     #data = ['balsingumas 1 balsas 1 1 9 1 1 1 1 0 3 2 0 0 0 0 1 1 0 0 0 1']
     #data = ['bendrystė 1 bendras 1 1 1 1 8 5 1 0 4 2 0 0 0 0 1 1 0 0 0 0']
     #data = ['barimasis 1 bartis(barasi,barėsi) 1 1 9 1 23 1 1 3 49 1 0 0 0 0 0 0 0 0 0 5']
-    data = ['abipusiškas 1 - 2 1 1 1 1 1 0 1 1 1 1 0 1 1 0']
+    #data = ['abipusiškas 1 - 2 1 1 1 1 1 0 1 1 1 1 0 1 1 0']
     for i, line in enumerate(data):
-        #line = line.strip().decode('cp1257')
-        line = line.strip().decode('utf-8')
+        line = line.strip().decode('cp1257')
+        #line = line.strip().decode('utf-8')
         res = parse_line(i, line)
         if res is None:
             continue
@@ -2955,9 +2955,9 @@ def build_file(lmdb):
     yield u'  </sdefs>'
     yield u'  <pardefs>'
 
-    #for name, forms in PARADIGMS:
-    #    for line in gen_paradigm('    ', name, forms):
-    #        yield line
+    for name, forms in PARADIGMS.items():
+        for line in gen_paradigm('    ', name, forms, []):
+            yield line
 
     for line in gen_paradigms(lmdb, '    '):
         yield line
@@ -3012,6 +3012,7 @@ def build_file(lmdb):
 
     #for line in gen_entries(lmdb, '    '):
     #    yield line
+
     yield u'  </section>'
     yield u'</dictionary>'
 
