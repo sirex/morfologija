@@ -1,7 +1,8 @@
-#!/usr/bin/env python
-# coding: utf-8
+#!/usr/bin/env python3
 
 import sys
+
+from lmdb import LMDB
 
 #   3  1  daiktavardis
 #   4  1  tikriniškumas
@@ -28,72 +29,82 @@ import sys
 #
 # ainis 1 - 1 1 1 1 3 1 1 0 0 2 0 0 0 0 1 1 0 0 0 0
 
+
+POS = {
+     1: ('n',      'daiktavardis'),
+     2: ('adj',    'būdvardis'),
+     3: ('num',    'skaitvardis'),
+     4: ('prn',    'įvardis'),
+     5: ('vblex',  'veiksmažodis'),
+     6: ('adv',    'prieveiksmis'),
+     #7: ('',       'dalelytė'),
+     8: ('pr',     'prielinksnis'),
+     9: ('cnjcoo', 'jungtukas'),
+    10: ('ij',     'jaustukas'),
+    #11: ('',       'ištiktukas'),
+}
+
+
 CASES = ('nom', 'gen', 'dat', 'acc', 'ins', 'loc', 'voc')
 
-class Base(object):
+
+class DPref(object):
+    """Declension prefixes."""
     pass
 
-class Par(object):
+
+class Declension(object):
     pass
+
+
+class Derivation(object):
+    pass
+
+
+class Diminutive(Derivation):
+    pass
+
 
 PARADIGMS = [
-    Base(u'ain/is',        u'is  io  iui  į   iu   yje   i',   ('m', 'sg')),
-    Base(u'ain/iai',       u'iai ių  iams ius iais iuose iai', ('m', 'pl')),
-    Base(u'ain/ė',         u'ė   ės  ei   ę   e    ėje   e',   ('f', 'sg')),
-    Base(u'ain/ės',        u'ės  ių  ėms  es  ėmis ėse   ės',  ('f', 'pl')),
+    # Declension prefixes
+    DPref('ain/is',        'is  io  iui  į   iu   yje   i',   ('m', 'sg')),
+    DPref('ain/iai',       'iai ių  iams ius iais iuose iai', ('m', 'pl')),
+    DPref('ain/ė',         'ė   ės  ei   ę   e    ėje   e',   ('f', 'sg')),
+    DPref('ain/ės',        'ės  ių  ėms  es  ėmis ėse   ės',  ('f', 'pl')),
 
-    Base(u'nam/as',        u'as  o   ui   ą   u    e     e',   ('m', 'sg')),
-    Base(u'nam/ai',        u'ai  ų   ams  us  ais  uose  ai',  ('m', 'pl')),
+    DPref('nam/as',        'as  o   ui   ą   u    e     e',   ('m', 'sg')),
+    DPref('nam/ai',        'ai  ų   ams  us  ais  uose  ai',  ('m', 'pl')),
 
-    Base(u'aini/išk/as',   u'as  ko  kam  ką  ku   kame  as',  ('m', 'sg')),
-    Base(u'aini/išk/i',    u'i   ų   iems us  ais  uose  i',   ('m', 'pl')),
-    Base(u'aini/išk/a',    u'a   os  ai   ą   a    oje   a',   ('f', 'sg')),
-    Base(u'aini/išk/os',   u'os  ų   oms  as  omis ose   os',  ('f', 'pl')),
-
-
-
+    DPref('aini/išk/as',   'as  ko  kam  ką  ku   kame  as',  ('m', 'sg')),
+    DPref('aini/išk/i',    'i   ų   iems us  ais  uose  i',   ('m', 'pl')),
+    DPref('aini/išk/a',    'a   os  ai   ą   a    oje   a',   ('f', 'sg')),
+    DPref('aini/išk/os',   'os  ų   oms  as  omis ose   os',  ('f', 'pl')),
 
     # Mažybinės formos (deminutyvai)
-    Base(u'nam/el/is',     prefix=u'el',    extends=u'ain/is'),
-    Base(u'nam/el/iai',    prefix=u'el',    extends=u'ain/iai'),
-    Base(u'merg/el/ė',     prefix=u'el',    extends=u'ain/ė'),
-    Base(u'merg/el/ės',    prefix=u'el',    extends=u'ain/ės'),
+    Diminutive('nam/el/is',     'el',    ('ain/is', 'ain/iai', 'ain/ė', 'ain/ės')),
+    Diminutive('nam/eliuk/as',  'eliuk', ('nam/as', 'nam/ai',  'ain/ė', 'ain/ės')),
+    Diminutive('nam/užėl/is',   'užėl',  ('ain/is', 'ain/iai', 'ain/ė', 'ain/ės')),
 
-    Base(u'nam/eliuk/as',  prefix=u'eliuk', extends=u'nam/as'),
-    Base(u'nam/eliuk/ai',  prefix=u'eluik', extends=u'nam/ai'),
-    Base(u'merg/eliuk/ė',  prefix=u'eliuk', extends=u'ain/ė'),
-    Base(u'merg/eliuk/ės', prefix=u'eliuk', extends=u'ain/ės'),
-
-    Base(u'nam/užėl/is',   prefix=u'užėl',  extends=u'ain/is'),
-    Base(u'nam/užėl/iai',  prefix=u'užėl',  extends=u'ain/iai'),
-    Base(u'merg/užėl/ė',   prefix=u'užėl',  extends=u'ain/ė'),
-    Base(u'merg/užėl/ės',  prefix=u'užėl',  extends=u'ain/ės'),
-
-
-    # Derivacijos
-    Base(u'bank/inink/as', prefix=u'inink', extends=u'nam/as'),
-    Base(u'bank/inink/ai', prefix=u'inink', extends=u'nam/ai'),
-    Base(u'bank/inink/ė',  prefix=u'inink', extends=u'ain/ė'),
-    Base(u'bank/inink/ės', prefix=u'inink', extends=u'ain/ės'),
-
-    Base(u'auks/išk/as',   prefix=u'išk',   extends=u'ain/išk/as'),
-    Base(u'auks/išk/i',    prefix=u'išk',   extends=u'ain/išk/i'),
-
+    # Kitos derivacijos
+    Derivation('bank/inink/as', 'inink', ('nam/as', 'nam/ai', 'ain/ė', 'ain/ės')),
+    Derivation('auks/išk/as',   'išk',   ('nam/as', 'nam/ai', 'ain/ė', 'ain/ės')),
 
     # Paradigmos
-    Par(u'ain/is', '1 1 1 1 3 1 1 0 0 2 0 0 0 0 1 1 0 0 0 0', (
-        u'BASE__ain/is',       u'BASE__ain/iai',
-        u'BASE__nam/el/is',    u'BASE__nam/el/iai',
-        u'BASE__nam/eliuk/as', u'BASE__nam/eliuk/ai',
-        u'BASE__auks/išk/as',  u'BASE__auks/išk/i',
-    )),
+    Declension('ain/is', ('ain/is', 'ain/iai',)),
+
+    #Declension('ain/is', (
+    #    'BASE__ain/is',       'BASE__ain/iai',
+    #    'BASE__nam/el/is',    'BASE__nam/el/iai',
+    #    'BASE__nam/eliuk/as', 'BASE__nam/eliuk/ai',
+    #    'BASE__auks/išk/as',  'BASE__auks/išk/i',
+    #)),
 ]
 
 
 def read_data(lmdb):
-    with open(lmdb) as f:
+    with open(lmdb, encoding='cp1257') as f:
         for line in f:
-            yield line.decode('cp1257')
+            yield line
 
 
 def gen_paradigms(lmdb):
@@ -101,13 +112,68 @@ def gen_paradigms(lmdb):
     for i, line in enumerate(data):
         line = line.strip()
         if line.endswith('1 1 1 1 3 1 1 0 0 2 0 0 0 0 1 1 0 0 0 0'):
-            print line
+            print(line)
             break
+
+
+def gen_symbols(indent):
+    for n, c in POS.values():
+        yield '%s<sdef n=%-10s c="%s"/>' % (
+            indent, '"%s"' % n, c
+        )
+
+    for pos, posrules in LMDB.items():
+        for category, rules in posrules:
+            yield ''
+            yield '%s<!-- %s -->' % (indent, category)
+            for name, options in rules.values():
+                yield ''
+                if name:
+                    yield '%s<!-- %s -->' % (indent, name)
+                for option in options.values():
+                    if isinstance(option, tuple):
+                        n, c = option
+                        yield '%s<sdef n=%-10s c="%s"/>' % (
+                            indent, '"%s"' % n, c
+                        )
+
+
+def build(lmdb):
+    yield '<?xml version="1.0" encoding="UTF-8"?>'
+    yield '<dictionary>'
+    yield '  <alphabet>AĄBCČDEĘĖFGHIĮYJKLMNOPRSŠTUŲŪVZŽaąbcčdeęėfghiįyjklmnoprsštuųūvzž</alphabet>'
+    yield '  <sdefs>'
+    for line in gen_symbols('    '):
+        yield line
+    yield '  </sdefs>'
+    yield '  <pardefs>'
+
+    #for name, forms in LMDB.items():
+    #    for line in gen_paradigm('    ', name, forms, []):
+    #        yield line
+
+    #for line in gen_paradigms(lmdb, '    '):
+    #    yield line
+
+    yield '  </pardefs>'
+    yield '  <section id="main" type="standard">'
+
+    #for line in gen_entries(lmdb, '    '):
+    #    yield line
+
+    yield '  </section>'
+    yield '</dictionary>'
 
 
 
 def main(lmdb):
-    gen_paradigms(lmdb)
+    #gen_paradigms(lmdb)
+    with open('build.dix', 'w') as f:
+        for line in build(lmdb):
+            f.wirte(line + '\n')
+
+    with open('build.dix') as f:
+        print(f.read())
 
 
 
