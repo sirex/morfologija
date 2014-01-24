@@ -233,7 +233,7 @@
           Daiktavardis nekaitomas; tradiciškai laikoma, kad tai vyr. gim.,
           nors tai ne visais atvejais akivaizdu., pvz., kredo, taksi
       - code: 4
-        label:
+        label: >
           Dažniausiai [tradiciškai?] laikoma, kad daiktavardis yra vyr. gim.,
           bet iš principo (teoriškai) jis gali būti tiek vyr., tiek ir
           mot.giminės, pvz., kai kurie nekaitomi dktv: buržua, atašė, portjė
@@ -243,7 +243,7 @@
       - code: 6
         label: Eilinis bendr. gim. daiktavardis
       - code: 7
-        label:
+        label: >
           Daiktavardis nekaitomas; gali būti laikoma, kad tai mot. gim., nors
           tai ne visais atvejais akivaizdu; pvz.: bezė
       - code: 8
@@ -264,7 +264,7 @@
       - code: 1
         label: Normalus abiskaitinis, pvz., namas,
       - code: 2
-        label:
+        label: >
           Abiskaitinis "tipo analgetikai": nors žodynuose (dažniausiai)
           pateikiamas daugiskaitoje, gali įgyti ir "normalias" vienaskaitos
           formas, pvz., analgetikai-analgetikas,
@@ -924,6 +924,7 @@
             neturi); tik: pats jau yra mažybinis, pvz., balnelis (dviračio)
       - code: 13
         label: Daiktavardžio vedinių su -ininkas(-ė) galimumas
+        fields:
         - code: 0
           label: tokių vedinių neturi
         - code: 1
@@ -937,6 +938,7 @@
           label: turi
       - code: 15
         label: Daiktavardžio vedinių su -ystė galimumas
+        fields:
         - code: 0
           label: tokių vedinių neturi
         - code: 1
@@ -1042,7 +1044,8 @@
       label: Linksniavimo charakteristika
       fields:
       - code: 0
-        label: Būdvardis nekaitomas, nelinksniuojamas, pvz.: bordo
+        label: >
+          Būdvardis nekaitomas, nelinksniuojamas, pvz.: bordo
         fields: []
       - code: 1
         label: >
@@ -1168,6 +1171,7 @@
           laipsnį, kuriame bevardės giminės nėra, pvz.: kairys, dešinys
     - code: 8
       label: Prefiksavimas
+      fields:
       - code: 0
         label: >
           žodynuose pateikiamas be neig. prefikso; neigiamų formų neturi, pvz.:
@@ -1606,7 +1610,6 @@
         label: >
           Įgyja tiek neįvardžiuotines,  tiek ir įvardžiuotines formas, pvz.:
           dušimtas
-    }),
   - label: Darybos charakteristika
     code: 11
     fields:
@@ -1993,7 +1996,8 @@
         - code: 2
         - code: 3
       - code: 5
-        label: asmenuotės nr.; galimos reikšmės: žiūr. DLKG97 psl.334-337
+        label: >
+          asmenuotės nr.; galimos reikšmės: žiūr. DLKG97 psl.334-337
         fields:
         - code: 1
         - code: 2
@@ -2317,6 +2321,7 @@
       - code: 1
         label: turi
   - label: Derivacijos charakteristika
+    fields:
     - code: 14
       label: Ar iš vksm galima padaryti priesagos -tumas vedinius
       fields:
@@ -2332,7 +2337,8 @@
       - code: 1
         label: galima
     - code: 16
-      label: Darybos charakteristika : padarymo būdo numeris
+      label: >
+        Darybos charakteristika : padarymo būdo numeris
       fields:
       - code: 0
         label: iš nieko nepadarytas veiksmažodis be prefikso
@@ -3284,9 +3290,11 @@
     label: Darybos charakteristika
     fields:
     - code: 1
-      label: be ne-; pvz.: ag
+      label: >
+        be ne-; pvz.: ag
     - code: 2
-      label: su ne-; pvz.: nejau, nelyg
+      label: >
+        su ne-; pvz.: nejau, nelyg
 - code: 8
   symbol: pr
   label: Prielinksnis
@@ -3295,19 +3303,26 @@
     label: Prielinksnio ypatumai
     fields:
     - code: 1
-      label: reikalauja kilmininko, polinksniu nebūna; pvz.: ant
+      label: >
+        reikalauja kilmininko, polinksniu nebūna; pvz.: ant
     - code: 2
-      label: reikalauja galininko, polinksniu nebūna; pvz.: aplink
+      label: >
+        reikalauja galininko, polinksniu nebūna; pvz.: aplink
     - code: 3
-      label: reikalauja kilmininko, gali būti polinksniu; pvz.: dėka
+      label: >
+        reikalauja kilmininko, gali būti polinksniu; pvz.: dėka
     - code: 4
-      label: reikalauja K arba G, polinksniu nebūna; pvz.: apsukui
+      label: >
+        reikalauja K arba G, polinksniu nebūna; pvz.: apsukui
     - code: 5
-      label: reikalauja K, G arba Įn, polinksniu nebūna; pvz.: po
+      label: >
+        reikalauja K, G arba Įn, polinksniu nebūna; pvz.: po
     - code: 6
-      label: reikalauja naudininko, polinksniu nebūna; pvz.: priešingai
+      label: >
+        reikalauja naudininko, polinksniu nebūna; pvz.: priešingai
     - code: 7
-      label: reikalauja įnagininko, polinksniu nebūna; pvz.: su
+      label: >
+        reikalauja įnagininko, polinksniu nebūna; pvz.: su
   - code: 5
     label: Darybos charakteristika
     fields:
@@ -3330,7 +3345,8 @@
         Apie jungtuko padarymą nieko pasakyti negalim (šiame darbo etape to dar
         nenagrinėjome); pvz.: ar, betgi, būtent
     - code: 1
-      label: Jungtukas su ne-; pvz.: nekaip, nelyg
+      label: >
+        Jungtukas su ne-; pvz.: nekaip, nelyg
 - code: 10
   symbol: ij
   label: Jaustukas

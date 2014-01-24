@@ -2,7 +2,7 @@
 
 import sys
 
-from lmdb import LMDB
+import yaml
 
 #   3  1  daiktavardis
 #   4  1  tikriniškumas
@@ -50,19 +50,23 @@ CASES = ('nom', 'gen', 'dat', 'acc', 'ins', 'loc', 'voc')
 
 class DPref(object):
     """Declension prefixes."""
-    pass
+    def __init__(self, name, affixes, sumbols=()):
+        pass
 
 
 class Declension(object):
-    pass
+    def __init__(self, name, affixes, sumbols=()):
+        pass
 
 
 class Derivation(object):
-    pass
+    def __init__(self, name, affixes, sumbols=()):
+        pass
 
 
 class Diminutive(Derivation):
-    pass
+    def __init__(self, name, affixes, sumbols=()):
+        pass
 
 
 PARADIGMS = [
@@ -86,8 +90,8 @@ PARADIGMS = [
     Diminutive('nam/užėl/is',   'užėl',  ('ain/is', 'ain/iai', 'ain/ė', 'ain/ės')),
 
     # Kitos derivacijos
-    Derivation('bank/inink/as', 'inink', ('nam/as', 'nam/ai', 'ain/ė', 'ain/ės')),
-    Derivation('auks/išk/as',   'išk',   ('nam/as', 'nam/ai', 'ain/ė', 'ain/ės')),
+    Derivation('bank/inink/as', 'inink', ('nam/as', 'nam/ai',  'ain/ė', 'ain/ės')),
+    Derivation('auks/išk/as',   'išk',   ('nam/as', 'nam/ai',  'ain/ė', 'ain/ės')),
 
     # Paradigmos
     Declension('ain/is', ('ain/is', 'ain/iai',)),
@@ -116,35 +120,47 @@ def gen_paradigms(lmdb):
             break
 
 
-def gen_symbols(indent):
-    for n, c in POS.values():
-        yield '%s<sdef n=%-10s c="%s"/>' % (
-            indent, '"%s"' % n, c
-        )
+def gen_symbols(mdb, paradigms):
+    for node in mdb:
+        symbol = node.get('symbol')
+        if symbol is not None:
+            yield '<sdef n=%-10s c="%s"/>' % (
+                '"%s"' % node['symbol'], node['label']
+            )
+        else:
+            yield '<!-- sdef n=%-10s c="%s"/ -->' % (
+                '"%s"' % '', node['label']
+            )
 
-    for pos, posrules in LMDB.items():
-        for category, rules in posrules:
-            yield ''
-            yield '%s<!-- %s -->' % (indent, category)
-            for name, options in rules.values():
-                yield ''
-                if name:
-                    yield '%s<!-- %s -->' % (indent, name)
-                for option in options.values():
-                    if isinstance(option, tuple):
-                        n, c = option
-                        yield '%s<sdef n=%-10s c="%s"/>' % (
-                            indent, '"%s"' % n, c
-                        )
+    for paradigm in paradigms:
+        if paradigm['type'] == 'symbol':
+            yield '<sdef n=%-10s c="%s"/>' % (
+                '"%s"' % paradigm['key'], paradigm['label']
+            )
+
+    #for node in mdb.items():
+    #    for category, rules in posrules:
+    #        yield ''
+    #        yield '%s<!-- %s -->' % (indent, category)
+    #        for name, options in rules.values():
+    #            yield ''
+    #            if name:
+    #                yield '%s<!-- %s -->' % (indent, name)
+    #            for option in options.values():
+    #                if isinstance(option, tuple):
+    #                    n, c = option
+    #                    yield '%s<sdef n=%-10s c="%s"/>' % (
+    #                        indent, '"%s"' % n, c
+    #                    )
 
 
-def build(lmdb):
+def build(mdb, paradigms):
     yield '<?xml version="1.0" encoding="UTF-8"?>'
     yield '<dictionary>'
     yield '  <alphabet>AĄBCČDEĘĖFGHIĮYJKLMNOPRSŠTUŲŪVZŽaąbcčdeęėfghiįyjklmnoprsštuųūvzž</alphabet>'
     yield '  <sdefs>'
-    for line in gen_symbols('    '):
-        yield line
+    for line in gen_symbols(mdb, paradigms):
+        yield '    ' + line
     yield '  </sdefs>'
     yield '  <pardefs>'
 
@@ -167,10 +183,16 @@ def build(lmdb):
 
 
 def main(lmdb):
+    with open('lmdb.yaml', encoding='utf-8') as f:
+        mdb = yaml.load(f)
+
+    with open('paradigms.yaml', encoding='utf-8') as f:
+        paradigms = yaml.load(f)
+
     #gen_paradigms(lmdb)
-    with open('build.dix', 'w') as f:
-        for line in build(lmdb):
-            f.wirte(line + '\n')
+    with open('build.dix', 'w', encoding='utf-8') as f:
+        for line in build(mdb, paradigms):
+            f.write(line + '\n')
 
     with open('build.dix') as f:
         print(f.read())

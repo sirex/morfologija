@@ -732,8 +732,8 @@ LMDB = {
                           ('čiuose', 'ts', ('m', 'pl', 'loc',), ()),
                           ('ŧys',    'ts', ('m', 'pl', 'voc',), ()),
                       ], modpar('pa', (
-                          (r'^e(.*)', ur'tė\g<1>'),
-                          (r'.*',     ur't\g<0>'),
+                          (r'^e(.*)', r'tė\g<1>'),
+                          (r'.*',     r't\g<0>'),
                       ))),
                  17: Paradigm('Paradigma daiktavardžiui mėnuo;', [
                           ('uo',      'uo', ('m', 'sg', 'nom',), ()),
@@ -752,9 +752,9 @@ LMDB = {
                           ('esiai',   'uo', ('m', 'pl', 'voc',), ()),
                       ],
                       modpar('pa', (
-                          (ur'^e(.*)',    ur'esė\g<1>'),
-                          (ur'^užėl(.*)', ur'\g<0>'),
-                          (ur'.*',        ur'es\g<0>'),
+                          (r'^e(.*)',    r'esė\g<1>'),
+                          (r'^užėl(.*)', r'\g<0>'),
+                          (r'.*',        r'es\g<0>'),
                       ))
                       ),
                  18: Paradigm('Paradigma vyr. g. daiktavardžiams iš sudaiktavardėjusių įvardžiuotinių būdvardžių bei dalyvių su -asis, pvz., jaunasis, palaimintasis, miegamasis, laukiamasis, mylimasis, nežinomasis', [
