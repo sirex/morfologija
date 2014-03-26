@@ -4,12 +4,14 @@
   fields:
   - label: Daiktavardžio įpatumai
     fields:
-    - code:  4
+    - code: 4
+      slug: noun-type
       label: Tikriniškumas
       fields:
       - code: 1
         label: Bendrinis
       - code: 2
+        slug: name
         symbol: ant
         label: Asmenvardis-vardas
       - code: 3
@@ -134,18 +136,51 @@
       - code: 0
         label: Daiktavardis nekaitomas, nelinksniuojamas
         fields: []
+        inflective: false
+      # FIXME: Pirmos paradigmos tikriniai, turi vinaskaitos šauksmininką su
+      # -ai, priešingai nei visi kiti, kurie turi -e. Tai dalinai išsprendžiau
+      # visiems tikriniams daiktavardžiams, tačiau pasitaiko ir bendrinių
+      # daiktavardžių, kurie šauksmininke turi -ai, pavyzdžiui vabalai, žentai,
+      # tėvai. Žiūrėti DLKG97 §120.
       - code: 1
         label: (i)a linksniuotė, paradigma nr. 1 (žiūr DLKG97 psl.70)
-        paradigms: []
+        declension: (i)a
+        paradigm: 1
+        pardefs:
+        - 
+          - ["Jon/as", {"noun-type": "name"}]
+          - ["vyr/as", {}]
+        - vyr/ai
+      # FIXME: Tai pačiai paradigmai priklauso tokie vienaskaitos vietininko
+      # formos žodžiai: elnyje, kelyje, vėjuje. Šauksmininkas: elni, kely,
+      # vėjau. Visi šie žodžiai priskirti vienai paradigmai, net jei vietininko
+      # ir šauksmininko galūnės skiriasi. Žiūrėti DLKG97 §119, 2 paradigma,
+      # vienaskaita, Vt. ir Š.
+      #
+      # Dalinai tai sprendžiu su galūnės patikrinimu, tačiau, vėjuje/vėjyje
+      # lieka neišspręstas.
       - code: 2
         label: (i)a linksniuotė, paradigma nr. 2 (žiūr DLKG97 psl.71)
-        paradigms: []
+        declension: (i)a
+        paradigm: 2
+        pardefs:
+        - elni/as
+        - 
+          - ["eln/ias", {"@endswith": "ias"}]
+          - ["vėj/as", {}]
+        - vyr/ai
       - code: 3
         label: (i)a linksniuotė, paradigma nr. 3 (žiūr DLKG97 psl.71)
-        paradigms: []
+        declension: (i)a
+        paradigm: 3
+        pardefs:
+        - brol/is
+        - brol/iai
       - code: 4
         label: (i)u linksniuotė, paradigma nr. 4 (žiūr DLKG97 psl.72)
-        paradigms: []
+        declension: (i)u
+        paradigm: 4
+        pardefs:
       - code: 5
         label: (i)u linksniuotė, paradigma nr. 5 (žiūr DLKG97 psl.73)
         paradigms: []
