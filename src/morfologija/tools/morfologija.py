@@ -1,16 +1,37 @@
+"""Morphology database tool.
+
+Usage:
+  morfologija <lexeme> [-d <path>]
+
+Options:
+  <lexeme>              A lexeme from morphology database.
+  -h --help             Show this screen.
+  -d --data-dir=<path>  Data directory [default: data].
+
+"""
+
+import yaml
+import docopt
+import os.path
+
+from ..grammar import Node
+from ..lexemes import Lexeme
+
+
 def main():
-    with open('lmdb.yaml', encoding='utf-8') as f:
-        mdb = yaml.load(f)
-    mdb = Node(dict(fields=mdb))
+    args = docopt.docopt(__doc__)
+    data_dir = args['--data-dir']
+    data = lambda name: os.path.join(data_dir, name)
 
-    with open('paradigms.yaml', encoding='utf-8') as f:
-        paradigms = yaml.load(f)
+    with open(data('grammar.yaml'), encoding='utf-8') as f:
+        grammar = yaml.load(f)
+    grammar = Node(dict(nodes=grammar))
 
-    with open(lmdb_file, encoding='utf-8') as lmdb, \
-         open('build.dix', 'w', encoding='utf-8') as dix:
-        parser = Converter(lmdb_file, lmdb, mdb, paradigms)
-        for line in parser.build_dix():
-            dix.write(line + '\n')
+    #with open(data('paradigms.yaml'), encoding='utf-8') as f:
+    #    paradigms = yaml.load(f)
 
-    with open('build.dix') as f:
-        print(f.read())
+    with open(data('lexemes.txt'), encoding='utf-8') as f:
+        for line in f:
+            lexeme = Lexeme(grammar, line)
+            if args['<lexeme>'] == lexeme.lexeme:
+                print(line)

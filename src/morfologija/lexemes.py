@@ -33,14 +33,15 @@ class Lexeme(object):
         assert self.pos is not None
         self.properties = []
         for field, value in zip(self.pos.query(code__isnull=False), params):
-            self.properties.append(field.get(code=value))
+            prop = field.get(code=value)
+            self.properties.append(prop)
         self.names = dict(self.get_names())
 
     def get_names(self):
         for node in self.properties:
-            if node.slug is not None:
-                key = first(node.parents(slug__isnull=False)).slug
-                val = node.slug
+            if node.name is not None:
+                key = first(node.parents(name__isnull=False)).name
+                val = node.name
                 yield key, val
 
     def check_properties(self, properties):

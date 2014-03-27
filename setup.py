@@ -11,6 +11,7 @@ setup(
     zip_safe=False,
     package_dir={'': 'src'},
     install_requires=[
+        'fn',
         'pyyaml',
         'docopt',
     ],

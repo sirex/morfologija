@@ -67,7 +67,7 @@ class Node(object):
         self.pardefs = node.get('pardefs', [])
         self.parent = parent
         self.fields = []
-        self._init_fields(node.get('fields', []))
+        self._init_fields(node.get('nodes', []))
 
     def _init_fields(self, fields):
         for node in fields:
