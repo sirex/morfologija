@@ -76,12 +76,12 @@ def main():
                 print_field(2, 'Lemma', None, lexeme.lemma)
                 print_field(3, 'Kalbos dalis', lexeme.pos.code, lexeme.pos.label)
 
+                stem = None
                 for node in lexeme.properties:
                     parent = first(node.parents(code__isnull=False))
                     print_field(parent.code, parent.label, node.code, node.label)
 
                     for pardef in lexeme.get_pardefs(node):
-                        stem = None
                         paradigm = paradigms.get(pardef)
                         for forms, symbols in paradigm.affixes('suffixes'):
                             for suffix in forms:

@@ -110,6 +110,12 @@
       - yje
       - [i, y]
 
+- key: eln/i/ai
+  extends:
+  - keys: vyr/ai
+    prefix:
+      suffixes: i
+
 - type: suffixes
   key: vėj/as
   symbols:
