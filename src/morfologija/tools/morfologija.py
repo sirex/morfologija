@@ -46,7 +46,7 @@ def main():
         grammar = yaml.load(f)
     grammar = Node(dict(nodes=grammar))
 
-    with open(data('sources.yaml'), encoding='utf=8') as f:
+    with open(data('sources.yaml'), encoding='utf-8') as f:
         sources = yaml.load(f)
     sources = Node(dict(nodes=sources))
 
