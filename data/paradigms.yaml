@@ -95,6 +95,22 @@
       - uose
 
 - type: suffixes
+  key: vėj/as
+  symbols:
+  - m
+  - sg
+  define:
+    suffixes:
+      declension:
+      - as
+      - o
+      - ui
+      - ą
+      - u
+      - [uje, yje]
+      - i
+
+- type: suffixes
   key: eln/ias
   symbols:
   - m
@@ -116,21 +132,6 @@
     prefix:
       suffixes: i
 
-- type: suffixes
-  key: vėj/as
-  symbols:
-  - m
-  - sg
-  define:
-    suffixes:
-      declension:
-      - as
-      - o
-      - ui
-      - ą
-      - u
-      - [uje, yje]
-      - i
 
 - type: suffixes
   key: brol/is

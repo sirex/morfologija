@@ -82,6 +82,7 @@ def main():
                     print_field(parent.code, parent.label, node.code, node.label)
 
                     for pardef in lexeme.get_pardefs(node):
+                        print('    [{}]'.format(pardef))
                         paradigm = paradigms.get(pardef)
                         for forms, symbols in paradigm.affixes('suffixes'):
                             for suffix in forms:
