@@ -1,19 +1,19 @@
-- code:   1
+- label:  Daiktavaris
+  code:   1
   symbol: n
-  label:  Daiktavaris
   nodes:
   - label: Daiktavardžio įpatumai
     nodes:
-    - code: 4
+    - label: Tikriniškumas
+      code: 4
       name: properness
-      label: Tikriniškumas
       nodes:
-      - code: 1
-        label: Bendrinis
-      - code: 2
+      - label: Bendrinis
+        code: 1
+      - label: Asmenvardis-vardas
+        code: 2
         name: name
         symbol: ant
-        label: Asmenvardis-vardas
       - code: 3
         label:
           Ne tikrinis, bet "iš pagarbos" ir pan. gali būti traktuojamas

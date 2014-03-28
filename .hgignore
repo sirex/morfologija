@@ -15,3 +15,4 @@ syntax: glob
 ./develop-eggs/
 ./include/
 *.egg-info/
+./tags

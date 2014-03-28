@@ -1,10 +1,3 @@
-"""
-Run tests with:
-
-    env/bin/python -m unittest tests
-
-"""
-
 import yaml
 import unittest
 

@@ -72,216 +72,245 @@
 
 - type: suffixes
   key: Jon/as
-  extends: vyr/as
-  replace:
-   suffixes:
-     declension:
-       voc: ai
+  extends:
+  - keys: vyr/as
+    replace:
+      suffixes:
+        declension:
+          voc: ai
 
 - type: suffixes
   key: vyr/ai
   symbols:
   - m
   - pl
-  suffixes:
-  - ai
-  - ų
-  - ams
-  - us
-  - ais
-  - uose
+  define:
+    suffixes:
+      declension:
+      - ai
+      - ų
+      - ams
+      - us
+      - ais
+      - uose
 
 - type: suffixes
   key: eln/ias
   symbols:
   - m
   - sg
-  suffixes:
-  - ias
-  - io
-  - iui
-  - ią
-  - iu
-  - yje
-  - i
+  define:
+    suffixes:
+      declension:
+      - ias
+      - io
+      - iui
+      - ią
+      - iu
+      - yje
+      - i
 
 - type: suffixes
   key: vėj/as
   symbols:
   - m
   - sg
-  suffixes:
-  - as
-  - o
-  - ui
-  - ą
-  - u
-  - [yje, uje]
-  - i
+  define:
+    suffixes:
+      declension:
+      - as
+      - o
+      - ui
+      - ą
+      - u
+      - [yje, uje]
+      - i
 
 - type: suffixes
   key: brol/is
   symbols:
   - m
   - sg
-  suffixes:
-  - is
-  - io
-  - iui
-  - į
-  - iu
-  - yje
-  - i
+  define:
+    suffixes:
+      declension:
+      - is
+      - io
+      - iui
+      - į
+      - iu
+      - yje
+      - i
 
 - type: suffixes
   key: brol/iai
   symbols:
   - m
   - pl
-  suffixes:
-  - iai
-  - ių
-  - iams
-  - ius
-  - iais
-  - iuose
+  define:
+    suffixes:
+      declension:
+      - iai
+      - ių
+      - iams
+      - ius
+      - iais
+      - iuose
 
 - type: declension prefixes
   key: ain/ė
   symbols:
   - f
   - sg
-  suffixes:
-  - ė
-  - ės
-  - ei
-  - ę
-  - e
-  - ėje
-  - e
+  define:
+    suffixes:
+      declension:
+      - ė
+      - ės
+      - ei
+      - ę
+      - e
+      - ėje
+      - e
 
 - type: declension prefixes
   key: ain/ės
   symbols:
   - f
   - pl
-  suffixes:
-  - ės
-  - ių
-  - ėms
-  - es
-  - ėmis
-  - ėse
-  - ės
+  define:
+    suffixes:
+      declension:
+      - ės
+      - ių
+      - ėms
+      - es
+      - ėmis
+      - ėse
+      - ės
 
 - type: declension prefixes
   key: aini/išk/as
   symbols:
   - m
   - sg
-  suffixes:
-  - as
-  - ko
-  - kam
-  - ką
-  - ku
-  - kame
-  - as
+  define:
+    suffixes:
+      declension:
+      - as
+      - ko
+      - kam
+      - ką
+      - ku
+      - kame
+      - as
 
 - type: declension prefixes
   key: aini/išk/i
   symbols:
   - m
   - pl
-  suffixes:
-  - i
-  - ų
-  - iems
-  - us
-  - ais
-  - uose
-  - i
+  define:
+    suffixes:
+      declension:
+      - i
+      - ų
+      - iems
+      - us
+      - ais
+      - uose
+      - i
 
 - type: declension prefixes
   key: aini/išk/a
   symbols:
   - f
   - sg
-  suffixes:
-  - a
-  - os
-  - ai
-  - ą
-  - a
-  - oje
-  - a
+  define:
+    suffixes:
+      declension:
+      - a
+      - os
+      - ai
+      - ą
+      - a
+      - oje
+      - a
 
 - type: declension prefixes
   key: aini/išk/os
   symbols:
   - f
   - pl
-  suffixes:
-  - os
-  - ų
-  - oms
-  - as
-  - omis
-  - ose
-  - os
+  define:
+    suffixes:
+      declension:
+      - os
+      - ų
+      - oms
+      - as
+      - omis
+      - ose
+      - os
 
 - type: diminutive
   key: nam/el/is
   extends:
-  - ain/is
-  - ain/iai
-  - ain/ė
-  - ain/ės
-  prefix:
-    suffixes: el
+  - keys:
+    - ain/is
+    - ain/iai
+    - ain/ė
+    - ain/ės
+    prefix:
+      suffixes: el
 
 - type: diminutive
   key: nam/eliuk/as
   extends:
-  - nam/as
-  - nam/ai
-  - ain/ė
-  - ain/ės
-  prefix:
-    suffixes: eliuk
+  - keys:
+    - nam/as
+    - nam/ai
+    - ain/ė
+    - ain/ės
+    prefix:
+      suffixes: eliuk
 
 - type: diminutive
   key: nam/užėl/is
   extends:
-  - ain/is
-  - ain/iai
-  - ain/ė
-  - ain/ės
-  prefix:
-    suffixes: užėl
+  - keys:
+    - ain/is
+    - ain/iai
+    - ain/ė
+    - ain/ės
+    prefix:
+      suffixes: užėl
 
 - type: derivation
   key: bank/inink/as
   extends:
-  - nam/as
-  - nam/ai
-  - ain/ė
-  - ain/ės
-  prefix:
-    suffixes: inink
+  - keys:
+    - nam/as
+    - nam/ai
+    - ain/ė
+    - ain/ės
+    prefix:
+      suffixes: inink
 
 - type: derivation
   key: auks/išk/as
   extends:
-  - nam/as
-  - nam/ai
-  - ain/ė
-  - ain/ės
-  prefix:
-    suffixes: išk
+  - keys:
+    - nam/as
+    - nam/ai
+    - ain/ė
+    - ain/ės
+    prefix:
+      suffixes: išk
 
 - type: declension
   key: ain/is
   extends:
-  - ain/is
-  - ain/iai
+  - keys:
+    - ain/is
+    - ain/iai

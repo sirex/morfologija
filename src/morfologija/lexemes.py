@@ -66,7 +66,7 @@ class Lexeme(object):
 
            pardefs:
            - - key: Jon/as
-               nodes:
+               properties:
                  properness: name
              - key: vyr/as
            - - key: eln/ias

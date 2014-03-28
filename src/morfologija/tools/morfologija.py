@@ -17,6 +17,7 @@ import textwrap
 
 from ..grammar import Node
 from ..lexemes import Lexeme
+from ..paradigms import ParadigmCollection
 from ..utils import first
 
 wrapper = textwrap.TextWrapper(subsequent_indent='       ')
@@ -49,8 +50,9 @@ def main():
         sources = yaml.load(f)
     sources = Node(dict(nodes=sources))
 
-    #with open(data('paradigms.yaml'), encoding='utf-8') as f:
-    #    paradigms = yaml.load(f)
+    with open(data('paradigms.yaml'), encoding='utf-8') as f:
+        paradigms = yaml.load(f)
+    paradigms = ParadigmCollection(paradigms)
 
     with open(data('lexemes.txt'), encoding='utf-8') as f:
         for i, line in enumerate(f, 1):
@@ -74,3 +76,21 @@ def main():
                 for node in lexeme.properties:
                     parent = first(node.parents(code__isnull=False))
                     print_field(parent.code, parent.label, node.code, node.label)
+
+                    for pardef in lexeme.get_pardefs(node):
+                        paradigm = paradigms.get(pardef)
+                        stem = None
+                        for suffix, symbols in paradigm.suffixes():
+                            if stem is None:
+                                sfx = ''.join(suffix)
+                                stem = lexeme.lexeme[:-len(sfx)]
+
+                            symbols = ', '.join(symbols)
+                            suffix = '-'.join(suffix)
+
+                            print('       {}: {}/{}'.format(
+                                symbols, stem, suffix,
+                            ))
+
+                    print()
+
