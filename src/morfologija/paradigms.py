@@ -18,14 +18,19 @@ class Paradigm(object):
             ('extends', []),
         ))
 
-    def replace(self, ext, kind, symkey, symbol, affix):
+    def normalize_forms(self, forms):
+        forms = forms if isinstance(forms, list) else [forms]
+        forms = [a if isinstance(a, list) else [a] for a in forms]
+        return forms
+
+    def replace(self, ext, kind, symkey, symbol, forms):
         repl = getnested(ext, ('replace', kind, symkey), {})
         if symbol in repl:
             if repl[symbol] is None:
                 return None
             else:
-                return [repl[symbol]]
-        return affix
+                return self.normalize_forms(repl[symbol])
+        return forms
 
     def prefix(self, ext, kind, symkey, symbol, affix):
         prefix = getnested(ext, ('prefix', kind))
@@ -41,30 +46,33 @@ class Paradigm(object):
     def definitions(self, kind, ext=None):
         ext = ext or {}
         affixes = self.define.get(kind, dict())
-        for symkey, suffixes in affixes.items():
+        for symkey, affixes in affixes.items():
             symbols = self.paradigms.get(symkey).symbols
-            for symbol, affix in zip(symbols, suffixes):
-                affix = [affix]
-                affix = self.replace(ext, kind, symkey, symbol, affix)
-                if affix is None: continue
-                affix = self.prefix(ext, kind, symkey, symbol, affix)
-                yield affix, [symbol] + self.symbols
+            for symbol, forms in zip(symbols, affixes):
+                forms = self.normalize_forms(forms)
+                forms = self.replace(ext, kind, symkey, symbol, forms)
+                if forms is None: continue
+                forms = [
+                    self.prefix(ext, kind, symkey, symbol, affix)
+                    for affix in forms
+                ]
+                yield forms, [symbol] + self.symbols
 
-    def extensions(self, ext=None):
+    def extensions(self, kind, ext=None):
         for extension in self.extends:
             keys = extension['keys']
             keys = keys if isinstance(keys, list) else [keys]
             for key in keys:
                 paradigm = self.paradigms.get(key)
-                for affix, symbols in paradigm.suffixes(extension):
-                    yield affix, symbols
+                for forms, symbols in paradigm.affixes(kind, extension):
+                    yield forms, symbols
 
-    def suffixes(self, ext=None):
-        for suffix, symbols in self.definitions('suffixes', ext):
-            yield suffix, symbols
+    def affixes(self, kind, ext=None):
+        for forms, symbols in self.definitions(kind, ext):
+            yield forms, symbols
 
-        for suffix, symbols in self.extensions(ext):
-            yield suffix, symbols
+        for forms, symbols in self.extensions(kind, ext):
+            yield forms, symbols
 
 
 

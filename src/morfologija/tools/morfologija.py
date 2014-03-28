@@ -81,19 +81,21 @@ def main():
                     print_field(parent.code, parent.label, node.code, node.label)
 
                     for pardef in lexeme.get_pardefs(node):
-                        paradigm = paradigms.get(pardef)
                         stem = None
-                        for suffix, symbols in paradigm.suffixes():
-                            if stem is None:
-                                sfx = ''.join(suffix)
-                                stem = lexeme.lexeme[:-len(sfx)]
+                        paradigm = paradigms.get(pardef)
+                        for forms, symbols in paradigm.affixes('suffixes'):
+                            for suffix in forms:
+                                if stem is None:
+                                    sfx = ''.join(suffix)
+                                    stem = lexeme.lexeme[:-len(sfx)]
 
                             symbols = ', '.join(symbols)
-                            suffix = '-'.join(suffix)
 
-                            print('    {}: {}/{}'.format(
-                                symbols, stem, suffix,
-                            ))
+                            forms = ', '.join([
+                                '%s/%s' % (stem, '/'.join(suffix))
+                                for suffix in forms
+                            ])
 
-                    print()
+                            print('    {}: {}'.format(symbols, forms))
+                        print()
 
