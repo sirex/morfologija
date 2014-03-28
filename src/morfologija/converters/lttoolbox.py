@@ -62,12 +62,12 @@ class Converter(object):
                 lexeme = Lexeme(self.mdb, line)
 
                 pardefs = []
-                for node in lexeme.fields:
+                for node in lexeme.properties:
                     pardefs.extend(lexeme.get_pardefs(node))
 
                 print(list(pardefs))
 
-                for node in lexeme.fields:
+                for node in lexeme.nodes:
                     parent = first(node.parents(code__isnull=False))
                     print('{:2}: {}'.format(parent.code, parent.label))
                     print('    {}: {}'.format(node.code, node.label[:72]))

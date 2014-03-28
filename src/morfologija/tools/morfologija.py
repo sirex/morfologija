@@ -13,9 +13,27 @@ Options:
 import yaml
 import docopt
 import os.path
+import textwrap
 
 from ..grammar import Node
 from ..lexemes import Lexeme
+from ..utils import first
+
+wrapper = textwrap.TextWrapper(subsequent_indent='       ')
+
+
+def print_field(field_code, field_label, value_code, value_label):
+    if value_label:
+        value_label = '\n'.join(wrapper.wrap(value_label))
+
+    print('{:2}: {}'.format(field_code, field_label))
+
+    if value_code is None:
+        print('    {}'.format(value_code, value_label))
+    else:
+        print('    {}: {}'.format(value_code, value_label))
+
+    print()
 
 
 def main():
@@ -27,11 +45,32 @@ def main():
         grammar = yaml.load(f)
     grammar = Node(dict(nodes=grammar))
 
+    with open(data('sources.yaml'), encoding='utf=8') as f:
+        sources = yaml.load(f)
+    sources = Node(dict(nodes=sources))
+
     #with open(data('paradigms.yaml'), encoding='utf-8') as f:
     #    paradigms = yaml.load(f)
 
     with open(data('lexemes.txt'), encoding='utf-8') as f:
-        for line in f:
-            lexeme = Lexeme(grammar, line)
-            if args['<lexeme>'] == lexeme.lexeme:
-                print(line)
+        for i, line in enumerate(f, 1):
+            if line.startswith(args['<lexeme>'] + ' ') or line.startswith(args['<lexeme>'] + '('):
+                try:
+                    lexeme = Lexeme(grammar, sources, line)
+                except:
+                    print('Error in line: {}'.format(line.strip()))
+                    print('      in {}:{}'.format(data('lexemes.txt'), i))
+                    raise
+
+                print('Leksema: {}'.format(lexeme.lexeme))
+                print('Vieta: {}:{}'.format(data('lexemes.txt'), i))
+                print('Eilutė: {}'.format(line))
+                print()
+
+                print_field(1, 'Lemma', None, lexeme.lemma)
+                print_field(2, 'Šaltinis', lexeme.source.code, lexeme.source.label)
+                print_field(3, 'Kalbos dalis', lexeme.pos.code, lexeme.pos.label)
+
+                for node in lexeme.properties:
+                    parent = first(node.parents(code__isnull=False))
+                    print_field(parent.code, parent.label, node.code, node.label)

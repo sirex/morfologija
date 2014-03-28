@@ -1,3 +1,25 @@
+class Query(object):
+    def __init__(self, nodes, kwargs, recurse=True):
+        self.nodes = nodes
+        self.kwargs = kwargs
+        self.recurse = recurse
+
+    def __iter__(self):
+        for node in self.nodes:
+            if node.match(**self.kwargs):
+                yield node
+            elif self.recurse:
+                for child in node.query(**self.kwargs):
+                    yield child
+
+    def query(self, **kwargs):
+        return Query(self, kwargs, recurse=False)
+
+    def get(self, **kwargs):
+        for node in self.query(**kwargs):
+            return node
+
+
 class Node(object):
     """Grammar specification node.
 
@@ -66,12 +88,12 @@ class Node(object):
         self.paradigm = node.get('paradigm')
         self.pardefs = node.get('pardefs', [])
         self.parent = parent
-        self.fields = []
-        self._init_fields(node.get('nodes', []))
+        self.nodes = []
+        self._init_nodes(node.get('nodes', []))
 
-    def _init_fields(self, fields):
-        for node in fields:
-            self.fields.append(Node(node, self))
+    def _init_nodes(self, nodes):
+        for node in nodes:
+            self.nodes.append(Node(node, self))
 
     def match(self, **kwargs):
         for k, v in kwargs.items():
@@ -85,12 +107,7 @@ class Node(object):
         return True
 
     def query(self, **kwargs):
-        for node in self.fields:
-            if node.match(**kwargs):
-                yield node
-            else:
-                for child in node.query(**kwargs):
-                    yield child
+        return Query(self.nodes, kwargs)
 
     def parents(self, **kwargs):
         parent = self.parent

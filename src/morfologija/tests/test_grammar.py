@@ -14,8 +14,10 @@ grammar = """\
 - code: 1
   symbol: a
   nodes:
-  - code: 10
-    symbol: a.a
+  - code: 1
+    symbol: aa
+  - code: 2
+    symbol: ab
 - label: Category
   nodes:
   - label: Subcategory
@@ -23,16 +25,21 @@ grammar = """\
     - code: 2
       symbol: b
       nodes:
-      - code: 20
-        symbol: b.a
+      - code: 1
+        symbol: ba
 """
 
 
 class NodeTests(unittest.TestCase):
-    def test_(self):
+    def setUp(self):
         data = yaml.load(grammar)
-        node = Node(dict(nodes=data))
+        self.grammar = Node(dict(nodes=data))
 
-        nodes = node.query(code__isnull=False)
-        codes = list([n.code for n in nodes])
-        self.assertEqual(codes, [1, 2])
+    def test_query(self):
+        nodes = self.grammar.query(code__isnull=False)
+        symbols = list([n.symbol for n in nodes])
+        self.assertEqual(symbols, ['a', 'b'])
+
+    def test_chained_query(self):
+        symbol = self.grammar.query(code__isnull=False).get(code=2).symbol
+        self.assertEqual(symbol, 'b')

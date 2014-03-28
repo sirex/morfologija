@@ -1777,6 +1777,7 @@
   label: Įvardis
   nodes:
   - code: 4
+    label: Įvardžio grupė
     nodes:
     - code: 1
       label: >
@@ -3371,7 +3372,7 @@
   label: Jungtukas
   nodes:
   - code: 4
-  - label: Darybos charakteristika
+    label: Darybos charakteristika
     nodes:
     - code: 0
       label: >

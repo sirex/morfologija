@@ -24,16 +24,23 @@ class Lexeme(object):
 
     """
 
-    def __init__(self, grammar, line):
+    def __init__(self, grammar, sources, line):
         fields = line.split()
         params = list(map(int, fields[4:]))
-        self.lexeme, self.source, lemma, pos = fields[:4]
+        self.lexeme, source, lemma, pos = fields[:4]
+        self.source = sources.get(code=int(source))
         self.lemma = None if lemma == '-' else lemma
-        self.pos = grammar.get(code=int(pos))
+        self.pos = grammar.query(code__isnull=False).get(code=int(pos))
         assert self.pos is not None
         self.properties = []
         for field, value in zip(self.pos.query(code__isnull=False), params):
-            prop = field.get(code=value)
+            prop = field.query(code__isnull=False).get(code=value)
+            if prop is None:
+                raise Exception(
+                    'Unknown value {val} for field {fld} ({label}) in {line}.'.
+                    format(val=value, fld=field.code, line=line,
+                           label=field.label)
+                )
             self.properties.append(prop)
         self.names = dict(self.get_names())
 
