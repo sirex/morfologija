@@ -54,6 +54,9 @@
   - loc
   - voc
 
+
+# 1 paradigma
+
 - type: suffixes
   key: vyr/as
   symbols:
@@ -68,7 +71,7 @@
       - ą
       - u
       - e
-      - e
+      - [e, ai]
 
 - type: suffixes
   key: Jon/as
@@ -93,6 +96,9 @@
       - us
       - ais
       - uose
+
+
+# 2 paradigma
 
 - type: suffixes
   key: vėj/as
@@ -133,6 +139,8 @@
       suffixes: i
 
 
+# 3 paradigma
+
 - type: suffixes
   key: brol/is
   symbols:
@@ -149,20 +157,89 @@
       - yje
       - i
 
-- type: suffixes
-  key: brol/iai
+- key: arkl/ys
+  extends:
+  - keys: brol/is
+    replace:
+      suffixes:
+        declension:
+          nom: ys
+          voc: y
+
+
+# 4 paradigma
+
+- key: turg/us
+  symbols:
+  - m
+  - sg
+  define:
+    suffixes:
+      declension:
+      - us
+      - aus
+      - ui
+      - ų
+      - umi
+      - uje
+      - au
+
+- key: turg/ūs
   symbols:
   - m
   - pl
   define:
     suffixes:
       declension:
-      - iai
-      - ių
-      - iams
-      - ius
-      - iais
-      - iuose
+      - ūs
+      - ų
+      - ums
+      - us
+      - umis
+      - uose
+
+
+# 5 paradigma
+
+- key: koridor/i/ai
+  extends:
+  - keys: turg/us
+    prefix:
+      suffixes: i
+
+
+# 6 paradigma
+
+- key: jūr/a
+  symbols:
+  - f
+  - sg
+  define:
+    suffixes:
+      declension:
+      - a
+      - os
+      - ai
+      - ą
+      - a
+      - oje
+      - a
+
+- key: jūr/os
+  symbols:
+  - f
+  - pl
+  define:
+    suffixes:
+      declension:
+      - os
+      - ų
+      - oms
+      - as
+      - omis
+      - ose
+
+
 
 - type: declension prefixes
   key: ain/ė

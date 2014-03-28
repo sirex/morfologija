@@ -174,19 +174,35 @@
         declension: (i)a
         paradigm: 3
         pardefs:
-        - brol/is
-        - brol/iai
+        - - key: arkl/ys
+            endswith: ys
+          - key: brol/is
+        - eln/i/ai
       - code: 4
         label: (i)u linksniuotė, paradigma nr. 4 (žiūr DLKG97 psl.72)
         declension: (i)u
         paradigm: 4
         pardefs:
+        - turg/us
+        - turg/ūs
       - code: 5
         label: (i)u linksniuotė, paradigma nr. 5 (žiūr DLKG97 psl.73)
-        paradigms: []
+        declension: (i)u
+        paradigm: 5
+        pardefs:
+        - - key: turg/us
+            endswith: jus
+          - key: koridor/i/ai
+        - - key: vyr/ai
+            endswith: jus
+          - key: eln/i/ai
       - code: 6
         label: (i)o linksniuotė, paradigma nr. 6 (žiūr DLKG97 psl.74)
-        paradigms: []
+        declension: (i)o
+        paradigm: 5
+        pardefs:
+        - jūr/a
+        - jūr/os
       - code: 7
         label: (i)o linksniuotė, paradigma nr. 7 (žiūr DLKG97 psl.74)
         paradigms: []
