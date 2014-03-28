@@ -66,11 +66,14 @@ def main():
 
                 print('Leksema: {}'.format(lexeme.lexeme))
                 print('Vieta: {}:{}'.format(data('lexemes.txt'), i))
-                print('Eilutė: {}'.format(line))
+                print('Eilutė: {}'.format(line.strip()))
+                print('Parametrai: {}'.format(', '.join([
+                    '{}={}'.format(k, v) for k, v in lexeme.names.items()
+                ])))
                 print()
 
-                print_field(1, 'Lemma', None, lexeme.lemma)
-                print_field(2, 'Šaltinis', lexeme.source.code, lexeme.source.label)
+                print_field(1, 'Šaltinis', lexeme.source.code, lexeme.source.label)
+                print_field(2, 'Lemma', None, lexeme.lemma)
                 print_field(3, 'Kalbos dalis', lexeme.pos.code, lexeme.pos.label)
 
                 for node in lexeme.properties:
@@ -88,7 +91,7 @@ def main():
                             symbols = ', '.join(symbols)
                             suffix = '-'.join(suffix)
 
-                            print('       {}: {}/{}'.format(
+                            print('    {}: {}/{}'.format(
                                 symbols, stem, suffix,
                             ))
 

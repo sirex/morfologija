@@ -146,7 +146,7 @@
         paradigm: 1
         pardefs:
         - - key: Jon/as
-            fields:
+            properties:
               properness: name
           - key: vyr/as
         - vyr/ai
