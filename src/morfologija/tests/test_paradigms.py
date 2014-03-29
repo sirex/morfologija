@@ -6,7 +6,7 @@ from ..paradigms import ParadigmCollection
 RES = dict(
     paradigms = """\
 - type: symbols
-  key: declension
+  key: case
   label: Linksniai
   symbols:
   - nom
@@ -20,11 +20,11 @@ RES = dict(
 - type: suffixes
   key: vyr/as
   symbols:
-  - m
-  - sg
+   gender: m
+   number: sg
   define:
     suffixes:
-      declension:
+      case:
       - as
       - o
       - ui
@@ -39,16 +39,16 @@ RES = dict(
   - keys: vyr/as
     replace:
       suffixes:
-        declension:
+        case:
           voc: ai
 
 - key: brol/is
   symbols:
-  - m
-  - sg
+    gender: m
+    number: sg
   define:
     suffixes:
-      declension:
+      case:
       - is
       - io
       - iui
@@ -66,11 +66,11 @@ RES = dict(
 
 - key: vėj/as
   symbols:
-  - m
-  - sg
+    gender: m
+    number: sg
   define:
     suffixes:
-      declension:
+      case:
       - as
       - o
       - ui
@@ -92,52 +92,51 @@ class NodeTests(unittest.TestCase):
         paradigm = self.paradigms.get('vyr/as')
         suffixes = list(paradigm.affixes('suffixes'))
         self.assertEqual(suffixes, [
-            ([['as']], ['nom', 'm', 'sg']),
-            ([['o' ]], ['gen', 'm', 'sg']),
-            ([['ui']], ['dat', 'm', 'sg']),
-            ([['ą' ]], ['acc', 'm', 'sg']),
-            ([['u' ]], ['ins', 'm', 'sg']),
-            ([['e' ]], ['loc', 'm', 'sg']),
-            ([['e' ]], ['voc', 'm', 'sg']),
+            ([['as']], {'case': 'nom', 'gender': 'm', 'number': 'sg'}),
+            ([['o' ]], {'case': 'gen', 'gender': 'm', 'number': 'sg'}),
+            ([['ui']], {'case': 'dat', 'gender': 'm', 'number': 'sg'}),
+            ([['ą' ]], {'case': 'acc', 'gender': 'm', 'number': 'sg'}),
+            ([['u' ]], {'case': 'ins', 'gender': 'm', 'number': 'sg'}),
+            ([['e' ]], {'case': 'loc', 'gender': 'm', 'number': 'sg'}),
+            ([['e' ]], {'case': 'voc', 'gender': 'm', 'number': 'sg'}),
         ])
 
     def test_replace(self):
         paradigm = self.paradigms.get('Jon/as')
         suffixes = list(paradigm.affixes('suffixes'))
         self.assertEqual(suffixes, [
-            ([['as']], ['nom', 'm', 'sg']),
-            ([['o' ]], ['gen', 'm', 'sg']),
-            ([['ui']], ['dat', 'm', 'sg']),
-            ([['ą' ]], ['acc', 'm', 'sg']),
-            ([['u' ]], ['ins', 'm', 'sg']),
-            ([['e' ]], ['loc', 'm', 'sg']),
-            ([['ai']], ['voc', 'm', 'sg']),
+            ([['as']], {'case': 'nom', 'gender': 'm', 'number': 'sg'}),
+            ([['o' ]], {'case': 'gen', 'gender': 'm', 'number': 'sg'}),
+            ([['ui']], {'case': 'dat', 'gender': 'm', 'number': 'sg'}),
+            ([['ą' ]], {'case': 'acc', 'gender': 'm', 'number': 'sg'}),
+            ([['u' ]], {'case': 'ins', 'gender': 'm', 'number': 'sg'}),
+            ([['e' ]], {'case': 'loc', 'gender': 'm', 'number': 'sg'}),
+            ([['ai']], {'case': 'voc', 'gender': 'm', 'number': 'sg'}),
         ])
 
     def test_prefix(self):
         paradigm = self.paradigms.get('brol/el/is')
         suffixes = list(paradigm.affixes('suffixes'))
         self.assertEqual(suffixes, [
-            ([['el', 'is' ]], ['nom', 'm', 'sg']),
-            ([['el', 'io' ]], ['gen', 'm', 'sg']),
-            ([['el', 'iui']], ['dat', 'm', 'sg']),
-            ([['el', 'į'  ]], ['acc', 'm', 'sg']),
-            ([['el', 'iu' ]], ['ins', 'm', 'sg']),
-            ([['el', 'yje']], ['loc', 'm', 'sg']),
-            ([['el', 'i'  ]], ['voc', 'm', 'sg']),
+            ([['el', 'is' ]], {'case': 'nom', 'gender': 'm', 'number': 'sg'}),
+            ([['el', 'io' ]], {'case': 'gen', 'gender': 'm', 'number': 'sg'}),
+            ([['el', 'iui']], {'case': 'dat', 'gender': 'm', 'number': 'sg'}),
+            ([['el', 'į'  ]], {'case': 'acc', 'gender': 'm', 'number': 'sg'}),
+            ([['el', 'iu' ]], {'case': 'ins', 'gender': 'm', 'number': 'sg'}),
+            ([['el', 'yje']], {'case': 'loc', 'gender': 'm', 'number': 'sg'}),
+            ([['el', 'i'  ]], {'case': 'voc', 'gender': 'm', 'number': 'sg'}),
         ])
-
 
     def test_multiple_forms(self):
         paradigm = self.paradigms.get('vėj/as')
         suffixes = list(paradigm.affixes('suffixes'))
         self.assertEqual(suffixes, [
-            ([['as' ]], ['nom', 'm', 'sg']),
-            ([['o'  ]], ['gen', 'm', 'sg']),
-            ([['ui' ]], ['dat', 'm', 'sg']),
-            ([['ą'  ]], ['acc', 'm', 'sg']),
-            ([['u'  ]], ['ins', 'm', 'sg']),
+            ([['as' ]], {'case': 'nom', 'gender': 'm', 'number': 'sg'}),
+            ([['o'  ]], {'case': 'gen', 'gender': 'm', 'number': 'sg'}),
+            ([['ui' ]], {'case': 'dat', 'gender': 'm', 'number': 'sg'}),
+            ([['ą'  ]], {'case': 'acc', 'gender': 'm', 'number': 'sg'}),
+            ([['u'  ]], {'case': 'ins', 'gender': 'm', 'number': 'sg'}),
             ([['uje'],
-              ['yje']], ['loc', 'm', 'sg']),
-            ([['i'  ]], ['voc', 'm', 'sg']),
+              ['yje']], {'case': 'loc', 'gender': 'm', 'number': 'sg'}),
+            ([['i'  ]], {'case': 'voc', 'gender': 'm', 'number': 'sg'}),
         ])

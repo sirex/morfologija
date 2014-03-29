@@ -43,12 +43,20 @@ class Lexeme(object):
                 )
             self.properties.append(prop)
         self.names = dict(self.get_names())
+        self.symbols = dict(self.get_symbols())
 
     def get_names(self):
         for node in self.properties:
             if node.name is not None:
                 key = first(node.parents(name__isnull=False)).name
                 val = node.name
+                yield key, val
+
+    def get_symbols(self):
+        for node in self.properties:
+            if node.symbol is not None:
+                key = first(node.parents(name__isnull=False)).name
+                val = node.symbol
                 yield key, val
 
     def check_properties(self, properties):

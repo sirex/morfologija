@@ -16,6 +16,8 @@ class Paradigm(object):
             ('label', ''),
             ('define', dict()),
             ('extends', []),
+            ('kind', None),
+            ('name', None),
         ))
 
     def normalize_forms(self, forms):
@@ -56,7 +58,7 @@ class Paradigm(object):
                     self.prefix(ext, kind, symkey, symbol, affix)
                     for affix in forms
                 ]
-                yield forms, [symbol] + self.symbols
+                yield forms, dict(self.symbols, **{symkey: symbol})
 
     def extensions(self, kind, ext=None):
         for extension in self.extends:

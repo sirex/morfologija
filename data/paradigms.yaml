@@ -27,12 +27,28 @@
   label: Šauksmininkas
 
 - type: symbol
+  kind: gender
   key: m
+  name: masculine
   label: Vyriška giminė
 
 - type: symbol
+  kind: gender
   key: f
+  name: feminine
   label: Moteriška giminė
+
+- type: symbol
+  kind: gender
+  key: nt
+  name: neuter
+  label: Neutrali giminė
+
+- type: symbol
+  kind: gender
+  key: nt
+  name: neuter
+  label: Neutrali giminė
 
 - type: symbol
   key: sg
@@ -43,7 +59,7 @@
   label: Daugiskaita
 
 - type: symbols
-  key: declension
+  key: case
   label: Linksniai
   symbols:
   - nom
@@ -60,11 +76,11 @@
 - type: suffixes
   key: vyr/as
   symbols:
-  - m
-  - sg
+    gender: m
+    number: sg
   define:
     suffixes:
-      declension:
+      case:
       - as
       - o
       - ui
@@ -79,17 +95,17 @@
   - keys: vyr/as
     replace:
       suffixes:
-        declension:
+        case:
           voc: ai
 
 - type: suffixes
   key: vyr/ai
   symbols:
-  - m
-  - pl
+    gender: m
+    number: pl
   define:
     suffixes:
-      declension:
+      case:
       - ai
       - ų
       - ams
@@ -103,11 +119,11 @@
 - type: suffixes
   key: vėj/as
   symbols:
-  - m
-  - sg
+    gender: m
+    number: sg
   define:
     suffixes:
-      declension:
+      case:
       - as
       - o
       - ui
@@ -119,11 +135,11 @@
 - type: suffixes
   key: eln/ias
   symbols:
-  - m
-  - sg
+    gender: m
+    number: sg
   define:
     suffixes:
-      declension:
+      case:
       - ias
       - io
       - iui
@@ -144,11 +160,11 @@
 - type: suffixes
   key: brol/is
   symbols:
-  - m
-  - sg
+    gender: m
+    number: sg
   define:
     suffixes:
-      declension:
+      case:
       - is
       - io
       - iui
@@ -162,7 +178,7 @@
   - keys: brol/is
     replace:
       suffixes:
-        declension:
+        case:
           nom: ys
           voc: y
 
@@ -171,11 +187,11 @@
 
 - key: turg/us
   symbols:
-  - m
-  - sg
+    gender: m
+    number: sg
   define:
     suffixes:
-      declension:
+      case:
       - us
       - aus
       - ui
@@ -186,11 +202,11 @@
 
 - key: turg/ūs
   symbols:
-  - m
-  - pl
+    gender: m
+    number: pl
   define:
     suffixes:
-      declension:
+      case:
       - ūs
       - ų
       - ums
@@ -212,11 +228,11 @@
 
 - key: jūr/a
   symbols:
-  - f
-  - sg
+    gender: f
+    number: sg
   define:
     suffixes:
-      declension:
+      case:
       - a
       - os
       - ai
@@ -227,11 +243,11 @@
 
 - key: jūr/os
   symbols:
-  - f
-  - pl
+    gender: f
+    number: pl
   define:
     suffixes:
-      declension:
+      case:
       - os
       - ų
       - oms
@@ -240,15 +256,40 @@
       - ose
 
 
-
-- type: declension prefixes
-  key: ain/ė
+- key: mar/ti
   symbols:
-  - f
-  - sg
+    gender: f
+    number: sg
   define:
     suffixes:
-      declension:
+      case:
+      - ti
+      - čios
+      - čiai
+      - čią
+      - čia
+      - čioje
+      - [čia, ti]
+
+- key: mar/či/os
+  symbols:
+    gender: f
+    number: pl
+  extends:
+  - keys: jūr/os
+    prefix:
+      suffixes: či
+
+
+# 8 paradigma
+
+- key: gerv/ė
+  symbols:
+    gender: f
+    number: sg
+  define:
+    suffixes:
+      case:
       - ė
       - ės
       - ei
@@ -257,30 +298,65 @@
       - ėje
       - e
 
-- type: declension prefixes
-  key: ain/ės
+- key: gerv/ės
   symbols:
-  - f
-  - pl
+    gender: f
+    number: pl
   define:
     suffixes:
-      declension:
+      case:
       - ės
       - ių
       - ėms
       - es
       - ėmis
       - ėse
-      - ės
+
+
+- key: dėd/ės
+  symbols:
+    gender: f
+    number: pl
+  extends:
+  - keys: gerv/ės
+    replace:
+      suffixes:
+        case:
+          gen: žių
+
+- key: bi/tė
+  symbols:
+    gender: f
+    number: sg
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: t
+
+- key: bi/tės
+  symbols:
+    gender: f
+    number: pl
+  define:
+    suffixes:
+      case:
+      - tės
+      - čių
+      - tėms
+      - tes
+      - tėmis
+      - tėse
+
+
 
 - type: declension prefixes
   key: aini/išk/as
   symbols:
-  - m
-  - sg
+    gender: m
+    number: sg
   define:
     suffixes:
-      declension:
+      case:
       - as
       - ko
       - kam
@@ -292,11 +368,11 @@
 - type: declension prefixes
   key: aini/išk/i
   symbols:
-  - m
-  - pl
+    gender: m
+    number: pl
   define:
     suffixes:
-      declension:
+      case:
       - i
       - ų
       - iems
@@ -308,11 +384,11 @@
 - type: declension prefixes
   key: aini/išk/a
   symbols:
-  - f
-  - sg
+    gender: f
+    number: sg
   define:
     suffixes:
-      declension:
+      case:
       - a
       - os
       - ai
@@ -324,11 +400,11 @@
 - type: declension prefixes
   key: aini/išk/os
   symbols:
-  - f
-  - pl
+    gender: f
+    number: pl
   define:
     suffixes:
-      declension:
+      case:
       - os
       - ų
       - oms

@@ -67,8 +67,9 @@ def main():
                 print('Leksema: {}'.format(lexeme.lexeme))
                 print('Vieta: {}:{}'.format(data('lexemes.txt'), i))
                 print('Eilutė: {}'.format(line.strip()))
-                print('Parametrai: {}'.format(', '.join([
-                    '{}={}'.format(k, v) for k, v in lexeme.names.items()
+                print('Parametrai:\n{}'.format('\n'.join([
+                    '    {}: {}'.format(k, v)
+                    for k, v in dict(lexeme.symbols, **lexeme.names).items()
                 ])))
                 print()
 
@@ -85,12 +86,16 @@ def main():
                         print('    [{}]'.format(pardef))
                         paradigm = paradigms.get(pardef)
                         for forms, symbols in paradigm.affixes('suffixes'):
+                            symbols = dict(symbols, **lexeme.symbols)
                             for suffix in forms:
                                 if stem is None:
                                     sfx = ''.join(suffix)
                                     stem = lexeme.lexeme[:-len(sfx)]
 
-                            symbols = ', '.join(symbols)
+                            symbols = ', '.join([
+                                symbols[key]
+                                for key in ('number', 'gender', 'case')
+                            ])
 
                             forms = ', '.join([
                                 '%s/%s' % (stem, '/'.join(suffix))
