@@ -73,8 +73,7 @@
 
 # 1 paradigma
 
-- type: suffixes
-  key: vyr/as
+- key: vyr/as
   symbols:
     gender: m
     number: sg
@@ -89,8 +88,7 @@
       - e
       - [e, ai]
 
-- type: suffixes
-  key: Jon/as
+- key: Jon/as
   extends:
   - keys: vyr/as
     replace:
@@ -132,8 +130,7 @@
       - [uje, yje]
       - i
 
-- type: suffixes
-  key: eln/ias
+- key: eln/ias
   symbols:
     gender: m
     number: sg
@@ -240,6 +237,8 @@
       - a
       - oje
       - a
+    optional-prefixes:
+      suffixes: i
 
 - key: jūr/os
   symbols:
@@ -254,31 +253,25 @@
       - as
       - omis
       - ose
+    optional-prefixes:
+      suffixes: i
 
 
-- key: mar/ti
-  symbols:
-    gender: f
-    number: sg
-  define:
-    suffixes:
-      case:
-      - ti
-      - čios
-      - čiai
-      - čią
-      - čia
-      - čioje
-      - [čia, ti]
+- key: mart/i
+  extends:
+  - keys: jūr/a
+    prefix:
+      suffixes: i
+    replace:
+      suffixes:
+        case:
+          nom: ''
 
-- key: mar/či/os
-  symbols:
-    gender: f
-    number: pl
+- key: marč/i/os
   extends:
   - keys: jūr/os
     prefix:
-      suffixes: či
+      suffixes: i
 
 
 # 8 paradigma
@@ -347,6 +340,81 @@
       - tėmis
       - tėse
 
+
+# 9 paradigma
+
+- key: krosn/is
+  symbols:
+    gender: f
+    number: sg
+  define:
+    suffixes:
+      case:
+      - is
+      - ies
+      - iai
+      - į
+      - imi
+      - yje
+      - ie
+
+- key: krosn/ys
+  symbols:
+    gender: f
+    number: pl
+  define:
+    suffixes:
+      case:
+      - ys
+      - ių
+      - ims
+      - is
+      - imis
+      - yse
+
+
+- key: šird/is
+  extends:
+  - keys: krosn/is
+    replace:
+      suffixes:
+        case:
+          dat: žiai
+
+- key: šird/ys
+  extends:
+  - keys: krosn/ys
+    replace:
+      suffixes:
+        case:
+          gen: žių
+
+- key: žuv/ys
+  extends:
+  - keys: krosn/ys
+    replace:
+      suffixes:
+        case:
+          gen: ų
+
+
+# 10 paradigma
+
+- key: žvėr/is
+  extends:
+  - keys: krosn/is
+    replace:
+      suffixes:
+        case:
+          dat: iui
+
+- key: žvėr/is
+  extends:
+  - keys: krosn/is
+    replace:
+      suffixes:
+        case:
+          dat: iui
 
 
 - type: declension prefixes

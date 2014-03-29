@@ -87,6 +87,7 @@ class Node(object):
         self.declension = node.get('declension')
         self.paradigm = node.get('paradigm')
         self.pardefs = node.get('pardefs', [])
+        self.lemma = node.get('lemma', False)
         self.parent = parent
         self.nodes = []
         self._init_nodes(node.get('nodes', []))

@@ -79,6 +79,23 @@ RES = dict(
       - [uje, yje]
       - i
 
+- key: jūr/a
+  symbols:
+    gender: f
+    number: sg
+  define:
+    suffixes:
+      case:
+      - a
+      - os
+      - ai
+      - ą
+      - a
+      - oje
+      - a
+    optional-prefixes:
+      suffixes: i
+
 """,
 )
 
@@ -99,6 +116,14 @@ class NodeTests(unittest.TestCase):
             ([['u' ]], {'case': 'ins', 'gender': 'm', 'number': 'sg'}),
             ([['e' ]], {'case': 'loc', 'gender': 'm', 'number': 'sg'}),
             ([['e' ]], {'case': 'voc', 'gender': 'm', 'number': 'sg'}),
+        ])
+
+    def test_define_prefix(self):
+        paradigm = self.paradigms.get('jūr/a')
+        suffixes = list(paradigm.affixes('suffixes'))
+        suffixes = [sfx[0][0] for sfx, symbols in suffixes]
+        self.assertEqual(suffixes, [
+            'a', 'os', 'ai', 'ą', 'a', 'oje', 'a',
         ])
 
     def test_replace(self):

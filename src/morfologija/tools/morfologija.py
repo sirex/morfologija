@@ -19,6 +19,7 @@ from ..grammar import Node
 from ..lexemes import Lexeme
 from ..paradigms import ParadigmCollection
 from ..utils import first
+from ..soundchanges import affrication
 
 wrapper = textwrap.TextWrapper(subsequent_indent='       ')
 
@@ -58,7 +59,7 @@ def main():
         for i, line in enumerate(f, 1):
             if line.startswith(args['<lexeme>'] + ' ') or line.startswith(args['<lexeme>'] + '('):
                 try:
-                    lexeme = Lexeme(grammar, sources, line)
+                    lexeme = Lexeme(grammar, paradigms, sources, line)
                 except:
                     print('Error in line: {}'.format(line.strip()))
                     print('      in {}:{}'.format(data('lexemes.txt'), i))
@@ -77,7 +78,6 @@ def main():
                 print_field(2, 'Lemma', None, lexeme.lemma)
                 print_field(3, 'Kalbos dalis', lexeme.pos.code, lexeme.pos.label)
 
-                stem = None
                 for node in lexeme.properties:
                     parent = first(node.parents(code__isnull=False))
                     print_field(parent.code, parent.label, node.code, node.label)
@@ -85,23 +85,17 @@ def main():
                     for pardef in lexeme.get_pardefs(node):
                         print('    [{}]'.format(pardef))
                         paradigm = paradigms.get(pardef)
-                        for forms, symbols in paradigm.affixes('suffixes'):
-                            symbols = dict(symbols, **lexeme.symbols)
-                            for suffix in forms:
-                                if stem is None:
-                                    sfx = ''.join(suffix)
-                                    stem = lexeme.lexeme[:-len(sfx)]
-
+                        for forms, symbols in lexeme.affixes(paradigm, 'suffixes'):
                             symbols = ', '.join([
                                 symbols[key]
                                 for key in ('number', 'gender', 'case')
                             ])
 
-                            forms = ', '.join([
-                                '%s/%s' % (stem, '/'.join(suffix))
-                                for suffix in forms
+                            word = ', '.join([
+                                '%s/%s' % (_stem, '/'.join(suffix))
+                                for _stem, suffix in forms
                             ])
 
-                            print('    {}: {}'.format(symbols, forms))
+                            print('    {}: {}'.format(symbols, word))
                         print()
 

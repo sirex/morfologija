@@ -41,6 +41,83 @@ RES = dict(
       suffixes:
         case:
           gen: žių
+
+- key: jūr/a
+  symbols:
+    gender: f
+    number: sg
+  define:
+    suffixes:
+      case:
+      - a
+      - os
+      - ai
+      - ą
+      - a
+      - oje
+      - a
+
+- key: mart/i
+  extends:
+  - keys: jūr/a
+    replace:
+      suffixes:
+        case:
+          nom: i
+
+- key: vėj/as
+  symbols:
+    gender: m
+    number: sg
+  define:
+    suffixes:
+      case:
+      - as
+      - o
+      - ui
+      - ą
+      - u
+      - [uje, yje]
+      - i
+
+- key: eln/ias
+  symbols:
+    gender: m
+    number: sg
+  define:
+    suffixes:
+      case:
+      - ias
+      - io
+      - iui
+      - ią
+      - iu
+      - yje
+      - [i, y]
+
+- key: vyr/as
+  symbols:
+    gender: m
+    number: sg
+  define:
+    suffixes:
+      case:
+      - as
+      - o
+      - ui
+      - ą
+      - u
+      - e
+      - [e, ai]
+
+- key: Jon/as
+  extends:
+  - keys: vyr/as
+    replace:
+      suffixes:
+        case:
+          voc: ai
+
 """,
 
     grammar = """\
@@ -49,6 +126,7 @@ nodes:
   nodes:
   - code: 4
     name: declension
+    lemma: true
     nodes:
     - code: 1
       pardefs:
@@ -66,6 +144,11 @@ nodes:
     - code: 3
       pardefs:
       - dėd/ės
+    - code: 4
+      pardefs:
+      - - key: mart/i
+          endswith: i
+        - key: jūr/a
   - code: 5
     name: properness
     nodes:
@@ -96,7 +179,7 @@ class NodeTests(unittest.TestCase):
             word=word, declension=declension, properness=properness,
             gender=gender,
         )
-        lexeme = Lexeme(self.grammar, self.source, line)
+        lexeme = Lexeme(self.grammar, self.paradigms, self.source, line)
         return lexeme
 
     def pardefs(self, *args):

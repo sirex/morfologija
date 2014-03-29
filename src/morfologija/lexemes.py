@@ -1,4 +1,5 @@
 from .utils import first
+from .soundchanges import affrication
 
 
 class Lexeme(object):
@@ -24,10 +25,11 @@ class Lexeme(object):
 
     """
 
-    def __init__(self, grammar, sources, line):
+    def __init__(self, grammar, paradigms, sources, line):
         fields = line.split()
         params = list(map(int, fields[4:]))
         self.lexeme, source, lemma, pos = fields[:4]
+        self.paradigms = paradigms
         self.source = sources.get(code=int(source))
         self.lemma = None if lemma == '-' else lemma
         self.pos = grammar.query(code__isnull=False).get(code=int(pos))
@@ -44,6 +46,7 @@ class Lexeme(object):
             self.properties.append(prop)
         self.names = dict(self.get_names())
         self.symbols = dict(self.get_symbols())
+        self.stem = self.get_stem()
 
     def get_names(self):
         for node in self.properties:
@@ -114,3 +117,28 @@ class Lexeme(object):
                     break
             else:
                 yield pardef
+
+    def prepare_forms(self, forms):
+        for suffix in forms:
+            stem = affrication(self.stem, ''.join(suffix))
+            yield stem, suffix
+
+    def affixes(self, paradigm, kind):
+        for forms, symbols in paradigm.affixes(kind):
+            symbols = dict(symbols, **self.symbols)
+            forms = self.prepare_forms(forms)
+            yield forms, symbols
+
+    def get_stem(self):
+        for node in self.properties:
+            parent = first(node.parents(code__isnull=False))
+            if not parent.lemma: continue
+
+            for pardef in self.get_pardefs(node):
+                paradigm = self.paradigms.get(pardef)
+                for forms, symbols in paradigm.affixes('suffixes'):
+                    suffix = ''.join(forms[0])
+                    stem = self.lexeme[:-len(suffix)]
+                    return stem
+
+        raise Exception('Can not find lemma for %s.' % self.pos.label)

@@ -131,6 +131,7 @@
   - label: Kaitybos charakteristika
     nodes:
     - code: 7
+      lemma: true
       label: Linksniavimo charakteristika
       nodes:
       - code: 0
@@ -208,12 +209,12 @@
         declension: (i)o
         paradigm: 7
         pardefs:
-        - - key: mar/ti
-            endswith: ti
+        - - key: mart/i
+            endswith: i
           - key: jūr/a
-        - - key: mar/či/os
-            endswith: ti
-          - key: jūr/a
+        - - key: marč/i/os
+            endswith: i
+          - key: jūr/os
       - code: 8
         label: ė linksniuotė, paradigma nr. 8 (žiūr DLKG97 psl.75)
         declension: ė
@@ -229,10 +230,26 @@
           - key: gerv/ės
       - code: 9
         label: i linksniuotė, paradigma nr. 9 (žiūr DLKG97 psl.76)
-        paradigms: []
+        declension: i
+        paradigm: 9
+        pardefs:
+        - - key: šird/is
+            endswith: dis
+          - key: krosn/is
+        - - key: šird/ys
+            endswith: dis
+          - key: žuv/ys
+            endswith: vis
+          - key: krosn/ys
       - code: 10
         label: i linksniuotė, paradigma nr. 10(žiūr DLKG97 psl.77)
-        paradigms: []
+        declension: i
+        paradigm: 10
+        pardefs:
+        - - key: dan/tis
+            endswith: tis
+          - key: žvėr/is
+        - krosn/ys
       - code: 11
         label: i linksniuotė, paradigma nr. 11(žiūr DLKG97 psl.77)
         paradigms: []
