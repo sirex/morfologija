@@ -246,9 +246,7 @@
         declension: i
         paradigm: 10
         pardefs:
-        - - key: dan/tis
-            endswith: tis
-          - key: žvėr/is
+        - žvėr/is
         - krosn/ys
       - code: 11
         label: i linksniuotė, paradigma nr. 11(žiūr DLKG97 psl.77)
