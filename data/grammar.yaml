@@ -250,59 +250,94 @@
         - krosn/ys
       - code: 11
         label: i linksniuotė, paradigma nr. 11(žiūr DLKG97 psl.77)
-        paradigms: []
+        declension: i
+        paradigm: 11
+        pardefs:
+        - - key: š/uo
+            endswith: šuo
+          - key: akm/uo
+        - - key: š/un/ys
+            endswith: šuo
+          - key: akm/en/ys
       - code: 12
         label: i linksniuotė, paradigma nr. 12(žiūr DLKG97 psl.78)
-        paradigms: []
+        declension: i
+        paradigm: 12
+        pardefs:
+        - ses/uo
+        - ses/er/ys
       - code: 13
         label: Paradigma daiktavardžiui petys;
-        paradigms: []
+        paradigm: 13
+        pardefs:
+        - pet/ys
+        - peč/iai
       - code: 14
         label: Paradigma daiktavardžiui žmogus (žmonės);
-        paradigms: []
+        pardefs:
+        - turg/us
+        - gerv/ės
       - code: 15
         label: Paradigma daiktavardžiui pats;
-        paradigms: []
+        pardefs:
+        - pat/s
+        - pat/ys
       - code: 16
         label: Paradigma daiktavardžiui viešpats;
-        paradigms: []
+        pardefs:
+        - viešpat/s
+        - peč/iai
       - code: 17
         label: Paradigma daiktavardžiui mėnuo;
-        paradigms: []
+        pardefs:
+        - mėn/uo
+        - mėn/esiai
       - code: 18
         label:
           Paradigma vyr. g. daiktavardžiams iš sudaiktavardėjusių
           įvardžiuotinių būdvardžių bei dalyvių su -asis, pvz., jaunasis,
           palaimintasis, miegamasis, laukiamasis, mylimasis, nežinomasis
-        paradigms: []
+        pardefs:
+        - jaun/asis
+        - jaun/ieji
       - code: 19
         label:
           Paradigma vyr. g. daiktavardžiams iš sudaiktavardėjusių
           įvardžiuotinių būdvardžių ar dalyvių su -[t]ysis, pvz., pėstysis,
           vyresnysis, dirbantysis
-        paradigms: []
+        pardefs:
+        - pėst/ysis
+        - pėst/ieji
       - code: 20
         label:
           Paradigma vyr. g. daiktavardžiams iš sudaiktavardėjusių
           neįvardžiuotinių dalyvių su -[..]as, pvz., pažįstamas
-        paradigms: []
+        pardefs:
+        - pažįstam/as
+        - pažįstam/i
       - code: 21
         label:
           Paradigma vyr. g. daiktavardžiams iš sudaiktavardėjusių
           neįvardžiuotinių dalyvių su -ęs, pvz., suaugęs
-        paradigms: []
+        pardefs:
+        - suaug/ęs
+        - suaug/ę
       - code: 22
         label:
           Paradigma mot. g. daiktavardžiams iš sudaiktavardėjusių
           įvardžiuotinių būdvardžių bei dalyvių su -(i)oji, pvz., jaunoji,
           palaimintoji, gulsčioji, kaltinamoji, kuliamoji, mylimoji,
           dirbančioji, sprogtinoji
-        paradigms: []
+        pardefs:
+        - jaun/oji
+        - jaun/osios
       - code: 23
         label:
           Paradigma vyr. g. sangrąžiniams daiktavardžiams iš sangrąžinių
           veiksmažodžių su ‑asis, pvz., barimasis(-osi, -uisi, ...)
-        paradigms: []
+        pardefs:
+        - barim/asis
+        - barim/aisi
     - code: 8
       name: gender
       label: Giminės charakteristika
@@ -358,6 +393,7 @@
           Daiktavardis nekaitomas; apie jo giminę ką nors pasakyti sunku
           (teksto vienetai-užsienio k. įterpiniai ir kt.)
     - code: 9
+      name: number
       label: Skaičiaus charakteristika
       nodes:
       - code: 0
@@ -365,6 +401,7 @@
           Daiktavardis nekaitomas, (gali būti laikoma, kad) skaičiaus
           kategorijos neturi,
       - code: 1
+        symbol: sp
         label: Normalus abiskaitinis, pvz., namas,
       - code: 2
         label: >
@@ -372,7 +409,12 @@
           pateikiamas daugiskaitoje, gali įgyti ir "normalias" vienaskaitos
           formas, pvz., analgetikai-analgetikas,
       - code: 3
+        name: plural
+        symbol: pl
         label: Daugiskaitinis, pvz., miltai, žirklės,
+        restrict:
+        - symbols:
+            number: pl
       - code: 4
         label: >
           "Normalus" vienaskaitinis,

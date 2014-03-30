@@ -3,6 +3,8 @@ import unittest
 
 from ..grammar import Node
 
+from .utils import genlexemes
+
 grammar = """\
 - code: 1
   symbol: a
@@ -36,3 +38,24 @@ class NodeTests(unittest.TestCase):
     def test_chained_query(self):
         symbol = self.grammar.query(code__isnull=False).get(code=2).symbol
         self.assertEqual(symbol, 'b')
+
+
+class GrammarTests(unittest.TestCase):
+    def test_restrict(self):
+        self.assertEqual(genlexemes('miltai', number='plural'), [
+            (['milt/as'  ], ['sg', 'm', 'nom']),
+            (['milt/o'   ], ['sg', 'm', 'gen']),
+            (['milt/ui'  ], ['sg', 'm', 'dat']),
+            (['milt/ą'   ], ['sg', 'm', 'acc']),
+            (['milt/u'   ], ['sg', 'm', 'ins']),
+            (['milt/e'   ], ['sg', 'm', 'loc']),
+            (['milt/e',
+              'milt/ai'  ], ['sg', 'm', 'voc']),
+
+            (['milt/ai'  ], ['pl', 'm', 'nom']),
+            (['milt/ų'   ], ['pl', 'm', 'gen']),
+            (['milt/ams' ], ['pl', 'm', 'dat']),
+            (['milt/us'  ], ['pl', 'm', 'acc']),
+            (['milt/ais' ], ['pl', 'm', 'ins']),
+            (['milt/uose'], ['pl', 'm', 'loc'])
+        ])

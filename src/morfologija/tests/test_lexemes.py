@@ -1,5 +1,6 @@
 import yaml
 import unittest
+import collections
 
 from ..grammar import Node
 from ..lexemes import Lexeme
@@ -118,6 +119,20 @@ RES = dict(
         case:
           voc: ai
 
+- key: vyr/ai
+  symbols:
+    gender: m
+    number: pl
+  define:
+    suffixes:
+      case:
+      - ai
+      - ų
+      - ams
+      - us
+      - ais
+      - uose
+
 """,
 
     grammar = """\
@@ -162,8 +177,43 @@ nodes:
       symbol: m
     - code: 2
       symbol: f
+  - code: 7
+    name: number
+    nodes:
+    - code: 1
+      name: singular, plurar
+    - code: 2
+      name: plural
+      restrict:
+      - symbols:
+          number: pl
 """,
 )
+
+Property = collections.namedtuple('Property', 'default, values')
+
+PROPERTIES = [
+    ('pos', Property(
+        default='noun',
+        values={'noun': 1},
+    )),
+    ('declension', Property(
+        default=1,
+        values={1: 1, 2: 2, 3: 3, 4: 4},
+    )),
+    ('properness', Property(
+        default=None,
+        values={None: 1, 'name': 2},
+    )),
+    ('gender', Property(
+        default='masculine',
+        values={'masculine': 1, 'feminine': 2},
+    )),
+    ('number', Property(
+        default='singular, plurar',
+        values={'singular, plurar': 1, 'plural': 2},
+    )),
+]
 
 
 class NodeTests(unittest.TestCase):
@@ -174,39 +224,57 @@ class NodeTests(unittest.TestCase):
         paradigms = yaml.load(RES['paradigms'])
         self.paradigms = ParadigmCollection(paradigms)
 
-    def lexeme(self, word, declension, properness, gender):
-        line = '{word} 1 - 1 {declension} {properness} {gender}'.format(
-            word=word, declension=declension, properness=properness,
-            gender=gender,
-        )
+    def lexeme(self, word, **kwargs):
+        numbers = [
+            prop.values[kwargs.get(name, prop.default)]
+            for name, prop in PROPERTIES
+        ]
+        numbers = ' '.join(map(str, numbers))
+        line = ('{word} 1 - {numbers}').format(word=word, numbers=numbers)
         lexeme = Lexeme(self.grammar, self.paradigms, self.source, line)
         return lexeme
 
-    def pardefs(self, *args):
-        lexeme = self.lexeme(*args)
+    def pardefs(self, word, **kwargs):
+        lexeme = self.lexeme(word, **kwargs)
         prop = lexeme.properties[0]
         return list(lexeme.get_pardefs(prop))
 
+    def lexemes(self, word, **kwargs):
+        lexemes = []
+        lexeme = self.lexeme(word, **kwargs)
+        symorder = ('number', 'gender', 'case')
+        for node in lexeme.properties:
+            for pardef in lexeme.get_pardefs(node):
+                paradigm = self.paradigms.get(pardef)
+                for forms, symbols in lexeme.affixes(paradigm, 'suffixes'):
+                    symbols = [symbols[key] for key in symorder]
+                    _lexeme = [
+                        '%s/%s' % (stem, '/'.join(suffix))
+                        for stem, suffix in forms
+                    ]
+                    lexemes.append((_lexeme, symbols))
+        return lexemes
+
     def test_pardefs_properties(self):
-        self.assertEqual(self.pardefs('vyras',  1, 1, 1), ['vyr/as',  'vyr/ai'])
-        self.assertEqual(self.pardefs('Jonas',  1, 2, 1), ['Jon/as',  'vyr/ai'])
+        self.assertEqual(self.pardefs('vyras'), ['vyr/as',  'vyr/ai'])
+        self.assertEqual(self.pardefs('Jonas', properness='name'), ['Jon/as',  'vyr/ai'])
 
     def test_pardefs_endswith(self):
-        self.assertEqual(self.pardefs('vėjas',  2, 1, 1), ['vėj/as',  'vyr/ai'])
-        self.assertEqual(self.pardefs('elnias', 2, 1, 1), ['eln/ias', 'vyr/ai'])
+        self.assertEqual(self.pardefs('vėjas',  declension=2), ['vėj/as',  'vyr/ai'])
+        self.assertEqual(self.pardefs('elnias', declension=2), ['eln/ias', 'vyr/ai'])
 
     def test_symbols(self):
         paradigm = self.paradigms.get('dėd/ės')
-        lexeme = self.lexeme('dėdė', 1, 1, 2)
+        lexeme = self.lexeme('dėdė', gender='masculine')
         suffixes = [
             (forms, dict(symbols, **lexeme.symbols))
             for forms, symbols in paradigm.affixes('suffixes')
         ]
         self.assertEqual(suffixes, [
-            ([['ės'  ]], {'case': 'nom', 'gender': 'f', 'number': 'pl'}),
-            ([['žių' ]], {'case': 'gen', 'gender': 'f', 'number': 'pl'}),
-            ([['ėms' ]], {'case': 'dat', 'gender': 'f', 'number': 'pl'}),
-            ([['es'  ]], {'case': 'acc', 'gender': 'f', 'number': 'pl'}),
-            ([['ėmis']], {'case': 'ins', 'gender': 'f', 'number': 'pl'}),
-            ([['ėse' ]], {'case': 'loc', 'gender': 'f', 'number': 'pl'}),
+            ([['ės'  ]], {'case': 'nom', 'gender': 'm', 'number': 'pl'}),
+            ([['žių' ]], {'case': 'gen', 'gender': 'm', 'number': 'pl'}),
+            ([['ėms' ]], {'case': 'dat', 'gender': 'm', 'number': 'pl'}),
+            ([['es'  ]], {'case': 'acc', 'gender': 'm', 'number': 'pl'}),
+            ([['ėmis']], {'case': 'ins', 'gender': 'm', 'number': 'pl'}),
+            ([['ėse' ]], {'case': 'loc', 'gender': 'm', 'number': 'pl'}),
         ])

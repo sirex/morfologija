@@ -96,8 +96,7 @@
         case:
           voc: ai
 
-- type: suffixes
-  key: vyr/ai
+- key: vyr/ai
   symbols:
     gender: m
     number: pl
@@ -417,8 +416,270 @@
           dat: iui
 
 
-- type: declension prefixes
-  key: aini/išk/as
+# 11 paradigma
+
+- key: akm/uo
+  symbols:
+    gender: m
+    number: sg
+  define:
+    suffixes:
+      case:
+      - uo
+      - ens
+      - eniui
+      - enį
+      - eniu
+      - enyje
+      - enie
+
+- key: akmen/ys
+  symbols:
+    gender: m
+    number: pl
+  define:
+    suffixes:
+      case:
+      - ys
+      - ų
+      - ims
+      - is
+      - imis
+      - yse
+
+- key: akm/en/ys
+  extends:
+  - keys: akmen/ys
+    prefix:
+      suffixes: en
+
+
+- key: š/uo
+  symbols:
+    gender: m
+    number: sg
+  define:
+    suffixes:
+      case:
+      - uo
+      - uns
+      - uniui
+      - unį
+      - uniu
+      - unyje
+      - unie
+
+- key: š/un/ys
+  extends:
+  - keys: akmen/ys
+    prefix:
+      suffixes: un
+
+
+# 12 paradigma
+
+- key: ses/uo
+  symbols:
+    gender: m
+    number: sg
+  define:
+    suffixes:
+      case:
+      - uo
+      - ers
+      - eriai
+      - erį
+      - [erimi, eria]
+      - eryje
+      - erie
+
+- key: ses/er/ys
+  extends:
+  - keys: akmen/ys
+    prefix:
+      suffixes: er
+
+
+# 13 paradigma
+
+- key: pet/ys
+  symbols:
+    gender: m
+    number: sg
+  define:
+    suffixes:
+      case:
+      - ys
+      - io
+      - iui
+      - į
+      - imi
+      - yse
+      - iai
+
+- key: peč/iai
+  symbols:
+    gender: m
+    number: pl
+  define:
+    suffixes:
+      case:
+      - iai
+      - ių
+      - [iams, iam]
+      - ius
+      - iais
+      - iuose
+
+# 15 paradigma
+
+- key: pat/s
+  symbols:
+    gender: m
+    number: sg
+  define:
+    suffixes:
+      case:
+      - s
+      - io
+      - iam
+      - į
+      - iu
+      - iame
+      - s
+
+- key: pat/ys
+  symbols:
+    gender: m
+    number: pl
+  define:
+    suffixes:
+      case:
+      - ys
+      - ių
+      - [iems, iem]
+      - ius
+      - iais
+      - iuose
+
+
+# 16 paradigma
+
+- key: viešpat/s
+  symbols:
+    gender: m
+    number: sg
+  define:
+    suffixes:
+      case:
+      - s
+      - io
+      - iui
+      - į
+      - iu
+      - yje
+      - ie
+
+
+# 17 paradigma
+
+- key: mėn/uo
+  symbols:
+    gender: m
+    number: sg
+  define:
+    suffixes:
+      case:
+      - [uo, esis]
+      - esio
+      - esiui
+      - esį
+      - esiu
+      - esyje
+      - esie
+
+- key: mėn/esiai
+  symbols:
+    gender: m
+    number: pl
+  define:
+    suffixes:
+      case:
+      - esiai
+      - esių
+      - esiams
+      - esius
+      - esiais
+      - esiuose
+
+
+# 18 paradigma
+
+- key: jaun/asis
+  symbols:
+    gender: m
+    number: sg
+  define:
+    suffixes:
+      case:
+      - asis
+      - ojo
+      - ajam
+      - ąjį
+      - uoju
+      - ąjame
+      - asai
+
+- key: jaun/ieji
+  symbols:
+    gender: m
+    number: pl
+  define:
+    suffixes:
+      case:
+      - ieji
+      - ųjų
+      - iesiems
+      - uosius
+      - aisiais
+      - uosiuose
+
+
+# 19 paradigma
+
+- key: pėst/ysis
+  symbols:
+    gender: m
+    number: sg
+  define:
+    suffixes:
+      case:
+      - ysis
+      - iojo
+      - iajam
+      - įjį
+      - iuoju
+      - iąjame
+      - iasis
+
+- key: pėst/ieji
+  symbols:
+    gender: m
+    number: pl
+  define:
+    suffixes:
+      case:
+      - ieji
+      - iųjų
+      - iesiems
+      - iuosius
+      - iaisiais
+      - iuosiuose
+
+
+# 20 paradigma
+
+- key: pažįstam/as
   symbols:
     gender: m
     number: sg
@@ -426,15 +687,14 @@
     suffixes:
       case:
       - as
-      - ko
-      - kam
-      - ką
-      - ku
-      - kame
-      - as
+      - o
+      - am
+      - ą
+      - u
+      - ame
+      - [asis, asai]
 
-- type: declension prefixes
-  key: aini/išk/i
+- key: pažįstam/i
   symbols:
     gender: m
     number: pl
@@ -447,98 +707,101 @@
       - us
       - ais
       - uose
-      - i
 
-- type: declension prefixes
-  key: aini/išk/a
+
+# 20 paradigma
+
+- key: suaug/ęs
+  symbols:
+    gender: m
+    number: sg
+  define:
+    suffixes:
+      case:
+      - ęs
+      - usio
+      - usiam
+      - usį
+      - usiu
+      - usiame
+      - usis
+
+- key: suaug/ę
+  symbols:
+    gender: m
+    number: pl
+  define:
+    suffixes:
+      case:
+      - ę
+      - usių
+      - usiems
+      - usus
+      - usais
+      - usuose
+
+
+# 22 paradigma
+
+- key: jaun/oji
   symbols:
     gender: f
     number: sg
   define:
     suffixes:
       case:
-      - a
-      - os
-      - ai
-      - ą
-      - a
-      - oje
-      - a
+      - oji
+      - osios
+      - ajai
+      - ąją
+      - ąja
+      - ojoje
+      - oji
 
-- type: declension prefixes
-  key: aini/išk/os
+- key: jaun/osios
   symbols:
     gender: f
     number: pl
   define:
     suffixes:
       case:
-      - os
-      - ų
-      - oms
-      - as
-      - omis
-      - ose
-      - os
+      - osios
+      - ųjų
+      - osioms
+      - ąsias
+      - [osiomis, osiom]
+      - osiose
 
-- type: diminutive
-  key: nam/el/is
-  extends:
-  - keys:
-    - ain/is
-    - ain/iai
-    - ain/ė
-    - ain/ės
-    prefix:
-      suffixes: el
 
-- type: diminutive
-  key: nam/eliuk/as
-  extends:
-  - keys:
-    - nam/as
-    - nam/ai
-    - ain/ė
-    - ain/ės
-    prefix:
-      suffixes: eliuk
+# 23 paradigma
 
-- type: diminutive
-  key: nam/užėl/is
-  extends:
-  - keys:
-    - ain/is
-    - ain/iai
-    - ain/ė
-    - ain/ės
-    prefix:
-      suffixes: užėl
+- key: barim/asis
+  symbols:
+    gender: f
+    number: sg
+  define:
+    suffixes:
+      case:
+      - asis
+      - osi
+      - uisi
+      - ąsi
+      - usi
+      - esi
+      - asai
 
-- type: derivation
-  key: bank/inink/as
-  extends:
-  - keys:
-    - nam/as
-    - nam/ai
-    - ain/ė
-    - ain/ės
-    prefix:
-      suffixes: inink
+- key: barim/aisi
+  symbols:
+    gender: f
+    number: pl
+  define:
+    suffixes:
+      case:
+      - aisi
+      - ųsi
+      - iesiems
+      - uosius
+      - aisiais
+      - uosiuose
 
-- type: derivation
-  key: auks/išk/as
-  extends:
-  - keys:
-    - nam/as
-    - nam/ai
-    - ain/ė
-    - ain/ės
-    prefix:
-      suffixes: išk
 
-- type: declension
-  key: ain/is
-  extends:
-  - keys:
-    - ain/is
-    - ain/iai

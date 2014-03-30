@@ -19,7 +19,6 @@ from ..grammar import Node
 from ..lexemes import Lexeme
 from ..paradigms import ParadigmCollection
 from ..utils import first
-from ..soundchanges import affrication
 
 wrapper = textwrap.TextWrapper(subsequent_indent='       ')
 
@@ -57,7 +56,8 @@ def main():
 
     with open(data('lexemes.txt'), encoding='utf-8') as f:
         for i, line in enumerate(f, 1):
-            if line.startswith(args['<lexeme>'] + ' ') or line.startswith(args['<lexeme>'] + '('):
+            if line.startswith(args['<lexeme>'] + ' ') or \
+               line.startswith(args['<lexeme>'] + '('):
                 try:
                     lexeme = Lexeme(grammar, paradigms, sources, line)
                 except:
