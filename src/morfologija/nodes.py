@@ -93,6 +93,7 @@ class Node(object):
         self.paradigm = node.get('paradigm')
         self.pardefs = node.get('pardefs', [])
         self.lemma = node.get('lemma', False)
+        self.restrict = node.get('restrict', [])
         self.parent = parent
         self.nodes = []
         self._init_nodes(node.get('nodes', []))

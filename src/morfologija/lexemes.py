@@ -140,3 +140,45 @@ class Lexeme(object):
                     return stem
 
         raise Exception('Can not find lemma for %s.' % self.pos.label)
+
+
+    def check_restrict(self, params, lexeme, symbols):
+        for param in params:
+            for k, rsymbols in param.get('symbols', {}).items():
+                rsymbols = rsymbols if isinstance(rsymbols, list) else [rsymbols]
+                for rsymbol in rsymbols:
+                    if rsymbol not in symbols:
+                        return False
+        return True
+
+    def check_filters(self, filters, lexeme, symbols):
+        for name, params in filters:
+            if name == 'restrict' and self.check_restrict(params, lexeme, symbols):
+                return False
+        return True
+
+    def apply_filters(self, lexemes):
+        filters = []
+        for value in self.properties:
+            if value.node.restrict:
+                filters.append(('restrict', value.node.restrict))
+
+        for lexeme, symbols in lexemes:
+            if self.check_filters(filters, lexeme, symbols):
+                yield lexeme, symbols
+
+    def genforms(self):
+        lexemes = []
+        symorder = ('number', 'gender', 'case')
+        for value in self.properties:
+            for pardef in self.get_pardefs(value.node):
+                paradigm = self.paradigms.get(pardef)
+                for forms, symbols in self.affixes(paradigm, 'suffixes'):
+                    symbols = [symbols[key] for key in symorder]
+                    lexeme = [
+                        '%s/%s' % (stem, '/'.join(suffix))
+                        for stem, suffix in forms
+                    ]
+                    lexemes.append((lexeme, symbols))
+        lexemes = list(self.apply_filters(lexemes))
+        return lexemes
