@@ -1,122 +1,109 @@
-class Query(object):
-    def __init__(self, nodes, kwargs, recurse=True):
-        self.nodes = nodes
-        self.kwargs = kwargs
-        self.recurse = recurse
-
-    def __iter__(self):
-        for node in self.nodes:
-            if node.match(**self.kwargs):
-                yield node
-            elif self.recurse:
-                for child in node.query(**self.kwargs):
-                    yield child
-
-    def query(self, **kwargs):
-        return Query(self, kwargs, recurse=False)
-
-    def get(self, **kwargs):
-        for node in self.query(**kwargs):
-            return node
+import collections
 
 
-class Node(object):
-    """Grammar specification node.
+class GrammarExecption(Exception): pass
 
-    Grammar specification is defined as tree of nodes. This tree have three
-    levels identified with nodes, that have ``code`` property. Tree levels are
-    these:
 
-    1. Part of speech.
+class Value(object):
+    def __init__(self, field, name, node):
+        self.field = field
+        self.name = name
+        self.node = node
+        self.code = node.code
+        self.label = node.label
 
-    2. Property of part of speech.
 
-    3. Value of property of part of speech.
+class Field(object):
+    def __init__(self, pos, name, node):
+        self.pos = pos
+        self.name = name
+        self.node = node
+        self.code = node.code
+        self.label = node.label
+        self.values = collections.OrderedDict()
 
-    Here is example of grammar specification tree:
+    def get_default_value(self):
+        for key, val in self.values.items():
+            return val
 
-    .. code-block:: yaml
+    def get_value_by_code(self, code):
+        for value in self.values.values():
+            if value.code == code:
+                return value
 
-       - code:   1
-         label:  Noun
-         nodes:
-         - label: Noun specialness
-           nodes:
-           - code: 4
-             label: Properness
-             nodes:
-             - code: 1
-               label: Appellative
-             - code: 2
-               label: Name
-           - code:  5
-             label: Neigiamumas
-             nodes:
-             - code: 1
-               label: Positive
-             - code: 2
-               label: Negative
 
-    In this example can be converted to this pseudo code:
+class POS(object):
+    def __init__(self, name, node):
+        self.name = name
+        self.node = node
+        self.code = node.code
+        self.label = node.label
+        self.fields = collections.OrderedDict()
 
-    .. code-block:: python
 
-       class Noun:
-           properness = [Appellative, Name]
-           negativity = [Positive, Negative]
+class Grammar(object):
+    def __init__(self, node):
+        self.node = node
+        self.poses = collections.OrderedDict()
+        self.init_poses()
 
-    Here we see, that *Noun specialness* is omitted because this node does not
-    have ``code`` property and only used for classification.
+    def init_poses(self):
+        for value in self.node.query(nodes__isempty=True):
+            named_nodes = self.get_named_nodes(value)
+            if len(named_nodes) != 3:
+                raise GrammarExecption(
+                    'Eeach tree node must have exactly three named nodes, '
+                    'but this [%s] node has only %d.' % (
+                        ' - '.join(self.get_path_labels(value)),
+                        len(named_nodes),
+                    )
+                )
 
-    """
+            (pos_name,   pos), \
+            (field_name, field), \
+            (value_name, value) = named_nodes
 
-    def check_isnull(node, k, v):
-        value = getattr(node, k, None)
-        return (value is None) == v
+            if pos_name not in self.poses:
+                self.poses[pos_name] = POS(pos_name, pos)
+            pos = self.poses[pos_name]
 
-    check = dict(
-        isnull=check_isnull,
-    )
+            if field_name not in pos.fields:
+                pos.fields[field_name] = Field(pos, field_name, field)
+            field = pos.fields[field_name]
 
-    def __init__(self, node, parent=None):
-        self.code = node.get('code')
-        self.name = node.get('name')
-        self.label = node.get('label')
-        self.symbol = node.get('symbol')
-        self.inflective = node.get('inflective')
-        self.declension = node.get('declension')
-        self.paradigm = node.get('paradigm')
-        self.pardefs = node.get('pardefs', [])
-        self.lemma = node.get('lemma', False)
-        self.parent = parent
-        self.nodes = []
-        self._init_nodes(node.get('nodes', []))
+            if value_name not in field.values:
+                field.values[value_name] = Value(field, value_name, value)
+            value = field.values[value_name]
 
-    def _init_nodes(self, nodes):
+    def get_named_nodes(self, node):
+        names = []
+        nodes = reversed([node] + list(node.parents())[:-1])
         for node in nodes:
-            self.nodes.append(Node(node, self))
+            if node.name:
+                names.append((node.name, node))
+            elif node.symbol:
+                names.append((node.symbol, node))
+            elif node.code is not None:
+                names.append((node.code, node))
+        return names
 
-    def match(self, **kwargs):
-        for k, v in kwargs.items():
-            if '__' in k:
-                k, check = k.split('__')
-                if not Node.check[check](self, k, v):
-                    return False
+    def get_path_labels(self, node):
+        labels = []
+        nodes = reversed([node] + list(node.parents())[:-1])
+        for node in nodes:
+            if node.label:
+                labels.append(node.label)
+            elif node.name:
+                labels.append(node.name)
+            elif node.symbol:
+                labels.append(node.symbol)
+            elif node.code:
+                labels.append(node.code)
             else:
-                if getattr(self, k, None) != v:
-                    return False
-        return True
+                labels.append('(unknown)')
+        return labels
 
-    def query(self, **kwargs):
-        return Query(self.nodes, kwargs)
-
-    def parents(self, **kwargs):
-        parent = self.parent
-        while parent is not None:
-            if parent.match(**kwargs):
-                yield parent
-            parent = parent.parent
-
-    def get(self, **kwargs):
-        for node in self.query(**kwargs):
-            return node
+    def get_pos_by_code(self, code):
+        for pos in self.poses.values():
+            if pos.code == code:
+                return pos

@@ -15,7 +15,8 @@ import docopt
 import os.path
 import textwrap
 
-from ..grammar import Node
+from ..nodes import Node
+from ..grammar import Grammar
 from ..lexemes import Lexeme
 from ..paradigms import ParadigmCollection
 from ..utils import first
@@ -44,7 +45,7 @@ def main():
 
     with open(data('grammar.yaml'), encoding='utf-8') as f:
         grammar = yaml.load(f)
-    grammar = Node(dict(nodes=grammar))
+    grammar = Grammar(Node(dict(nodes=grammar)))
 
     with open(data('sources.yaml'), encoding='utf-8') as f:
         sources = yaml.load(f)
@@ -78,11 +79,11 @@ def main():
                 print_field(2, 'Lemma', None, lexeme.lemma)
                 print_field(3, 'Kalbos dalis', lexeme.pos.code, lexeme.pos.label)
 
-                for node in lexeme.properties:
-                    parent = first(node.parents(code__isnull=False))
-                    print_field(parent.code, parent.label, node.code, node.label)
+                for value in lexeme.properties:
+                    print_field(value.field.code, value.field.label,
+                                value.code, value.label)
 
-                    for pardef in lexeme.get_pardefs(node):
+                    for pardef in lexeme.get_pardefs(value.node):
                         print('    [{}]'.format(pardef))
                         paradigm = paradigms.get(pardef)
                         for forms, symbols in lexeme.affixes(paradigm, 'suffixes'):

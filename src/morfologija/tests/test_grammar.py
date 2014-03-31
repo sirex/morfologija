@@ -1,7 +1,7 @@
 import yaml
 import unittest
 
-from ..grammar import Node
+from ..nodes import Node
 
 from .utils import genlexemes
 
@@ -42,7 +42,8 @@ class NodeTests(unittest.TestCase):
 
 class GrammarTests(unittest.TestCase):
     def test_restrict(self):
-        self.assertEqual(genlexemes('miltai', number='plural'), [
+        props = dict(declension=1, number='plural')
+        self.assertEqual(genlexemes('miltai', 'noun', **props), [
             (['milt/as'  ], ['sg', 'm', 'nom']),
             (['milt/o'   ], ['sg', 'm', 'gen']),
             (['milt/ui'  ], ['sg', 'm', 'dat']),

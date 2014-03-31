@@ -2,7 +2,8 @@ import yaml
 import unittest
 import collections
 
-from ..grammar import Node
+from ..nodes import Node
+from ..grammar import Grammar
 from ..lexemes import Lexeme
 from ..paradigms import ParadigmCollection
 
@@ -219,7 +220,7 @@ PROPERTIES = [
 class NodeTests(unittest.TestCase):
     def setUp(self):
         grammar = yaml.load(RES['grammar'])
-        self.grammar = Node(grammar)
+        self.grammar = Grammar(Node(grammar))
         self.source = Node(dict(nodes=[dict(code=1, label='')]))
         paradigms = yaml.load(RES['paradigms'])
         self.paradigms = ParadigmCollection(paradigms)
@@ -236,8 +237,8 @@ class NodeTests(unittest.TestCase):
 
     def pardefs(self, word, **kwargs):
         lexeme = self.lexeme(word, **kwargs)
-        prop = lexeme.properties[0]
-        return list(lexeme.get_pardefs(prop))
+        value = lexeme.properties[0]
+        return list(lexeme.get_pardefs(value.node))
 
     def lexemes(self, word, **kwargs):
         lexemes = []

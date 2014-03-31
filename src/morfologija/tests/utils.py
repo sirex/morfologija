@@ -1,7 +1,9 @@
 import yaml
 import os.path
 
-from ..grammar import Node
+from ..nodes import Node
+from ..grammar import Grammar
+from ..lexemes import Lexeme
 from ..paradigms import ParadigmCollection
 
 
@@ -13,6 +15,7 @@ data = lambda name: os.path.join(data_dir, name)
 with open(data('grammar.yaml'), encoding='utf-8') as f:
     grammar = yaml.load(f)
 grammar = Node(dict(nodes=grammar))
+grammar = Grammar(grammar)
 
 with open(data('sources.yaml'), encoding='utf-8') as f:
     sources = yaml.load(f)
@@ -24,32 +27,26 @@ paradigms = ParadigmCollection(paradigms)
 
 
 
-def genlexemes(word, **kwargs):
-    pass
-
-
-def lexeme(self, word, **kwargs):
+def create_lexeme(word, pos, **kwargs):
+    pos = grammar.poses[pos]
     numbers = [
-        prop.values[kwargs.get(name, prop.default)]
-        for name, prop in PROPERTIES
+        field.values[kwargs.get(name, field.get_default_value().name)].code
+        for name, field in pos.fields.items()
     ]
     numbers = ' '.join(map(str, numbers))
-    line = ('{word} 1 - {numbers}').format(word=word, numbers=numbers)
-    lexeme = Lexeme(self.grammar, self.paradigms, self.source, line)
+    line = ('{word} 1 - {pos} {numbers}').format(word=word, pos=pos.code,
+                                                 numbers=numbers)
+    lexeme = Lexeme(grammar, paradigms, sources, line)
     return lexeme
 
-def pardefs(self, word, **kwargs):
-    lexeme = self.lexeme(word, **kwargs)
-    prop = lexeme.properties[0]
-    return list(lexeme.get_pardefs(prop))
-
-def lexemes(self, word, **kwargs):
+def genlexemes(word, pos, **kwargs):
+    assert isinstance(pos, str)
     lexemes = []
-    lexeme = self.lexeme(word, **kwargs)
+    lexeme = create_lexeme(word, pos, **kwargs)
     symorder = ('number', 'gender', 'case')
-    for node in lexeme.properties:
-        for pardef in lexeme.get_pardefs(node):
-            paradigm = self.paradigms.get(pardef)
+    for value in lexeme.properties:
+        for pardef in lexeme.get_pardefs(value.node):
+            paradigm = paradigms.get(pardef)
             for forms, symbols in lexeme.affixes(paradigm, 'suffixes'):
                 symbols = [symbols[key] for key in symorder]
                 _lexeme = [

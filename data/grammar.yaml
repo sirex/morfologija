@@ -1,5 +1,6 @@
-- label:  Daiktavaris
-  code:   1
+- code:   1
+  label:  Daiktavaris
+  name: noun
   symbol: n
   nodes:
   - label: Daiktavardžio įpatumai
@@ -9,6 +10,7 @@
       name: properness
       nodes:
       - label: Bendrinis
+        name: appellative
         code: 1
       - label: Asmenvardis-vardas
         code: 2
@@ -132,6 +134,7 @@
     nodes:
     - code: 7
       lemma: true
+      name: declension
       label: Linksniavimo charakteristika
       nodes:
       - code: 0
@@ -1180,6 +1183,7 @@
         - code: 22
           label: '+,N;'
 - code:   2
+  name: adjective
   symbol: adj
   label:  Būdvardis
   nodes:
@@ -1596,6 +1600,7 @@
         - code: 1
           label: turi
 - code: 3
+  name: numeral
   symbol: num
   label: Skaitvardis
   nodes:
@@ -1885,6 +1890,7 @@
       - code: 1
         label: turi
 - code: 4
+  name: pronoun
   symbol: prn
   label: Įvardis
   nodes:
@@ -2124,6 +2130,7 @@
         label: >
           Iš jų gali būti išvedamos mažybinės formos; pvz.: tamsta-tamstelė
 - code: 5
+  name: verb
   symbol: vblex
   label: Veiksmažodis
   nodes:
@@ -2941,6 +2948,7 @@
       - code: 226
         label: padarytas iš ištiktuko priesagos -telėti veiksmažodis be prefikso
 - code: 6
+  name: adverb
   symbol: adv
   label: Prieveiksmis
   nodes:
@@ -3430,6 +3438,7 @@
           prv su (nebe-, tebene-) + šitas priešd.+si ir pan.; pvz.:
           neįsivaizduojamai
 - code: 7
+  name: particle
   label: Dalelytė
   nodes:
   - code: 4
@@ -3442,6 +3451,7 @@
       label: >
         su ne-; pvz.: nejau, nelyg
 - code: 8
+  name: preposition
   symbol: pr
   label: Prielinksnis
   nodes:
@@ -3480,6 +3490,7 @@
       label: >
         Prielinksnis su ne-; pvz.: nepaisant, netoli
 - code: 9
+  name: conjungtion
   symbol: cnjcoo
   label: Jungtukas
   nodes:
@@ -3494,9 +3505,15 @@
       label: >
         Jungtukas su ne-; pvz.: nekaip, nelyg
 - code: 10
+  name: interjection
   symbol: ij
   label: Jaustukas
+  nodes:
+  - name: interjection
+    nodes:
+    - name: interjection
 - code: 11
+  name: verbal-interjection
   label: Ištiktukas
   nodes:
   - code: 4

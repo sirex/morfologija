@@ -32,34 +32,34 @@ class Lexeme(object):
         self.paradigms = paradigms
         self.source = sources.get(code=int(source))
         self.lemma = None if lemma == '-' else lemma
-        self.pos = grammar.query(code__isnull=False).get(code=int(pos))
+        self.pos = grammar.get_pos_by_code(int(pos))
         assert self.pos is not None
         self.properties = []
-        for field, value in zip(self.pos.query(code__isnull=False), params):
-            prop = field.query(code__isnull=False).get(code=value)
-            if prop is None:
+        for field, value_code in zip(self.pos.fields.values(), params):
+            value = field.get_value_by_code(value_code)
+            if value is None:
                 raise Exception(
                     'Unknown value {val} for field {fld} ({label}) in {line}.'.
-                    format(val=value, fld=field.code, line=line,
+                    format(val=value_code, fld=field.code, line=line,
                            label=field.label)
                 )
-            self.properties.append(prop)
+            self.properties.append(value)
         self.names = dict(self.get_names())
         self.symbols = dict(self.get_symbols())
         self.stem = self.get_stem()
 
     def get_names(self):
-        for node in self.properties:
-            if node.name is not None:
-                key = first(node.parents(name__isnull=False)).name
-                val = node.name
+        for value in self.properties:
+            if value.node.name is not None:
+                key = first(value.node.parents(name__isnull=False)).name
+                val = value.node.name
                 yield key, val
 
     def get_symbols(self):
-        for node in self.properties:
-            if node.symbol is not None:
-                key = first(node.parents(name__isnull=False)).name
-                val = node.symbol
+        for value in self.properties:
+            if value.node.symbol is not None:
+                key = first(value.node.parents(name__isnull=False)).name
+                val = value.node.symbol
                 yield key, val
 
     def check_properties(self, properties):
@@ -130,11 +130,9 @@ class Lexeme(object):
             yield forms, symbols
 
     def get_stem(self):
-        for node in self.properties:
-            parent = first(node.parents(code__isnull=False))
-            if not parent.lemma: continue
-
-            for pardef in self.get_pardefs(node):
+        for value in self.properties:
+            if not value.field.node.lemma: continue
+            for pardef in self.get_pardefs(value.node):
                 paradigm = self.paradigms.get(pardef)
                 for forms, symbols in paradigm.affixes('suffixes'):
                     suffix = ''.join(forms[0])
