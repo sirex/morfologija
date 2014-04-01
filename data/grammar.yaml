@@ -404,7 +404,6 @@
           Daiktavardis nekaitomas, (gali būti laikoma, kad) skaičiaus
           kategorijos neturi,
       - code: 1
-        symbol: sp
         label: Normalus abiskaitinis, pvz., namas,
       - code: 2
         label: >
@@ -1058,9 +1057,19 @@
           label: >
             Turi normalius deminutyvus; deminutyvų abiejose giminėse (kaip kad
             pvz. meška-meškutis-meškutė) neturi,
+          pardefs:
+          - nam/elis
+          - nam/eliai
+          - mešk/utis
+          - mešk/učiai
         - code: 3
           label: >
             Turi deminutyvus abiejose giminėse, pvz., meška-meškutis-meškutė,
+          pardefs:
+          - mešk/utis
+          - mešk/učiai
+          - mešk/utė
+          - mešk/utės
         - code: 4
           label: >
             Daiktavardžiai nekaitomi (nėra linksniuojami), nors kai kurie jų,

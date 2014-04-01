@@ -9,7 +9,7 @@ def assign(obj, data, fields, ignore=None):
     keys = set()
     for k, v in fields:
         keys.add(k)
-        setattr(obj, k, data.get(k, v))
+        setattr(obj, k.replace('-', '_'), data.get(k, v))
     keys.update(ignore or [])
     diff = set(data).difference(keys)
     if diff:

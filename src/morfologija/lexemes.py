@@ -150,7 +150,8 @@ class Lexeme(object):
     def affixes(self, value, paradigm, kind):
         for forms, symbols in paradigm.affixes(kind):
             if self.check_filters(self.filters, value, forms, symbols):
-                symbols = dict(symbols, **self.symbols)
+                if paradigm.override_symbols:
+                    symbols = dict(symbols, **self.symbols)
                 forms = self.prepare_forms(forms)
                 yield forms, symbols
 

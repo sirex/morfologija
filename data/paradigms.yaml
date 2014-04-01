@@ -805,3 +805,99 @@
       - uosiuose
 
 
+# Sangražinės formos
+
+
+# Deminutyvai
+
+- key: nam/elis
+  symbols:
+    gender: m
+    number: sg
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - elis
+      - elio
+      - eliui
+      - elį
+      - eliu
+      - elyje
+      - eli
+
+- key: nam/eliai
+  symbols:
+    gender: m
+    number: pl
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - eliai
+      - elių
+      - eliams
+      - elius
+      - eliais
+      - eliuose
+
+
+- key: mešk/utis
+  symbols:
+    gender: m
+    number: sg
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - utis
+      - učio
+      - učiui
+      - utį
+      - učiu
+      - utyje
+      - uti
+
+- key: mešk/učiai
+  symbols:
+    gender: m
+    number: pl
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - učiai
+      - učių
+      - učiams
+      - učius
+      - učiais
+      - učiuose
+
+- key: mešk/utė
+  symbols:
+    gender: f
+    number: sg
+  define:
+    suffixes:
+      case:
+      - utė
+      - utės
+      - utei
+      - utę
+      - ute
+      - utėje
+      - ute
+
+- key: mešk/utės
+  symbols:
+    gender: f
+    number: pl
+  define:
+    suffixes:
+      case:
+      - utės
+      - učių
+      - utėms
+      - utes
+      - utėmis
+      - utėse

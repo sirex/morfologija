@@ -18,6 +18,7 @@ class Paradigm(object):
             ('extends', []),
             ('kind', None),
             ('name', None),
+            ('override-symbols', True),
         ))
 
     def normalize_forms(self, forms):
