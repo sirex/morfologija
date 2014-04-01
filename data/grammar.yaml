@@ -1058,10 +1058,44 @@
             Turi normalius deminutyvus; deminutyvų abiejose giminėse (kaip kad
             pvz. meška-meškutis-meškutė) neturi,
           pardefs:
-          - nam/elis
-          - nam/eliai
-          - mešk/utis
-          - mešk/učiai
+          - - key: katin/ėlis
+              properties:
+                gender: masculine
+              syllables:
+                gt: 2
+            - key: nam/elis
+              properties:
+                gender: masculine
+          - - key: katin/ėliai
+              properties:
+                gender: masculine
+              syllables:
+                gt: 2
+            - key: nam/eliai
+              properties:
+                gender: masculine
+          - - key: arbat/ėlė
+              properties:
+                gender: feminine
+              syllables:
+                gt: 2
+            - key: saul/elė
+              properties:
+                gender: feminine
+          - - key: arbat/ėlės
+              properties:
+                gender: feminine
+              syllables:
+                gt: 2
+            - key: saul/elės
+              properties:
+                gender: feminine
+          - - key: mešk/utis
+              properties:
+                gender: masculine
+          - - key: mešk/učiai
+              properties:
+                gender: feminine
         - code: 3
           label: >
             Turi deminutyvus abiejose giminėse, pvz., meška-meškutis-meškutė,
