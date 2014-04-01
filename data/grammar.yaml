@@ -419,8 +419,12 @@
         - symbols:
             number: pl
       - code: 4
-        label: >
-          "Normalus" vienaskaitinis,
+        name: singular
+        symbol: sg
+        label: Normalus vienaskaitinis, pvz., cukrus, duona, grietinė, pienas, sviestas.
+        restrict:
+        - symbols:
+            number: sg
       - code: 5
         label: >
           "Labiau vienaskaitinis" nei abiskaitinis, nes tai tikrinis
