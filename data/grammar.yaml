@@ -1048,12 +1048,14 @@
     - label: Derivacijos charakteristika
       nodes:
       - code: 12
+        name: diminutive
         label: Demunityviniai vediniai
         nodes:
         - code: 1
           label: >
             Deminutyvų neturi,
         - code: 2
+          name: single-gender
           label: >
             Turi normalius deminutyvus; deminutyvų abiejose giminėse (kaip kad
             pvz. meška-meškutis-meškutė) neturi,
@@ -1097,6 +1099,7 @@
               properties:
                 gender: feminine
         - code: 3
+          name: both-genders
           label: >
             Turi deminutyvus abiejose giminėse, pvz., meška-meškutis-meškutė,
           pardefs:
