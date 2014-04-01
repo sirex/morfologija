@@ -44,15 +44,6 @@ class GrammarTests(unittest.TestCase):
     def test_restrict(self):
         props = dict(declension=1, number='plural')
         self.assertEqual(genlexemes('miltai', 'noun', **props), [
-            #(['milt/as'  ], ['sg', 'm', 'nom']),
-            #(['milt/o'   ], ['sg', 'm', 'gen']),
-            #(['milt/ui'  ], ['sg', 'm', 'dat']),
-            #(['milt/ą'   ], ['sg', 'm', 'acc']),
-            #(['milt/u'   ], ['sg', 'm', 'ins']),
-            #(['milt/e'   ], ['sg', 'm', 'loc']),
-            #(['milt/e',
-            #  'milt/ai'  ], ['sg', 'm', 'voc']),
-
             (['milt/ai'  ], ['pl', 'm', 'nom']),
             (['milt/ų'   ], ['pl', 'm', 'gen']),
             (['milt/ams' ], ['pl', 'm', 'dat']),

@@ -47,6 +47,7 @@ class Lexeme(object):
         self.names = dict(self.get_names())
         self.symbols = dict(self.get_symbols())
         self.stem = self.get_stem()
+        self.filters = self.get_filters()
 
     def get_names(self):
         for value in self.properties:
@@ -62,9 +63,32 @@ class Lexeme(object):
                 val = value.node.symbol
                 yield key, val
 
+    def get_filters(self):
+        filters = []
+        for value in self.properties:
+            if value.node.restrict:
+                filters.append(('restrict', value.node.restrict))
+        return filters
+
     def check_properties(self, properties):
         for k, v in properties.items():
             if k not in self.names or self.names[k] != v:
+                return False
+        return True
+
+    def check_restrict(self, restrictions, form, symbols):
+        """Return True if restriction is in effect."""
+        for restriction in restrictions:
+            for key, rsymbols in restriction.get('symbols', {}).items():
+                rsymbols = rsymbols if isinstance(rsymbols, list) else [rsymbols]
+                if key in symbols and symbols[key] not in rsymbols:
+                    return True
+        return False
+
+    def check_filters(self, filters, value, form, symbols):
+        """Returns True if filters matches."""
+        for name, params in filters:
+            if name == 'restrict' and self.check_restrict(params, form, symbols):
                 return False
         return True
 
@@ -123,11 +147,12 @@ class Lexeme(object):
             stem = affrication(self.stem, ''.join(suffix))
             yield stem, suffix
 
-    def affixes(self, paradigm, kind):
+    def affixes(self, value, paradigm, kind):
         for forms, symbols in paradigm.affixes(kind):
-            symbols = dict(symbols, **self.symbols)
-            forms = self.prepare_forms(forms)
-            yield forms, symbols
+            if self.check_filters(self.filters, value, forms, symbols):
+                symbols = dict(symbols, **self.symbols)
+                forms = self.prepare_forms(forms)
+                yield forms, symbols
 
     def get_stem(self):
         for value in self.properties:
@@ -141,44 +166,13 @@ class Lexeme(object):
 
         raise Exception('Can not find lemma for %s.' % self.pos.label)
 
-
-    def check_restrict(self, params, lexeme, symbols):
-        for param in params:
-            for k, rsymbols in param.get('symbols', {}).items():
-                rsymbols = rsymbols if isinstance(rsymbols, list) else [rsymbols]
-                for rsymbol in rsymbols:
-                    if rsymbol not in symbols:
-                        return False
-        return True
-
-    def check_filters(self, filters, lexeme, symbols):
-        for name, params in filters:
-            if name == 'restrict' and self.check_restrict(params, lexeme, symbols):
-                return False
-        return True
-
-    def apply_filters(self, lexemes):
-        filters = []
-        for value in self.properties:
-            if value.node.restrict:
-                filters.append(('restrict', value.node.restrict))
-
-        for lexeme, symbols in lexemes:
-            if self.check_filters(filters, lexeme, symbols):
-                yield lexeme, symbols
-
     def genforms(self):
-        lexemes = []
-        symorder = ('number', 'gender', 'case')
         for value in self.properties:
             for pardef in self.get_pardefs(value.node):
                 paradigm = self.paradigms.get(pardef)
-                for forms, symbols in self.affixes(paradigm, 'suffixes'):
-                    symbols = [symbols[key] for key in symorder]
+                for forms, symbols in self.affixes(value, paradigm, 'suffixes'):
                     lexeme = [
                         '%s/%s' % (stem, '/'.join(suffix))
                         for stem, suffix in forms
                     ]
-                    lexemes.append((lexeme, symbols))
-        lexemes = list(self.apply_filters(lexemes))
-        return lexemes
+                    yield lexeme, symbols

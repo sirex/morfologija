@@ -86,15 +86,15 @@ def main():
                     for pardef in lexeme.get_pardefs(value.node):
                         print('    [{}]'.format(pardef))
                         paradigm = paradigms.get(pardef)
-                        for forms, symbols in lexeme.affixes(paradigm, 'suffixes'):
+                        for forms, symbols in lexeme.affixes(value, paradigm, 'suffixes'):
                             symbols = ', '.join([
                                 symbols[key]
                                 for key in ('number', 'gender', 'case')
                             ])
 
                             word = ', '.join([
-                                '%s/%s' % (_stem, '/'.join(suffix))
-                                for _stem, suffix in forms
+                                '%s/%s' % (stem, '/'.join(suffix))
+                                for stem, suffix in forms
                             ])
 
                             print('    {}: {}'.format(symbols, word))

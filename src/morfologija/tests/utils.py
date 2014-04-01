@@ -43,5 +43,8 @@ def genlexemes(word, pos, **kwargs):
     assert isinstance(pos, str)
     lexemes = []
     lexeme = create_lexeme(word, pos, **kwargs)
-    return lexeme.genforms()
+    symorder = ('number', 'gender', 'case')
+    for forms, symbols in lexeme.genforms():
+        symbols = [symbols[key] for key in symorder]
+        lexemes.append((forms, symbols))
     return lexemes

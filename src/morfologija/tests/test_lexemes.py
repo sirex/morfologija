@@ -279,3 +279,15 @@ class NodeTests(unittest.TestCase):
             ([['ėmis']], {'case': 'ins', 'gender': 'm', 'number': 'pl'}),
             ([['ėse' ]], {'case': 'loc', 'gender': 'm', 'number': 'pl'}),
         ])
+
+    def test_check_restrict(self):
+        lexeme = self.lexeme('word')
+        restrictions = [{'symbols': {'number': 'pl'}}]
+
+        # Restrictio is not in effect
+        self.assertFalse(
+            lexeme.check_restrict(restrictions, 'word', {'number': 'pl'}))
+
+        # Restriction is in effect
+        self.assertTrue(
+            lexeme.check_restrict(restrictions, 'word', {'number': 'sg'}))
