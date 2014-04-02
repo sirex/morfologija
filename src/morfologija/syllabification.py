@@ -91,4 +91,4 @@ def syllabificate(word):
         syllables.append(syllable + ''.join(consonants))
     elif consonants and syllables:
         syllables[-1] += ''.join(consonants)
-    return filter(None, syllables)
+    return list(filter(None, syllables))

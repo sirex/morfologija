@@ -223,13 +223,9 @@
         declension: ė
         paradigm: 8
         pardefs:
-        - - key: bi/tė
-            endswith: tė
-          - key: gerv/ė
+        - - key: gerv/ė
         - - key: dėd/ės
             endswith: dė
-          - key: bi/tės
-            endswith: tė
           - key: gerv/ės
       - code: 9
         label: i linksniuotė, paradigma nr. 9 (žiūr DLKG97 psl.76)
@@ -1092,10 +1088,43 @@
             - key: saul/elės
               properties:
                 gender: feminine
+
+          - - key: nam/ukas
+              properties:
+                gender: masculine
+            - key: saul/ukė
+              properties:
+                gender: feminine
+          - - key: nam/ukai
+              properties:
+                gender: masculine
+            - key: saul/ukės
+              properties:
+                gender: feminine
+
           - - key: mešk/utis
               properties:
                 gender: masculine
+            - key: mešk/utė
+              properties:
+                gender: feminine
           - - key: mešk/učiai
+              properties:
+                gender: masculine
+            - key: mešk/utės
+              properties:
+                gender: feminine
+
+          - - key: vežim/aitis
+              properties:
+                gender: masculine
+            - key: obel/aitė
+              properties:
+                gender: feminine
+          - - key: vežim/aičiai
+              properties:
+                gender: masculine
+            - key: obel/aitės
               properties:
                 gender: feminine
         - code: 3

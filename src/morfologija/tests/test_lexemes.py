@@ -291,3 +291,34 @@ class NodeTests(unittest.TestCase):
         # Restriction is in effect
         self.assertTrue(
             lexeme.check_restrict(restrictions, 'word', {'number': 'sg'}))
+
+    def test_check_number(self):
+        lexeme = self.lexeme('word')
+
+        # eq
+        self.assertFalse(lexeme.check_number(42, dict(eq=41)))
+        self.assertTrue (lexeme.check_number(42, dict(eq=42)))
+
+        # gt
+        self.assertFalse(lexeme.check_number(42, dict(gt=43)))
+        self.assertFalse(lexeme.check_number(42, dict(gt=42)))
+        self.assertTrue (lexeme.check_number(42, dict(gt=41)))
+
+        # lt
+        self.assertFalse(lexeme.check_number(42, dict(lt=41)))
+        self.assertFalse(lexeme.check_number(42, dict(lt=42)))
+        self.assertTrue (lexeme.check_number(42, dict(lt=43)))
+
+        # gte
+        self.assertFalse(lexeme.check_number(42, dict(gte=43)))
+        self.assertTrue (lexeme.check_number(42, dict(gte=42)))
+        self.assertTrue (lexeme.check_number(42, dict(gte=41)))
+
+        # lte
+        self.assertFalse(lexeme.check_number(42, dict(lte=41)))
+        self.assertTrue (lexeme.check_number(42, dict(lte=42)))
+        self.assertTrue (lexeme.check_number(42, dict(lte=43)))
+
+        # Multiple options
+        self.assertTrue(lexeme.check_number(42, dict(lte=42, eq=42)))
+        self.assertFalse(lexeme.check_number(42, dict(lte=42, eq=40)))

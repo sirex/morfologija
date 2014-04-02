@@ -1,5 +1,8 @@
+import collections
+
 from .utils import first
 from .soundchanges import affrication
+from .syllabification import syllabificate
 
 
 class Lexeme(object):
@@ -24,6 +27,10 @@ class Lexeme(object):
         Dictionary of flattened property and value names for this lexeme.
 
     """
+
+    CheckNumber = collections.namedtuple('CheckNumber', 'eq gt lt gte lte')
+    CheckNumber_defaults = CheckNumber(eq=None, gt=None, lt=None, gte=None,
+                                       lte=None)
 
     def __init__(self, grammar, paradigms, sources, line):
         fields = line.split()
@@ -92,6 +99,20 @@ class Lexeme(object):
                 return False
         return True
 
+    def check_number(self, number, options):
+        cn = self.CheckNumber_defaults._replace(**options)
+        if cn.eq is not None and cn.eq != number:
+            return False
+        if cn.gt is not None and number <= cn.gt:
+            return False
+        if cn.lt is not None and number >= cn.lt:
+            return False
+        if cn.gte is not None and number < cn.gte:
+            return False
+        if cn.lte is not None and number > cn.lte:
+            return False
+        return True
+
     def get_pardefs(self, node):
         """Exctract paradigm definition keys from node ``pardefs`` property.
 
@@ -123,6 +144,9 @@ class Lexeme(object):
         endswith
             Checks if lexeme ends with specified string.
 
+        syllables
+            Checks if lexeme has specified numbe of syllables.
+
         """
         for pardef in node.pardefs:
             if isinstance(pardef, list):
@@ -135,6 +159,12 @@ class Lexeme(object):
                     if (
                         'endswith' in item and
                         not self.lexeme.endswith(item['endswith'])
+                    ):
+                        continue
+                    if (
+                        'syllables' in item and
+                        not self.check_number(len(syllabificate(self.lexeme)),
+                                              item['syllables'])
                     ):
                         continue
                     yield item['key']

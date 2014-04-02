@@ -49,5 +49,8 @@ class GrammarTests(unittest.TestCase):
             (['milt/ams' ], ['pl', 'm', 'dat']),
             (['milt/us'  ], ['pl', 'm', 'acc']),
             (['milt/ais' ], ['pl', 'm', 'ins']),
-            (['milt/uose'], ['pl', 'm', 'loc'])
+            (['milt/uose'], ['pl', 'm', 'loc']),
         ])
+
+    def test_syllable_filter(self):
+        pass

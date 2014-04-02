@@ -316,29 +316,6 @@
         case:
           gen: žių
 
-- key: bi/tė
-  symbols:
-    gender: f
-    number: sg
-  extends:
-  - keys: gerv/ė
-    prefix:
-      suffixes: t
-
-- key: bi/tės
-  symbols:
-    gender: f
-    number: pl
-  define:
-    suffixes:
-      case:
-      - tės
-      - čių
-      - tėms
-      - tes
-      - tėmis
-      - tėse
-
 
 # 9 paradigma
 
@@ -842,6 +819,166 @@
       - eliuose
 
 
+- key: saul/elė
+  symbols:
+    gender: m
+    number: sg
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - elė
+      - elės
+      - elei
+      - elę
+      - ele
+      - elėje
+      - elę
+
+- key: saul/elės
+  symbols:
+    gender: m
+    number: pl
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - elės
+      - elių
+      - elėms
+      - eles
+      - elėmis
+      - elėse
+
+
+- key: katin/ėlis
+  symbols:
+    gender: m
+    number: sg
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - ėlis
+      - ėlio
+      - ėliui
+      - ėlį
+      - ėliu
+      - ėlyje
+      - ėli
+
+- key: katin/ėliai
+  symbols:
+    gender: m
+    number: pl
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - ėliai
+      - ėlių
+      - ėliams
+      - ėlius
+      - ėliais
+      - ėliuose
+
+
+- key: arbat/ėlė
+  symbols:
+    gender: f
+    number: sg
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - ėlė
+      - ėlės
+      - ėlei
+      - ėlę
+      - ėle
+      - ėlėje
+      - ėlę
+
+- key: arbat/ėlės
+  symbols:
+    gender: f
+    number: pl
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - ėlės
+      - ėlių
+      - ėlėms
+      - ėles
+      - ėlėmis
+      - ėlėse
+
+
+- key: nam/ukas
+  symbols:
+    gender: m
+    number: sg
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - ukas
+      - uko
+      - ukui
+      - uką
+      - uku
+      - uke
+      - uk
+
+- key: nam/ukai
+  symbols:
+    gender: m
+    number: pl
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - ukai
+      - ukų
+      - ukams
+      - ukus
+      - ukais
+      - ukuose
+
+
+- key: saul/ukė
+  symbols:
+    gender: f
+    number: sg
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - ukė
+      - ukės
+      - ukei
+      - ukę
+      - uke
+      - ukėje
+      - ukę
+
+- key: saul/ukės
+  symbols:
+    gender: f
+    number: pl
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - ukės
+      - ukių
+      - ukėms
+      - ukes
+      - ukėmis
+      - ukėse
+
+
 - key: mešk/utis
   symbols:
     gender: m
@@ -901,3 +1038,65 @@
       - utes
       - utėmis
       - utėse
+
+
+- key: vežim/aitis
+  symbols:
+    gender: m
+    number: sg
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - aitis
+      - aičio
+      - aičiui
+      - aitį
+      - aičiu
+      - aityje
+      - aiti
+
+- key: vežim/aičiai
+  symbols:
+    gender: m
+    number: pl
+  override-symbols: false
+  define:
+    suffixes:
+      case:
+      - aičiai
+      - aičių
+      - aičiams
+      - aičius
+      - aičiais
+      - aičiuose
+
+
+- key: obel/aitė
+  symbols:
+    gender: f
+    number: sg
+  define:
+    suffixes:
+      case:
+      - aitė
+      - aitės
+      - aitei
+      - aitę
+      - aite
+      - aitėje
+      - aite
+
+- key: obel/aitės
+  symbols:
+    gender: f
+    number: pl
+  define:
+    suffixes:
+      case:
+      - aitės
+      - aičių
+      - aitėms
+      - aites
+      - aitėmis
+      - aitėse
