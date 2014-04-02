@@ -1,6 +1,5 @@
 import unittest
 
-from ..sounds import split_sounds
 from ..syllabification import syllabificate
 
 
@@ -26,11 +25,3 @@ class SyllabificationTest(unittest.TestCase):
         #self.assertSyllabification('in-du-iz-mas')
         #self.assertSyllabification('su-i-ro')
         #self.assertSyllabification('juod-že-mis')
-
-    def assertSplitSounds(self, sounds):
-        word = ''.join(sounds)
-        self.assertEqual(list(split_sounds(word)), sounds)
-
-    def test_itersounds(self):
-        self.assertSplitSounds(['dž', 'i', 'n', 'a', 's'])
-        self.assertSplitSounds(['j', 'u', 'o', 'dž', 'e', 'm', 'i', 's'])
