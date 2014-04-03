@@ -167,6 +167,11 @@ class Lexeme(object):
                                               item['syllables'])
                     ):
                         continue
+                    if (
+                        'lemmas' in item and
+                        (self.lemma or self.lexeme) not in item['lemmas']
+                    ):
+                        continue
                     yield item['key']
                     break
             else:

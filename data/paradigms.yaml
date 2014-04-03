@@ -804,6 +804,8 @@
 
 # Deminutyvai
 
+# -elis, DLKŽ96, § 150
+
 - key: nam/elis
   override-symbols: false
   extends:
@@ -833,6 +835,8 @@
     prefix:
       suffixes: el
 
+
+# -ėlis, DLKŽ96, § 151
 
 - key: katin/ėlis
   override-symbols: false
@@ -864,6 +868,8 @@
       suffixes: ėl
 
 
+# -(i)ukas, DLKŽ96, § 152
+
 - key: nam/ukas
   override-symbols: false
   extends:
@@ -894,6 +900,8 @@
       suffixes: uk
 
 
+# -(i)utis, DLKŽ96, § 153
+
 - key: mešk/utis
   override-symbols: false
   extends:
@@ -923,6 +931,8 @@
       suffixes: ut
 
 
+# -aitis, DLKŽ96, § 154
+
 - key: vežim/aitis
   override-symbols: false
   extends:
@@ -951,3 +961,321 @@
   - keys: gerv/ės
     prefix:
       suffixes: ait
+
+
+# -ytis, DLKŽ96, § 155
+
+- key: brol/ytis
+  override-symbols: false
+  extends:
+  - keys: brol/is
+    prefix:
+      suffixes: yt
+
+- key: brol/yčiai
+  override-symbols: false
+  extends:
+  - keys: eln/iai
+    prefix:
+      suffixes: yt
+
+
+- key: saul/ytė
+  override-symbols: false
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: yt
+
+- key: saul/ytės
+  override-symbols: false
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: yt
+
+
+# -ulis, DLKŽ96, § 156
+
+- key: tėv/ulis
+  override-symbols: false
+  extends:
+  - keys: brol/is
+    prefix:
+      suffixes: ul
+
+- key: tėv/uliai
+  override-symbols: false
+  extends:
+  - keys: eln/iai
+    prefix:
+      suffixes: ul
+
+
+- key: mot/ulė
+  override-symbols: false
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: ul
+
+- key: mot/ulės
+  override-symbols: false
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: ul
+
+
+# -užis, DLKŽ96, § 157
+
+- key: tėv/užis
+  override-symbols: false
+  extends:
+  - keys: brol/is
+    prefix:
+      suffixes: už
+
+- key: tėv/užiai
+  override-symbols: false
+  extends:
+  - keys: eln/iai
+    prefix:
+      suffixes: už
+
+
+- key: mot/užė
+  override-symbols: false
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: už
+
+- key: mot/užės
+  override-symbols: false
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: už
+
+
+# -(i)ūkštis, DLKŽ96, § 158
+
+- key: tėv/ūkštis
+  override-symbols: false
+  extends:
+  - keys: brol/is
+    prefix:
+      suffixes: ūkšt
+
+- key: tėv/ūkščiai
+  override-symbols: false
+  extends:
+  - keys: eln/iai
+    prefix:
+      suffixes: ūkšt
+
+
+- key: mot/ūkštė
+  override-symbols: false
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: ūkšt
+
+- key: mot/ūkštės
+  override-symbols: false
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: ūkšt
+
+
+# -okšnis, DLKŽ96, § 159
+
+- key: tėv/okšnis
+  override-symbols: false
+  extends:
+  - keys: brol/is
+    prefix:
+      suffixes: okšn
+
+- key: tėv/okšniai
+  override-symbols: false
+  extends:
+  - keys: eln/iai
+    prefix:
+      suffixes: okšn
+
+
+- key: mot/okšnė
+  override-symbols: false
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: okšn
+
+- key: mot/okšnės
+  override-symbols: false
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: okšn
+
+
+# -šė, DLKŽ96, § 160
+
+- key: merg/šė
+  override-symbols: false
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: š
+
+- key: merg/šės
+  override-symbols: false
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: š
+
+
+# -inas, DLKŽ96, § 161
+
+- key: vaik/inas
+  override-symbols: false
+  extends:
+  - keys: vyr/as
+    prefix:
+      suffixes: in
+
+- key: vaik/inai
+  override-symbols: false
+  extends:
+  - keys: vyr/ai
+    prefix:
+      suffixes: in
+
+
+- key: merg/ina
+  override-symbols: false
+  extends:
+  - keys: jūr/a
+    prefix:
+      suffixes: in
+
+- key: merg/inos
+  override-symbols: false
+  extends:
+  - keys: jūr/os
+    prefix:
+      suffixes: in
+
+
+# -ušis, DLKŽ96, § 162
+
+
+
+# -išius, DLKŽ96, § 163
+
+
+
+# -ilis, DLKŽ96, § 164
+
+
+
+# -ėzas, DLKŽ96, § 165
+
+
+
+# -ikė; -(i)okas, DLKŽ96, § 166
+
+- key: merg/ikė
+  override-symbols: false
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: ik
+
+- key: merg/ikės
+  override-symbols: false
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: ik
+
+
+- key: bern/iokas
+  override-symbols: false
+  extends:
+  - keys: vyr/as
+    prefix:
+      suffixes: iok
+
+- key: bern/iokai
+  override-symbols: false
+  extends:
+  - keys: vyr/ai
+    prefix:
+      suffixes: iok
+
+- key: merg/iotė
+  override-symbols: false
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: iot
+
+- key: merg/iotės
+  override-symbols: false
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: iot
+
+
+# -etė, DLKŽ96, § 167
+
+- key: tank/etė
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: et
+
+- key: tank/etės
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: et
+
+
+# -utėlis; -elytis, DLKŽ96, § 168
+
+
+- key: bern/utėlis
+  override-symbols: false
+  extends:
+  - keys: brol/is
+    prefix:
+      suffixes: utėl
+
+- key: bern/utėliai
+  override-symbols: false
+  extends:
+  - keys: eln/iai
+    prefix:
+      suffixes: utėl
+
+- key: merg/utėlė
+  override-symbols: false
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: utėl
+
+- key: merg/utėlės
+  override-symbols: false
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: utėl

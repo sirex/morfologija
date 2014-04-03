@@ -1056,6 +1056,7 @@
             Turi normalius deminutyvus; deminutyvų abiejose giminėse (kaip kad
             pvz. meška-meškutis-meškutė) neturi,
           pardefs:
+          # -elis, -ėlis
           - - key: katin/ėlis
               properties:
                 gender: masculine
@@ -1089,6 +1090,7 @@
               properties:
                 gender: feminine
 
+          # -ukas
           - - key: nam/ukas
               properties:
                 gender: masculine
@@ -1102,6 +1104,7 @@
               properties:
                 gender: feminine
 
+          # -utis
           - - key: mešk/utis
               properties:
                 gender: masculine
@@ -1115,6 +1118,7 @@
               properties:
                 gender: feminine
 
+          # -aitis
           - - key: vežim/aitis
               properties:
                 gender: masculine
@@ -1127,6 +1131,131 @@
             - key: obel/aitės
               properties:
                 gender: feminine
+
+          # -ytis
+          - - key: brol/ytis
+              properties:
+                gender: masculine
+            - key: saul/ytė
+              properties:
+                gender: feminine
+          - - key: brol/yčiai
+              properties:
+                gender: masculine
+            - key: saul/ytės
+              properties:
+                gender: feminine
+
+          # -ulis
+          - - key: tėv/ulis
+              properties:
+                gender: masculine
+            - key: mot/ulė
+              properties:
+                gender: feminine
+          - - key: tėv/uliai
+              properties:
+                gender: masculine
+            - key: mot/ulės
+              properties:
+                gender: feminine
+
+          # -užis
+          - - key: tėv/užis
+              properties:
+                gender: masculine
+            - key: mot/užė
+              properties:
+                gender: feminine
+          - - key: tėv/užiai
+              properties:
+                gender: masculine
+            - key: mot/užės
+              properties:
+                gender: feminine
+
+          # -(i)ūkštis
+          - - key: tėv/ūkštis
+              properties:
+                gender: masculine
+            - key: mot/ūkštė
+              properties:
+                gender: feminine
+          - - key: tėv/ūkščiai
+              properties:
+                gender: masculine
+            - key: mot/ūkštės
+              properties:
+                gender: feminine
+
+          # -okšnis
+          - - key: tėv/okšnis
+              properties:
+                gender: masculine
+            - key: mot/okšnė
+              properties:
+                gender: feminine
+          - - key: tėv/okšniai
+              properties:
+                gender: masculine
+            - key: mot/okšnės
+              properties:
+                gender: feminine
+
+          # -šė
+          - - key: merg/šė
+              properties:
+                gender: feminine
+              lemmas:
+                - merga
+                - boba
+          - - key: merg/šės
+              properties:
+                gender: feminine
+              lemmas:
+                - merga
+                - boba
+
+          # -ikė
+          - - key: merg/ikė
+              properties:
+                gender: feminine
+          - - key: merg/ikės
+              properties:
+                gender: feminine
+
+          # -(i)okas
+          - - key: bern/iokas
+              properties:
+                gender: masculine
+            - key: merg/iotė
+              properties:
+                gender: feminine
+          - - key: bern/iokai
+              properties:
+                gender: masculine
+            - key: merg/iotės
+              properties:
+                gender: feminine
+
+          # -etė
+          - tank/etė
+          - tank/etės
+
+          # -utėlis
+          - - key: bern/utėlis
+              properties:
+                gender: masculine
+            - key: merg/utėlė
+              properties:
+                gender: feminine
+          - - key: bern/utėliai
+              properties:
+                gender: masculine
+            - key: merg/utėlės
+              properties:
+                gender: feminine
+
         - code: 3
           name: both-genders
           label: >
@@ -1179,6 +1308,54 @@
           - vežim/aičiai
           - obel/aitė
           - obel/aitės
+
+          - brol/ytis
+          - brol/yčiai
+          - saul/ytė
+          - saul/ytės
+
+          - tėv/ulis
+          - tėv/uliai
+          - mot/ulė
+          - mot/ulės
+
+          - tėv/užis
+          - tėv/užiai
+          - mot/užė
+          - mot/užės
+
+          - tėv/ūkštis
+          - tėv/ūkščiai
+          - mot/ūkštė
+          - mot/ūkštės
+
+          - tėv/okšnis
+          - tėv/okšniai
+          - mot/okšnė
+          - mot/okšnės
+
+          # -ikė
+          - - key: merg/ikė
+              properties:
+                gender: feminine
+          - - key: merg/ikės
+              properties:
+                gender: feminine
+
+          # -(i)okas
+          - bern/iokas
+          - bern/iokai
+          - merg/iotė
+          - merg/iotės
+
+          - tank/etė
+          - tank/etės
+
+          - bern/utėlis
+          - bern/utėliai
+          - merg/utėlė
+          - merg/utėlės
+
         - code: 4
           label: >
             Daiktavardžiai nekaitomi (nėra linksniuojami), nors kai kurie jų,
