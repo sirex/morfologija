@@ -173,9 +173,9 @@ class Lexeme(object):
                 yield pardef
 
     def prepare_forms(self, forms):
-        for suffix in forms:
-            stem = affrication(self.stem, ''.join(suffix))
-            yield stem, suffix
+        for suffixes in forms:
+            stem, suffixes = affrication(self.stem, suffixes)
+            yield stem, suffixes
 
     def affixes(self, value, paradigm, kind):
         for forms, symbols in paradigm.affixes(kind):

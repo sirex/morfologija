@@ -170,7 +170,7 @@
         - - key: eln/ias
             endswith: ias
           - key: vėj/as
-        - - key: eln/i/ai
+        - - key: eln/iai
             endswith: ias
           - key: vyr/ai
       - code: 3
@@ -181,7 +181,7 @@
         - - key: arkl/ys
             endswith: ys
           - key: brol/is
-        - eln/i/ai
+        - eln/iai
       - code: 4
         label: (i)u linksniuotė, paradigma nr. 4 (žiūr DLKG97 psl.72)
         declension: (i)u
@@ -196,10 +196,10 @@
         pardefs:
         - - key: turg/us
             endswith: jus
-          - key: koridor/i/ai
+          - key: koridor/ius
         - - key: vyr/ai
             endswith: jus
-          - key: eln/i/ai
+          - key: eln/iai
       - code: 6
         label: (i)o linksniuotė, paradigma nr. 6 (žiūr DLKG97 psl.74)
         declension: (i)o
@@ -1132,10 +1132,53 @@
           label: >
             Turi deminutyvus abiejose giminėse, pvz., meška-meškutis-meškutė,
           pardefs:
+          - - key: katin/ėlis
+              properties:
+                gender: masculine
+              syllables:
+                gt: 2
+            - key: nam/elis
+              properties:
+                gender: masculine
+          - - key: katin/ėliai
+              properties:
+                gender: masculine
+              syllables:
+                gt: 2
+            - key: nam/eliai
+              properties:
+                gender: masculine
+          - - key: arbat/ėlė
+              properties:
+                gender: feminine
+              syllables:
+                gt: 2
+            - key: saul/elė
+              properties:
+                gender: feminine
+          - - key: arbat/ėlės
+              properties:
+                gender: feminine
+              syllables:
+                gt: 2
+            - key: saul/elės
+              properties:
+                gender: feminine
+
+          - nam/ukas
+          - nam/ukai
+          - saul/ukė
+          - saul/ukės
+
           - mešk/utis
           - mešk/učiai
           - mešk/utė
           - mešk/utės
+
+          - vežim/aitis
+          - vežim/aičiai
+          - obel/aitė
+          - obel/aitės
         - code: 4
           label: >
             Daiktavardžiai nekaitomi (nėra linksniuojami), nors kai kurie jų,

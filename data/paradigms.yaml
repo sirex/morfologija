@@ -144,11 +144,19 @@
       - yje
       - [i, y]
 
-- key: eln/i/ai
-  extends:
-  - keys: vyr/ai
-    prefix:
-      suffixes: i
+- key: eln/iai
+  symbols:
+    gender: m
+    number: pl
+  define:
+    suffixes:
+      case:
+      - iai
+      - ių
+      - iams
+      - ius
+      - iais
+      - iuose
 
 
 # 3 paradigma
@@ -213,11 +221,20 @@
 
 # 5 paradigma
 
-- key: koridor/i/ai
-  extends:
-  - keys: turg/us
-    prefix:
-      suffixes: i
+- key: koridor/ius
+  symbols:
+    gender: m
+    number: sg
+  define:
+    suffixes:
+      case:
+      - ius
+      - iaus
+      - iui
+      - ių
+      - iumi
+      - iuje
+      - iau
 
 
 # 6 paradigma
@@ -788,315 +805,149 @@
 # Deminutyvai
 
 - key: nam/elis
-  symbols:
-    gender: m
-    number: sg
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - elis
-      - elio
-      - eliui
-      - elį
-      - eliu
-      - elyje
-      - eli
+  extends:
+  - keys: brol/is
+    prefix:
+      suffixes: el
 
 - key: nam/eliai
-  symbols:
-    gender: m
-    number: pl
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - eliai
-      - elių
-      - eliams
-      - elius
-      - eliais
-      - eliuose
+  extends:
+  - keys: eln/iai
+    prefix:
+      suffixes: el
 
 
 - key: saul/elė
-  symbols:
-    gender: m
-    number: sg
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - elė
-      - elės
-      - elei
-      - elę
-      - ele
-      - elėje
-      - elę
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: el
 
 - key: saul/elės
-  symbols:
-    gender: m
-    number: pl
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - elės
-      - elių
-      - elėms
-      - eles
-      - elėmis
-      - elėse
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: el
 
 
 - key: katin/ėlis
-  symbols:
-    gender: m
-    number: sg
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - ėlis
-      - ėlio
-      - ėliui
-      - ėlį
-      - ėliu
-      - ėlyje
-      - ėli
+  extends:
+  - keys: brol/is
+    prefix:
+      suffixes: ėl
 
 - key: katin/ėliai
-  symbols:
-    gender: m
-    number: pl
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - ėliai
-      - ėlių
-      - ėliams
-      - ėlius
-      - ėliais
-      - ėliuose
+  extends:
+  - keys: eln/iai
+    prefix:
+      suffixes: ėl
 
 
 - key: arbat/ėlė
-  symbols:
-    gender: f
-    number: sg
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - ėlė
-      - ėlės
-      - ėlei
-      - ėlę
-      - ėle
-      - ėlėje
-      - ėlę
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: ėl
 
 - key: arbat/ėlės
-  symbols:
-    gender: f
-    number: pl
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - ėlės
-      - ėlių
-      - ėlėms
-      - ėles
-      - ėlėmis
-      - ėlėse
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: ėl
 
 
 - key: nam/ukas
-  symbols:
-    gender: m
-    number: sg
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - ukas
-      - uko
-      - ukui
-      - uką
-      - uku
-      - uke
-      - uk
+  extends:
+  - keys: vyr/as
+    prefix:
+      suffixes: uk
 
 - key: nam/ukai
-  symbols:
-    gender: m
-    number: pl
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - ukai
-      - ukų
-      - ukams
-      - ukus
-      - ukais
-      - ukuose
+  extends:
+  - keys: vyr/ai
+    prefix:
+      suffixes: uk
 
 
 - key: saul/ukė
-  symbols:
-    gender: f
-    number: sg
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - ukė
-      - ukės
-      - ukei
-      - ukę
-      - uke
-      - ukėje
-      - ukę
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: uk
 
 - key: saul/ukės
-  symbols:
-    gender: f
-    number: pl
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - ukės
-      - ukių
-      - ukėms
-      - ukes
-      - ukėmis
-      - ukėse
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: uk
 
 
 - key: mešk/utis
-  symbols:
-    gender: m
-    number: sg
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - utis
-      - učio
-      - učiui
-      - utį
-      - učiu
-      - utyje
-      - uti
+  extends:
+  - keys: brol/is
+    prefix:
+      suffixes: ut
 
 - key: mešk/učiai
-  symbols:
-    gender: m
-    number: pl
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - učiai
-      - učių
-      - učiams
-      - učius
-      - učiais
-      - učiuose
+  extends:
+  - keys: eln/iai
+    prefix:
+      suffixes: ut
 
 - key: mešk/utė
-  symbols:
-    gender: f
-    number: sg
-  define:
-    suffixes:
-      case:
-      - utė
-      - utės
-      - utei
-      - utę
-      - ute
-      - utėje
-      - ute
+  override-symbols: false
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: ut
 
 - key: mešk/utės
-  symbols:
-    gender: f
-    number: pl
-  define:
-    suffixes:
-      case:
-      - utės
-      - učių
-      - utėms
-      - utes
-      - utėmis
-      - utėse
+  override-symbols: false
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: ut
 
 
 - key: vežim/aitis
-  symbols:
-    gender: m
-    number: sg
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - aitis
-      - aičio
-      - aičiui
-      - aitį
-      - aičiu
-      - aityje
-      - aiti
+  extends:
+  - keys: brol/is
+    prefix:
+      suffixes: ait
 
 - key: vežim/aičiai
-  symbols:
-    gender: m
-    number: pl
   override-symbols: false
-  define:
-    suffixes:
-      case:
-      - aičiai
-      - aičių
-      - aičiams
-      - aičius
-      - aičiais
-      - aičiuose
+  extends:
+  - keys: eln/iai
+    prefix:
+      suffixes: ait
 
 
 - key: obel/aitė
-  symbols:
-    gender: f
-    number: sg
-  define:
-    suffixes:
-      case:
-      - aitė
-      - aitės
-      - aitei
-      - aitę
-      - aite
-      - aitėje
-      - aite
+  override-symbols: false
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: ait
 
 - key: obel/aitės
-  symbols:
-    gender: f
-    number: pl
-  define:
-    suffixes:
-      case:
-      - aitės
-      - aičių
-      - aitėms
-      - aites
-      - aitėmis
-      - aitėse
+  override-symbols: false
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: ait

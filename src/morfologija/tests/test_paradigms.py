@@ -1,6 +1,7 @@
 import yaml
 import unittest
 
+from ..paradigms import Paradigm
 from ..paradigms import ParadigmCollection
 
 RES = dict(
@@ -96,6 +97,36 @@ RES = dict(
     optional-prefixes:
       suffixes: i
 
+
+
+- key: vyr/ai
+  symbols:
+    gender: m
+    number: pl
+  define:
+    suffixes:
+      case:
+      - ai
+      - ų
+      - ams
+      - us
+      - ais
+      - uose
+
+- key: eln/i/ai
+  extends:
+  - keys: vyr/ai
+    prefix:
+      suffixes: i
+
+- key: vežim/aičiai
+  override-symbols: false
+  extends:
+  - keys: eln/i/ai
+    prefix:
+      suffixes: ait
+
+
 """,
 )
 
@@ -165,3 +196,103 @@ class NodeTests(unittest.TestCase):
               ['yje']], {'case': 'loc', 'gender': 'm', 'number': 'sg'}),
             ([['i'  ]], {'case': 'voc', 'gender': 'm', 'number': 'sg'}),
         ])
+
+    def test_multiple_extends(self):
+        paradigm = self.paradigms.get('vežim/aičiai')
+        suffixes = list(paradigm.affixes('suffixes'))
+        self.assertEqual(suffixes, [
+            ([['ait', 'i', 'ai'  ]], {'case': 'nom', 'gender': 'm', 'number': 'pl'}),
+            ([['ait', 'i', 'ų'   ]], {'case': 'gen', 'gender': 'm', 'number': 'pl'}),
+            ([['ait', 'i', 'ams' ]], {'case': 'dat', 'gender': 'm', 'number': 'pl'}),
+            ([['ait', 'i', 'us'  ]], {'case': 'acc', 'gender': 'm', 'number': 'pl'}),
+            ([['ait', 'i', 'ais' ]], {'case': 'ins', 'gender': 'm', 'number': 'pl'}),
+            ([['ait', 'i', 'uose']], {'case': 'loc', 'gender': 'm', 'number': 'pl'}),
+        ])
+
+
+class ParadigmPrefixMethodTests(unittest.TestCase):
+    """
+    Pradigm.prefx method can be called using two ways:
+
+    1. Specifying one prefix for all difined affixes:
+
+           prefix:
+             suffixes: el
+
+    2. Specifying particular affixes to prefix:
+
+           prefix:
+             suffixes:
+               case:
+                 nom: el
+
+    """
+    def test_no_prefix(self):
+        paradigm = Paradigm(None, {})
+        ext = dict()
+        kind = 'suffixes'
+        symkey = 'case'
+        symbol = 'nom'
+        affix = ['is']
+
+        self.assertEqual(
+            paradigm.prefix(ext, kind, symkey, symbol, affix), ['is'])
+
+    def test_prefix_1(self):
+        paradigm = Paradigm(None, {})
+        ext = dict(prefix=dict(suffixes='el'))
+        kind = 'suffixes'
+        symkey = 'case'
+        symbol = 'nom'
+        affix = ['is']
+
+        self.assertEqual(
+            paradigm.prefix(ext, kind, symkey, symbol, affix), ['el', 'is'])
+
+    def test_prefix_2(self):
+        paradigm = Paradigm(None, {})
+        ext = dict(prefix=dict(suffixes=dict(case=dict(nom='el'))))
+        kind = 'suffixes'
+        symkey = 'case'
+        symbol = 'nom'
+        affix = ['ai']
+
+        # Everything matches, add prefix
+        self.assertEqual(
+            paradigm.prefix(ext, kind, symkey, symbol, affix), ['el', 'ai'])
+
+        # Symbol doesnot match, do not add prefix
+        symbol = 'gen'
+        self.assertEqual(
+            paradigm.prefix(ext, kind, symkey, symbol, affix), ['ai'])
+
+
+class ParadigmExtendsTests(unittest.TestCase):
+    def test_extends_prefix(self):
+        paradigms = yaml.load('''\
+        - key: case
+          symbols:
+          - nom
+
+        - key: akm/as
+          define:
+            suffixes:
+              case:
+              - as
+
+        - key: akm/uk/as
+          extends:
+          - keys: akm/as
+            prefix:
+              suffixes: uk
+
+        - key: akm/en/uk/as
+          extends:
+          - keys: akm/uk/as
+            prefix:
+              suffixes: en
+        ''')
+        paradigms = ParadigmCollection(paradigms)
+        paradigm = paradigms.get('akm/en/uk/as')
+        suffixes = list(paradigm.affixes('suffixes'))
+        self.assertEqual(suffixes, [([['en', 'uk', 'as']], {'case': 'nom'})])
