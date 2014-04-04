@@ -1279,3 +1279,36 @@
   - keys: gerv/ės
     prefix:
       suffixes: utėl
+
+
+# Veikėjų ir veiksmažodinės ypatybės turėtojų pavadinimai
+
+# -ininkas, DLKŽ96, § 256
+
+- key: amat/ininkas
+  override-symbols: false
+  extends:
+  - keys: vyr/as
+    prefix:
+      suffixes: inink
+
+- key: amat/ininkai
+  override-symbols: false
+  extends:
+  - keys: vyr/ai
+    prefix:
+      suffixes: inink
+
+- key: amat/ininkė
+  override-symbols: false
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: inink
+
+- key: amat/ininkės
+  override-symbols: false
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: inink

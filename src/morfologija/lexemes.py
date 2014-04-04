@@ -79,7 +79,12 @@ class Lexeme(object):
 
     def check_properties(self, properties):
         for k, v in properties.items():
-            if k not in self.names or self.names[k] != v:
+            if k not in self.names:
+                return False
+
+            names = self.names[k]
+            names = names if isinstance(names, list) else [names]
+            if v not in names:
                 return False
         return True
 
