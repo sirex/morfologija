@@ -19,7 +19,6 @@ from ..nodes import Node
 from ..grammar import Grammar
 from ..lexemes import Lexeme
 from ..paradigms import ParadigmCollection
-from ..utils import first
 
 wrapper = textwrap.TextWrapper(subsequent_indent='       ')
 
