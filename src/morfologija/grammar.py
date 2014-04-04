@@ -61,7 +61,7 @@ class Grammar(object):
 
             (pos_name,   pos), \
             (field_name, field), \
-            (value_names, value) = named_nodes
+            (value_name, value) = named_nodes
 
             if pos_name not in self.poses:
                 self.poses[pos_name] = POS(pos_name, pos)
@@ -71,12 +71,8 @@ class Grammar(object):
                 pos.fields[field_name] = Field(pos, field_name, field)
             field = pos.fields[field_name]
 
-            value_names = (
-                value_names if isinstance(value_names, list) else [value_names]
-            )
-            for value_name in value_names:
-                if value_name not in field.values:
-                    field.values[value_name] = Value(field, value_name, value)
+            if value_name not in field.values:
+                field.values[value_name] = Value(field, value_name, value)
 
     def get_named_nodes(self, node):
         names = []

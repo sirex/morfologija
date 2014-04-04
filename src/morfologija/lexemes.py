@@ -45,6 +45,11 @@ class Lexeme(object):
         for field, value_code in zip(self.pos.fields.values(), params):
             value = field.get_value_by_code(value_code)
             if value is None:
+                for value in field.values.values():
+                    print('value.label: %s' % value.label)
+                    print('value.code: %s' % value.code)
+                    if value.code == value_code:
+                        print('  returing...')
                 raise Exception(
                     'Unknown value {val} for field {fld} ({label}) in {line}.'.
                     format(val=value_code, fld=field.code, line=line,
@@ -58,10 +63,17 @@ class Lexeme(object):
 
     def get_names(self):
         for value in self.properties:
-            if value.node.name is not None:
+            if value.node.value is not None:
+                key = first(value.node.parents(name__isnull=False)).name
+                if isinstance(value.node.value, list):
+                    val = value.node.value
+                else:
+                    val = [value.node.value]
+                yield key, val
+            elif value.node.name is not None:
                 key = first(value.node.parents(name__isnull=False)).name
                 val = value.node.name
-                yield key, val
+                yield key, [val]
 
     def get_symbols(self):
         for value in self.properties:

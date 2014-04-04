@@ -346,19 +346,19 @@
         symbol: m
         label: Eilinis vyr. gim. daiktavardis
       - code: 2
-        name: [masculine, feminine]
+        value: [masculine, feminine]
         symbol: mf
         label:
           Vyr. gim. dktv; turi atitikmenį mot. gim., pvz.,
           informatikas->informatikė
       - code: 3
-        name: [common, masculine]
+        value: [common, masculine]
         symbol: um
         label:
           Daiktavardis nekaitomas; tradiciškai laikoma, kad tai vyr. gim.,
           nors tai ne visais atvejais akivaizdu., pvz., kredo, taksi
       - code: 4
-        name: [neuter, masculine]
+        value: [neuter, masculine]
         symbol: mn
         label: >
           Dažniausiai [tradiciškai?] laikoma, kad daiktavardis yra vyr. gim.,
@@ -374,13 +374,13 @@
         symbol: nt
         label: Eilinis bendr. gim. daiktavardis
       - code: 7
-        name: [common, feminine]
+        value: [common, feminine]
         symbol: uf
         label: >
           Daiktavardis nekaitomas; gali būti laikoma, kad tai mot. gim., nors
           tai ne visais atvejais akivaizdu; pvz.: bezė
       - code: 8
-        name: [feminine, masculine]
+        value: [feminine, masculine]
         symbol: fm
         label:
           Mot. gim. daiktavardis; turi atitikmenį vyr. gim. pvz.,
@@ -1388,6 +1388,9 @@
           label: tokių vedinių neturi
         - code: 1
           label: turi
+          pardefs:
+          - brol/ybė
+          - brol/ybės
       - code: 15
         label: Daiktavardžio vedinių su -ystė galimumas
         nodes:

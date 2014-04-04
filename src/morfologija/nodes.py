@@ -86,6 +86,7 @@ class Node(object):
     def __init__(self, node, parent=None):
         self.code = node.get('code')
         self.name = node.get('name')
+        self.value = node.get('value')
         self.label = node.get('label')
         self.symbol = node.get('symbol')
         self.inflective = node.get('inflective')

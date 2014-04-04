@@ -1281,6 +1281,23 @@
       suffixes: utėl
 
 
+# Ypatybių pavadinimai (vardažodžių abstraktai)
+
+# -ybė, DLKŽ96, § 214
+
+- key: brol/ybė
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: yb
+
+- key: brol/ybės
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: yb
+
+
 # Veikėjų ir veiksmažodinės ypatybės turėtojų pavadinimai
 
 # -ininkas, DLKŽ96, § 256
