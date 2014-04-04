@@ -1298,6 +1298,83 @@
       suffixes: yb
 
 
+# -ystė, DLKŽ96, § 215
+
+- key: vaik/ystė
+  extends:
+  - keys: gerv/ė
+    prefix:
+      suffixes: yst
+
+- key: vaik/ystės
+  extends:
+  - keys: gerv/ės
+    prefix:
+      suffixes: yst
+
+
+# -ingas
+
+- key: mad/ingas
+  override-symbols: false
+  extends:
+  - keys: pažįstam/as
+    prefix:
+      suffixes: ing
+
+- key: mad/ingi
+  override-symbols: false
+  extends:
+  - keys: pažįstam/i
+    prefix:
+      suffixes: ing
+
+- key: mad/inga
+  override-symbols: false
+  extends:
+  - keys: jūr/a
+    prefix:
+      suffixes: ing
+
+- key: mad/ingos
+  override-symbols: false
+  extends:
+  - keys: jūr/os
+    prefix:
+      suffixes: ing
+
+
+# -iškas
+
+- key: ūk/iškas
+  override-symbols: false
+  extends:
+  - keys: pažįstam/as
+    prefix:
+      suffixes: išk
+
+- key: ūk/iški
+  override-symbols: false
+  extends:
+  - keys: pažįstam/i
+    prefix:
+      suffixes: išk
+
+- key: ūk/iška
+  override-symbols: false
+  extends:
+  - keys: jūr/a
+    prefix:
+      suffixes: išk
+
+- key: ūk/iškos
+  override-symbols: false
+  extends:
+  - keys: jūr/os
+    prefix:
+      suffixes: išk
+
+
 # Veikėjų ir veiksmažodinės ypatybės turėtojų pavadinimai
 
 # -ininkas, DLKŽ96, § 256
