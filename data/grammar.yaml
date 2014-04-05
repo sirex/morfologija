@@ -3,7 +3,7 @@
   name: noun
   symbol: n
   nodes:
-  - label: Daiktavardžio įpatumai
+  - label: Daiktavardžio ypatumai
     nodes:
     - label: Tikriniškumas
       code: 4
